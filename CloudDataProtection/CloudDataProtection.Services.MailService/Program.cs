@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace ClouDataProtection.Services.MailService
+namespace CloudDataProtection.Services.MailService
 {
     public class Program
     {

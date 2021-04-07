@@ -1,22 +1,26 @@
 ﻿using System;
-using ClouDataProtection.Services.MailService.Dto;
+using System.Threading.Tasks;
+using CloudDataProtection.Services.MailService.Business;
+using CloudDataProtection.Services.MailService.Dto;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ClouDataProtection.Services.MailService.Messaging.Listener
+namespace CloudDataProtection.Services.MailService.Messaging.Listener
 {
     public class UserRegisteredMessageListener : RabbitMqMessageListenerBase<UserRegisteredModel>
     {
-        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<UserRegisteredModel>> logger) : base(options, logger)
+        private readonly RegistrationMailLogic _logic;
+
+        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<UserRegisteredModel>> logger, RegistrationMailLogic logic) : base(options, logger)
         {
+            _logic = logic;
         }
 
         protected override string Subject => "UserRegistered";
-        public override void HandleMessage(UserRegisteredModel model)
+        public override async Task HandleMessage(UserRegisteredModel model)
         {
-            // TODO Handle
-            Console.WriteLine(model);
+            await _logic.SendUserRegistered(model.Email);
         }
     }
 }

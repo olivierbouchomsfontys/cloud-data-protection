@@ -14,3 +14,23 @@ Branches:
 * Staging: staging environment (n.a.)
 * Test: test environment (will be set up during the semester)
 * Develop: development branch
+
+# How to run locally
+
+## SendGrid
+
+SendGrid is used to send mails in the development environment. Create a user account and API key on SendGrid and store the API key in an environment variable.
+
+Unix:
+`export CDP_DEV_SENDGRID={your api key goes here}`
+
+Windows:
+`setx CDP_DEV_SENDGRID {your api key goes here}`
+
+You also need to verify your email address to send mails, see https://sendgrid.com/docs/ui/sending-email/sender-verification/. Then it should be set as an environment variable.
+
+Unix:
+`export CDP_DEV_SENDGRID_SENDER={your email goes here}`
+
+Windows:
+`setx CDP_DEV_SENDGRID_SENDER {your email goes here}`

@@ -2,11 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>ClouDataProtection.Services.MailService</RootNamespace>
+        <RootNamespace>CloudDataProtection.Services.MailService</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\CloudDataProtection.Core\CloudDataProtection.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SendGrid" Version="9.22.0" />
     </ItemGroup>
 
 

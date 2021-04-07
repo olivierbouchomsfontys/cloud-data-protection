@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ClouDataProtection.Services.MailService.Messaging.Listener;
+using CloudDataProtection.Services.MailService.Business;
+using CloudDataProtection.Services.MailService.Messaging.Listener;
+using CloudDataProtection.Services.MailService.Sender;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace ClouDataProtection.Services.MailService
+namespace CloudDataProtection.Services.MailService
 {
     public class Startup
     {
@@ -30,6 +24,9 @@ namespace ClouDataProtection.Services.MailService
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             
             services.AddHostedService<UserRegisteredMessageListener>();
+
+            services.AddSingleton<IMailSender, SendGridMailSender>();
+            services.AddSingleton<RegistrationMailLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

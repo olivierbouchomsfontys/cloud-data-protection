@@ -1,4 +1,4 @@
-﻿namespace ClouDataProtection.Services.MailService.Dto
+﻿namespace CloudDataProtection.Services.MailService.Dto
 {
     public class UserRegisteredModel
     {

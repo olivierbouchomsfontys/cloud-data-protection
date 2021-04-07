@@ -50,7 +50,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             Init();
         }
         
-        public abstract void HandleMessage(TModel model);
+        public abstract Task HandleMessage(TModel model);
         
         protected sealed override Task ExecuteAsync(CancellationToken cancellationToken)
         {
