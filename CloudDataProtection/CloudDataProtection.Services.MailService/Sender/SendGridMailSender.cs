@@ -62,7 +62,7 @@ namespace CloudDataProtection.Services.MailService.Sender
 
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine();
+                _logger.LogError($"An error occured while sending a request to SendGrid: {response.StatusCode}, {await response.Body.ReadAsStringAsync()}");
             }
         }
 
