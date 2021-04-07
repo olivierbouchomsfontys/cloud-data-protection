@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CloudDataProtection.Core.Controllers;
+using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Rest.Errors;
+using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +12,11 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OnboardingController : ControllerBase
+    public class OnboardingController : ServiceController
     {
         private readonly Lazy<OnboardingBusinessLogic> _logic;
 
-        public OnboardingController(Lazy<OnboardingBusinessLogic> logic)
+        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder) : base(jwtDecoder)
         {
             _logic = logic;
         }
@@ -21,7 +24,7 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         [HttpGet]
         public async Task<ActionResult> IsComplete(int userId)
         {
-            var businessResult = await _logic.Value.IsOnboarded(userId);
+            BusinessResult<bool> businessResult = await _logic.Value.IsOnboarded(userId);
 
             if (!businessResult.Success)
             {

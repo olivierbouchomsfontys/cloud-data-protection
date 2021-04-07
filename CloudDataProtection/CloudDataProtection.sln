@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Core.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Services.OnboardingService", "CloudDataProtection.Services.OnboardingService\CloudDataProtection.Services.OnboardingService.csproj", "{3C9BC3D9-D950-4012-BDFB-24F8C65F52BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Services.MailService", "CloudDataProtection.Services.MailService\CloudDataProtection.Services.MailService.csproj", "{A4F76C5F-83D1-482A-9AB7-043E21E25AFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{3C9BC3D9-D950-4012-BDFB-24F8C65F52BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C9BC3D9-D950-4012-BDFB-24F8C65F52BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C9BC3D9-D950-4012-BDFB-24F8C65F52BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F76C5F-83D1-482A-9AB7-043E21E25AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F76C5F-83D1-482A-9AB7-043E21E25AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F76C5F-83D1-482A-9AB7-043E21E25AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F76C5F-83D1-482A-9AB7-043E21E25AFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,80 +1,84 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Core.Rest.Errors;
+using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Entities;
+using CloudDataProtection.Jwt;
+using CloudDataProtection.Messaging.Publisher;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CloudDataProtection.Controllers
 {
     public class AuthenticationController : ControllerBase
     {
-        private readonly AuthenticationBusinessLogic _authenticationBusinessLogic;
+        private readonly AuthenticationBusinessLogic _logic;
+        private readonly IJwtHelper _jwtHelper;
+        private readonly Lazy<UserRegisteredMessagePublisher> _messagePublisher;
 
-        public AuthenticationController(AuthenticationBusinessLogic authenticationBusinessLogic)
+        public AuthenticationController(AuthenticationBusinessLogic logic, IJwtHelper jwtHelper, Lazy<UserRegisteredMessagePublisher> messagePublisher)
         {
-            _authenticationBusinessLogic = authenticationBusinessLogic;
+            _logic = logic;
+            _jwtHelper = jwtHelper;
+            _messagePublisher = messagePublisher;
         }
         
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<ActionResult> Authenticate([FromBody] LoginInput input)
         {
-            var user = await _authenticationBusinessLogic.Authenticate(input.Username, input.Password);
+            BusinessResult<User> businessResult = await _logic.Authenticate(input.Email, input.Password);
 
-            if (user == null)
-                return Unauthorized(new { message = "Username or password is incorrect" });
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            
-            // TODO Replace
-            var key = Encoding.ASCII.GetBytes("jwtSecretButNowLonger");
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if (!businessResult.Success)
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+                return Unauthorized(UnauthorizedResponse.Create());
+            }
 
-            // return basic user info and authentication token
-            return Ok(new AuthenticateResult
+            User user = businessResult.Data;
+
+            AuthenticateResult result = new AuthenticateResult()
             {
                 User = new UserResult
                 {
                     Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
                     Id = user.Id
                 },
-                Token = tokenString
-            });
+                Token = _jwtHelper.GenerateToken(user)
+            };
+            
+            return Ok(result);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterInput model)
         {
-            // map model to entity
-            var user = new User()
+            User user = new User()
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
                 Email = model.Email
             };
 
             // create user
-            await _authenticationBusinessLogic.Create(user, model.Password);
-            return Ok();
+            BusinessResult<User> businessResult = await _logic.Create(user, model.Password);
+
+            if (businessResult.Success)
+            {
+                UserResult result = new UserResult
+                {
+                    Email = user.Email,
+                    Id = user.Id
+                };
+
+                await _messagePublisher.Value.Send(result);
+                
+                return Ok(result);
+            }
+            else
+            {
+                return Problem(businessResult.Message);
+            }
         }
     }
 }

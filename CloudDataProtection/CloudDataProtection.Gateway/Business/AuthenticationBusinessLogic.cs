@@ -1,35 +1,42 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
 using CloudDataProtection.Entities;
+using CloudDataProtection.Password;
 
 namespace CloudDataProtection.Business
 {
     public class AuthenticationBusinessLogic
     {
         private readonly IAuthenticationRepository _repository;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public AuthenticationBusinessLogic(IAuthenticationRepository repository)
+        public AuthenticationBusinessLogic(IAuthenticationRepository repository, IPasswordHasher passwordHasher)
         {
             _repository = repository;
+            _passwordHasher = passwordHasher;
         }
 
-        // TODO Use businessResult
-        public async Task<User> Authenticate(string username, string password)
+        public async Task<BusinessResult<User>> Authenticate(string username, string password)
         {
-            var user = await _repository.Get(username);
+            if (username == null)
+            {
+                return BusinessResult<User>.Error("Invalid username or password");
+            }
+            
+            User user = await _repository.Get(username);
 
             if (user == null)
             {
-                return null;
+                return BusinessResult<User>.Error("Invalid username or password");
             }
 
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!_passwordHasher.Match(user.Password, password))
             {
-                return null;
+                return BusinessResult<User>.Error("Invalid username or password");
             }
 
-            return user;
+            return BusinessResult<User>.Ok(user);
         }
 
         public async Task<User> Get(int id)
@@ -37,49 +44,23 @@ namespace CloudDataProtection.Business
             return await _repository.Get(id);
         }
 
-        // TODO Use BusinessResult
-        public async Task<User> Create(User user, string password)
+        public async Task<BusinessResult<User>> Create(User user, string password)
         {
+            if (user.Email == null)
+            {
+                return BusinessResult<User>.Error("Invalid email provided");
+            }
+            
             if (await _repository.Get(user.Email) != null)
             {
-                // User exists
-                return null;
+                return BusinessResult<User>.Error($"A user with email {user.Email} already exists");
             }
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-
+            user.Password = _passwordHasher.HashPassword(password);
+            
             await _repository.Create(user);
 
-            return user;
-        }
-
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            // TODO Use IPasswordHasher
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
-        {
-            // TODO Use IPasswordHasher
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != storedHash[i]) return false;
-                }
-            }
-
-            return true;
+            return BusinessResult<User>.Ok(user);
         }
     }
 }

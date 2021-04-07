@@ -9,9 +9,9 @@ using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace CloudDataProtection.Core.Messaging.RabbitMq 
+namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
-    public abstract class RabbitMqMessageListenerBase<TModel> : BackgroundService where TModel : class, IMessageListener<TModel>
+    public abstract class RabbitMqMessageListenerBase<TModel> : BackgroundService, IMessageListener<TModel> where TModel : class
     {
         private readonly ILogger<RabbitMqMessageListenerBase<TModel>> _logger;
         private readonly RabbitMqConfiguration _configuration;
@@ -50,7 +50,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             Init();
         }
         
-        protected abstract void HandleMessage(TModel model);
+        public abstract void HandleMessage(TModel model);
         
         protected sealed override Task ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -101,7 +101,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private void DoInit()
         {
             _channel = Connection.CreateModel();
-            _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout);
+            _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
             
             QueueDeclareOk result = _channel.QueueDeclare(string.Empty, exclusive: true);
 

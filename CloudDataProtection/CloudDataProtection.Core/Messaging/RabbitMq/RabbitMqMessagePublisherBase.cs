@@ -6,7 +6,7 @@ using RabbitMQ.Client;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
-    public abstract class RabbitMqMessagePublisherBase<TModel> where TModel : class, IMessagePublisher<TModel>
+    public abstract class RabbitMqMessagePublisherBase<TModel> : IMessagePublisher<TModel> where TModel : class  
     {
         private readonly RabbitMqConfiguration _configuration;
 
@@ -41,7 +41,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _configuration = options.Value;
             
             Channel = Connection.CreateModel();
-            Channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout);
+            Channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
         }
         
         public async Task Send(TModel obj)
