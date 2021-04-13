@@ -58,14 +58,14 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
             EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += HandleMessage;
+            consumer.Received += async (sender,args) => await HandleMessage(sender, args);
 
             _channel.BasicConsume(string.Empty, false, consumer);
 
             return Task.CompletedTask;
         }
 
-        private void HandleMessage(object sender, BasicDeliverEventArgs args)
+        private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
         {
             if (ShouldHandleMessage(args))
             {
@@ -73,7 +73,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
              
                 _logger.LogInformation("Handling message with subject {GetSubject} and model {Model}", args.GetSubject(), model);
 
-                HandleMessage(model);
+                await HandleMessage(model);
                 
                 _channel.BasicAck(args.DeliveryTag, false);
             }
