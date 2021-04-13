@@ -1,32 +1,51 @@
-import React, {useState} from "react";
-import {useDispatch} from "react-redux";
-import { login } from '../features/userSlice';
+import React, {useEffect, useState} from "react";
 import './login.css';
+import {AuthService} from "../services/authService";
+import {Button, Divider, Input, InputLabel, Typography} from "@material-ui/core";
+import {useSnackbar} from 'notistack';
+import {http} from "../common/http";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const handleSubmit = (e: any) => {
+    const authService = new AuthService();
+
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        dispatch(login({
-            email: email,
-            password: password,
-            loggedIn: true
-        }))
+        const cancelToken = http.CancelToken.source().token;
+
+        const input = { email, password };
+
+        await authService.login(input, cancelToken)
+            .then(() => onSuccess())
+            .catch((e: any) => onError(e))
+            .finally(() => onFinish());
+    }
+
+    const onSuccess = () => {
+        setEmail('');
+    }
+
+    const onError = (e: any) => {
+        enqueueSnackbar(e, { autoHideDuration: 6000 });
+    }
+
+    const onFinish = () => {
+        setPassword('');
     }
 
     return (
         <div className='login'>
-            <h1>Log in</h1>
+            <Typography variant='h1' className='login__header'>Log in</Typography>
             <form className='login__form' onSubmit={(e) => handleSubmit(e)}>
-                <input type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                <input type="password" placeholder="password" value={password}
+                <Input className='login__form__input' autoFocus={true} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <Input className='login__form__input' type="password" placeholder="Password" value={password}
                        onChange={(e) => setPassword(e.target.value)}/>
-                <button type="submit">Log in</button>
+                <Button className='login__form__submit' type="submit" color='primary'>Log in</Button>
             </form>
         </div>
     )

@@ -9,7 +9,7 @@ const AnonymousRouter = () => {
         <Fragment>
             <Route exact path='/' component={Home}/>
             <Route exact path='/login' component={Login}/>
-            <Redirect from='*' to='/'/>
+            <Redirect to="/" />
         </Fragment>
     )
 }

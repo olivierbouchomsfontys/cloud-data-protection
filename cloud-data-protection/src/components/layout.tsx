@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
 import NavMenu from "./navMenu";
 
 export class Layout extends Component {
     render () {
         return (
-            <div>
+            <div style={{display: 'flex'}}>
                 <NavMenu />
-                <Container>
+                <div className={'app__content'}>
                     {this.props.children}
-                </Container>
+                </div>
             </div>
         );
     }

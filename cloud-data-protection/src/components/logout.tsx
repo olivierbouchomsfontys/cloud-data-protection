@@ -1,21 +1,24 @@
-import React from "react";
-import './logout.css';
-import {useDispatch} from "react-redux";
-import {login, logout} from "../features/userSlice";
+import React, {useEffect} from "react";
+import {AuthService} from "../services/authService";
+import {useSnackbar} from 'notistack';
 
 const Logout = () => {
-    const dispatch = useDispatch();
+    const authService = new AuthService();
+
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleLogout = () => {
-        dispatch(logout());
+        authService.logout();
+
+        enqueueSnackbar('You are now logged out', { autoHideDuration: 6000 })
     }
+
+    useEffect(() => {
+        handleLogout();
+    })
 
     return (
         <div className='logout'>
-            <h1>Welcome, <span className='user__name'>Olivier</span></h1>
-            <button className='logout__button' onClick={(e) => handleLogout()}>
-                Log out
-            </button>
         </div>
     )
 }

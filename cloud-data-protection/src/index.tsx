@@ -6,12 +6,15 @@ import './index.css';
 
 import {Provider} from 'react-redux';
 import store from './stores/Store';
+import {SnackbarProvider} from "notistack";
 
 ReactDOM.render(
-  <Provider store={store}>
-      <BrowserRouter>
-          <App />
-      </BrowserRouter>
-  </Provider>,
+    <SnackbarProvider maxSnack={2}>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </Provider>
+    </SnackbarProvider>,
   document.getElementById('root')
 );

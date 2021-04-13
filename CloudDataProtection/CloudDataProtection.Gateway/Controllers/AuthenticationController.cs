@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CloudDataProtection.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
         private readonly AuthenticationBusinessLogic _logic;

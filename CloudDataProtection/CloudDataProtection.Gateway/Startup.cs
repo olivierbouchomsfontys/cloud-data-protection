@@ -24,6 +24,8 @@ namespace CloudDataProtection
 {
     public class Startup
     {
+        private const string CorsPolicy = "cors-policy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,6 +41,17 @@ namespace CloudDataProtection
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "CloudDataProtection ApiGateway", Version = "v1"});
+            });
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy, builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                });
             });
 
             ConfigureAuthentication(services);
@@ -63,6 +76,8 @@ namespace CloudDataProtection
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors(CorsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();

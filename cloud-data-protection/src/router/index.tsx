@@ -1,18 +1,18 @@
 import React, { Fragment } from "react";
 import {useSelector} from "react-redux";
-import {selectUser} from "../features/userSlice";
+import {selectAuthenticated, selectUser} from "../features/userSlice";
 import ClientRouter from "./client";
 import EmployeeRouter from "./employee";
 import AnonymousRouter from "./anonymous";
-import {Layout} from "../components/layout";
 
 const Router = () => {
     const user = useSelector(selectUser);
+    const authenticated = useSelector(selectAuthenticated);
 
     return (
         <Fragment>
             {
-                user?.loggedIn ?
+                authenticated ?
                     user.roleName === 'client' ?
                         <ClientRouter /> :
                         <EmployeeRouter /> :
