@@ -1,0 +1,11 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.login__form button[type='submit'] {
+    width: 100%;
+}
