@@ -9,7 +9,7 @@ import store from './stores/Store';
 import {SnackbarProvider} from "notistack";
 
 ReactDOM.render(
-    <SnackbarProvider maxSnack={2}>
+    <SnackbarProvider maxSnack={1}>
         <Provider store={store}>
             <BrowserRouter>
                 <App />

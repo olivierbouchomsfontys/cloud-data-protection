@@ -1,11 +1,12 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AutoMapper;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Data;
 using CloudDataProtection.Services.Onboarding.Data.Context;
+using CloudDataProtection.Services.Onboarding.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +60,13 @@ namespace CloudDataProtection.Services.Onboarding
             });
 
             ConfigureAuthentication(services);
+
+            services.AddAutoMapper(ConfigureMapper);
+        }
+
+        private void ConfigureMapper(IMapperConfigurationExpression config)
+        {
+            config.CreateMap<Entities.Onboarding, OnboardingResult>();
         }
 
         private void ConfigureAuthentication(IServiceCollection services)

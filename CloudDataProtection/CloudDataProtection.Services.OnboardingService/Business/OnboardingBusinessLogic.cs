@@ -2,20 +2,16 @@
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.Onboarding.Data;
 using CloudDataProtection.Services.Onboarding.Entities;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 
 namespace CloudDataProtection.Services.Onboarding.Business
 {
     public class OnboardingBusinessLogic
     {
         private readonly IOnboardingRepository _repository;
-        private readonly ILogger<OnboardingBusinessLogic> _logger;
 
-        public OnboardingBusinessLogic(IOnboardingRepository repository, ILogger<OnboardingBusinessLogic> logger)
+        public OnboardingBusinessLogic(IOnboardingRepository repository)
         {
             _repository = repository;
-            _logger = logger;
         }
 
         public async Task<BusinessResult<Entities.Onboarding>> GetByUser(long userId)

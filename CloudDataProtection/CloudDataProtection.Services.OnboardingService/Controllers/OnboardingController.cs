@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using CloudDataProtection.Core.Controllers;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Rest.Errors;
@@ -15,29 +16,26 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
     public class OnboardingController : ServiceController
     {
         private readonly Lazy<OnboardingBusinessLogic> _logic;
+        private readonly IMapper _mapper;
 
-        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder) : base(jwtDecoder)
+        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder, IMapper mapper) : base(jwtDecoder)
         {
             _logic = logic;
+            _mapper = mapper;
         }
         
         [HttpGet]
         [Route("")]
         public async Task<ActionResult> Get()
         {
-            BusinessResult<bool> businessResult = await _logic.Value.IsOnboarded(UserId);
+            BusinessResult<Entities.Onboarding> businessResult = await _logic.Value.GetByUser(UserId);
 
             if (!businessResult.Success)
             {
                 return NotFound(NotFoundResponse.Create("User", UserId));
             }
 
-            IsCompleteResult result = new IsCompleteResult
-            {
-                IsComplete = businessResult.Data
-            };
-            
-            return Ok(result);
+            return Ok(_mapper.Map<OnboardingResult>(businessResult.Data));
         }
     }
 }

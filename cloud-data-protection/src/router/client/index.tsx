@@ -6,10 +6,6 @@ import {Redirect} from "react-router-dom";
 import Onboarding from "../../components/onboarding";
 
 const ClientRouter = () => {
-    useEffect(() => {
-        console.log('ClientRouter')
-    })
-
     return (
         <Fragment>
             <Route exact path='/' component={Home} />
