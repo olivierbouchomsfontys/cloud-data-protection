@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Core.Result;
 using CloudDataProtection.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -18,9 +19,9 @@ namespace CloudDataProtection.Jwt
         {
             int userId = int.Parse(context.Principal.Identity.Name);
             
-            User user = await _logic.Get(userId);
+            BusinessResult<User> result = await _logic.Get(userId);
 
-            if (user == null)
+            if (result == null || !result.Success || result.Data == null)
             {
                 // return unauthorized if user no longer exists
                 context.Fail("Unauthorized");
