@@ -4,6 +4,7 @@ import {selectAuthenticated, selectUser} from "../features/userSlice";
 import {
     Home,
     AccountCircle,
+    DriveEta,
     Person,
     PersonAdd,
     ExitToApp
@@ -18,17 +19,52 @@ import {
 } from "@material-ui/core";
 import './navMenu.css';
 import {Link} from "react-router-dom";
+import {UserRole} from "../services/result/loginResult";
+import NavMenuItem from "./navMenu/navMenuItem";
 
 const NavMenu = () => {
     const authenticated = useSelector(selectAuthenticated);
     const user = useSelector(selectUser);
 
     const menuItems = (): JSX.Element[] => {
-        const links = [];
+        const links: NavMenuItem[] = [];
 
         links.push({text: 'Home', route: '/', icon: <Home /> });
 
+        if (authenticated) {
+            userMenuItems().forEach(link => links.push(link));
+        }
+
         return links.map(link => mapLink(link));
+    }
+
+    const userMenuItems = (): NavMenuItem[] => {
+        const links: NavMenuItem[] = [];
+
+        switch (user.role) {
+            case UserRole.Client:
+                clientMenuItems().forEach(link => links.push(link));
+                break;
+            case UserRole.Employee:
+                employeeMenuItems().forEach(link => links.push(link));
+                break;
+        }
+
+        return links;
+    }
+
+    const clientMenuItems = (): NavMenuItem[] => {
+        const links: NavMenuItem[] = [];
+
+        links.push({text: 'Onboarding', route: '/onboarding', icon: <DriveEta />})
+
+        return links;
+    }
+
+    const employeeMenuItems = (): NavMenuItem[] => {
+        const links: NavMenuItem[] = [];
+
+        return links;
     }
 
     const authMenuItems = (): JSX.Element[] => {
@@ -44,7 +80,7 @@ const NavMenu = () => {
         return links.map(link => mapLink(link));
     }
 
-    const mapLink = (link: any): JSX.Element =>  {
+    const mapLink = (link: NavMenuItem): JSX.Element =>  {
         return (
             <Link to={link.route} key={link.text}>
                 <ListItem button className='nav__drawer__link'>

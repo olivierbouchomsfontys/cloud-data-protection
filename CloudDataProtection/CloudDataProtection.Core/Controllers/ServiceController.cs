@@ -1,4 +1,5 @@
-﻿using CloudDataProtection.Core.Jwt;
+﻿using CloudDataProtection.Core.Controllers.Data;
+using CloudDataProtection.Core.Jwt;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudDataProtection.Core.Controllers
@@ -17,6 +18,7 @@ namespace CloudDataProtection.Core.Controllers
         private void Initialize()
         {
             _userId = _jwtDecoder.GetUserId(Request.Headers);
+            _userRole = _jwtDecoder.GetUserRole(Request.Headers);
         }
 
         private long? _userId;
@@ -25,6 +27,10 @@ namespace CloudDataProtection.Core.Controllers
         /// Id of the current user
         /// </summary>
         protected long UserId => _userId.GetValueOrDefault();
+
+        private UserRole? _userRole;
+
+        public UserRole UserRole => _userRole.GetValueOrDefault();
 
         /// <summary>
         /// If a user is authenticated

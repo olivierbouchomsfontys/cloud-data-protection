@@ -23,7 +23,14 @@ namespace CloudDataProtection.Services.Onboarding.Business
 
             if (onboarding == null)
             {
-                return BusinessResult<bool>.Error($"Could not find onboarding for user with id = {userId}");
+                Entities.Onboarding newOnboarding = new Entities.Onboarding
+                {
+                    UserId = userId
+                };
+
+                await Create(newOnboarding);
+
+                return await IsOnboarded(userId);
             }
             
             return BusinessResult<bool>.Ok(onboarding.Status == OnboardingStatus.Complete);

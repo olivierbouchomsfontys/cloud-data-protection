@@ -62,7 +62,7 @@ const Register = () => {
                        onChange={(e) => setPassword(e.target.value)} autoComplete="new-password"/>
                 <Input className='register__form__input' type="password" placeholder="Repeat password" value={repeatPassword}
                        onChange={(e) => setRepeatPassword(e.target.value)}/>
-                <Button className='register__form__submit' type="submit" color='primary'>Log in</Button>
+                <Button className='register__form__submit' type="submit" color='primary'>Register</Button>
             </form>
         </div>
     )

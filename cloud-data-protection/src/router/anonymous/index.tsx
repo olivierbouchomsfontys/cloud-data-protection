@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect} from "react";
 import {Route} from "react-router";
 import {Home} from "../../components/home";
 import Login from "../../components/login";
@@ -6,6 +6,10 @@ import Register from "../../components/register";
 import {Redirect} from "react-router-dom";
 
 const AnonymousRouter = () => {
+    useEffect(() => {
+        console.log('AnonymousRouter')
+    })
+
     return (
         <Fragment>
             <Route exact path='/' component={Home}/>

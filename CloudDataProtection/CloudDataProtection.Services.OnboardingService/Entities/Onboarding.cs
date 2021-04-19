@@ -12,9 +12,9 @@ namespace CloudDataProtection.Services.Onboarding.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         
-        public DateTime Created { get; set; }
-        
-        public OnboardingStatus Status { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+
+        public OnboardingStatus Status { get; set; } = OnboardingStatus.None;
         
         public long UserId { get; set; }
     }

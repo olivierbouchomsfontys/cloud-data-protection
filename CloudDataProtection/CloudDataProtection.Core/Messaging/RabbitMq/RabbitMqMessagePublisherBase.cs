@@ -49,7 +49,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             IBasicProperties message = Channel.CreateBasicProperties();
 
             message.ContentType = _configuration.ContentType;
-            message.SetSubject(Subject);
 
             byte[] body = JsonSerializer.SerializeToUtf8Bytes(obj, typeof(TModel));
 
@@ -60,7 +59,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         {
             await Task.Run(() =>
             {
-                Channel.BasicPublish(_configuration.Exchange, string.Empty, message, body);
+                Channel.BasicPublish(_configuration.Exchange, Subject, message, body);
             });
         }
     }

@@ -6,7 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Messaging\Listener" />
       <Folder Include="Messaging\Publisher" />
     </ItemGroup>
 

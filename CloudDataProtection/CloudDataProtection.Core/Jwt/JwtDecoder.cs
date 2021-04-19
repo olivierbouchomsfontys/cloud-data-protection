@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using CloudDataProtection.Core.Controllers.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,7 +13,6 @@ namespace CloudDataProtection.Core.Jwt
     public class JwtDecoder : IJwtDecoder
     {
         private const string AuthenticationScheme = "Bearer";
-        private const string DecryptionKey = "jwtSecretButNowLonger";
         
         public int? GetUserId(IHeaderDictionary headers)
         {
@@ -25,6 +26,20 @@ namespace CloudDataProtection.Core.Jwt
                 .FirstOrDefault();
 
             return userId;
+        }
+
+        public UserRole? GetUserRole(IHeaderDictionary headers)
+        {
+            UserRole? role = headers
+                .Where(header => header.Key == "Authorization")
+                .Select(header => header.Value)
+                .Select(value => value.ToString())
+                .Select(GetToken)
+                .Select(GetClaims)
+                .Select(GetUserRole)
+                .FirstOrDefault();
+
+            return role;
         }
 
         private string GetToken(string header)
@@ -57,6 +72,15 @@ namespace CloudDataProtection.Core.Jwt
                 .Where(c => c.Type == "unique_name")
                 .Select(claim => claim.Value)
                 .Select(value => int.TryParse(value, out int id) ? id : null as int?)
+                .FirstOrDefault();
+        }
+
+        private UserRole? GetUserRole(IEnumerable<Claim> claims)
+        {
+            return claims
+                .Where(c => c.Type == CustomClaimTypes.UserRole)
+                .Select(claim => claim.Value)
+                .Select(value => int.TryParse(value, out int role) ? (UserRole) role : null as UserRole?)
                 .FirstOrDefault();
         }
     }

@@ -17,6 +17,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private readonly RabbitMqConfiguration _configuration;
 
         protected abstract string Subject { get; }
+        protected abstract string QueueName { get; }
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -67,16 +68,13 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
         {
-            if (ShouldHandleMessage(args))
-            {
-                TModel model = args.GetModel<TModel>();
-             
-                _logger.LogInformation("Handling message with subject {GetSubject} and model {Model}", args.GetSubject(), model);
+            TModel model = args.GetModel<TModel>();
+         
+            _logger.LogInformation("Handling message with subject {GetSubject} and model {Model}", args.RoutingKey, model);
 
-                await HandleMessage(model);
-                
-                _channel.BasicAck(args.DeliveryTag, false);
-            }
+            await HandleMessage(model);
+            
+            _channel.BasicAck(args.DeliveryTag, false);
         }
 
         private void Init()
@@ -103,15 +101,9 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel = Connection.CreateModel();
             _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
             
-            QueueDeclareOk result = _channel.QueueDeclare(string.Empty, exclusive: true);
-
-            _channel.QueueBind(result.QueueName, _configuration.Exchange, string.Empty);
-        }
-        
-        private bool ShouldHandleMessage(BasicDeliverEventArgs args)
-        {
-            return args.GetSubject()?.Equals(Subject, StringComparison.OrdinalIgnoreCase)
-                ?? false;
+            // A queue should not be automatically deleted and should survive a broker restart
+            _channel.QueueDeclare(QueueName, exclusive: false, durable: true, autoDelete: false);
+            _channel.QueueBind(QueueName, _configuration.Exchange, Subject);
         }
     }
 }
