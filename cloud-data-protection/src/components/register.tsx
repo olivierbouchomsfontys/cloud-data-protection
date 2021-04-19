@@ -49,7 +49,7 @@ const Register = () => {
     }
 
     const onFinish = () => {
-        setPassword('');
+        setPassword("");
         setRepeatPassword('');
     }
 
