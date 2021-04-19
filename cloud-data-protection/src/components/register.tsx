@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './register.css';
+import "./register.css";
 import {AuthService} from "../services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
