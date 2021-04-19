@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './register.css';
+import "./register.css";
 import {AuthService} from "../services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
@@ -41,7 +41,7 @@ const Register = () => {
 
         enqueueSnackbar('Your account has been created. You can now log in using the specified credentials', snackbarOptions);
 
-        history.push('/login');
+        history.push("/login");
     }
 
     const onError = (e: any) => {
@@ -49,7 +49,7 @@ const Register = () => {
     }
 
     const onFinish = () => {
-        setPassword('');
+        setPassword("");
         setRepeatPassword('');
     }
 
