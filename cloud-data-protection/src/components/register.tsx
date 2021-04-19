@@ -41,7 +41,7 @@ const Register = () => {
 
         enqueueSnackbar('Your account has been created. You can now log in using the specified credentials', snackbarOptions);
 
-        history.push('/login');
+        history.push("/login");
     }
 
     const onError = (e: any) => {
