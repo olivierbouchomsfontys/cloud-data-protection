@@ -1,4 +1,4 @@
-import {UserRole} from "../services/result/loginResult";
+import UserRole from "./userRole";
 
 interface User {
     id: number;

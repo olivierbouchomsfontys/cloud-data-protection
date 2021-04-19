@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {useSelector} from "react-redux";
-import {selectAuthenticated, selectUser} from "../features/userSlice";
+import {selectAuthenticated, selectUser} from "features/userSlice";
 import {
     Home,
     AccountCircle,
@@ -17,10 +17,10 @@ import {
     ListItemText,
     Toolbar,
 } from "@material-ui/core";
-import './navMenu.css';
 import {Link} from "react-router-dom";
-import {UserRole} from "../services/result/loginResult";
-import NavMenuItem from "./navMenu/navMenuItem";
+import NavMenuItem from "components/navMenu/navMenuItem";
+import UserRole from "entities/userRole";
+import './navMenu.css';
 
 const NavMenu = () => {
     const authenticated = useSelector(selectAuthenticated);

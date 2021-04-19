@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import './login.css';
-import {AuthService} from "../services/authService";
+import {AuthService} from "services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
-import {http} from "../common/http";
-import snackbarOptions from "../common/snackbar/options";
+import {http} from "common/http";
+import snackbarOptions from "common/snackbar/options";
 
 const Login = () => {
     const [email, setEmail] = useState('');

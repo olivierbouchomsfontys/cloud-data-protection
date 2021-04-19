@@ -4,7 +4,7 @@ import {selectAuthenticated, selectUser} from "../features/userSlice";
 import ClientRouter from "./client";
 import EmployeeRouter from "./employee";
 import AnonymousRouter from "./anonymous";
-import {UserRole} from "../services/result/loginResult";
+import UserRole from "../entities/userRole";
 
 const Router = () => {
     const user = useSelector(selectUser);

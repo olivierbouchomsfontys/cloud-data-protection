@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavMenu from "./navMenu";
+import NavMenu from "components/navMenu/navMenu";
 
 export class Layout extends Component {
     render () {

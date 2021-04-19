@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import "./register.css";
-import {AuthService} from "../services/authService";
+import {AuthService} from "services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
-import {http} from "../common/http";
-import snackbarOptions from "../common/snackbar/options";
+import {http} from "common/http";
+import snackbarOptions from "common/snackbar/options";
 import { useHistory } from "react-router-dom";
+import "./register.css";
 
 const Register = () => {
     const [email, setEmail] = useState('');

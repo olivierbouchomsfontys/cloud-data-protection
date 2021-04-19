@@ -1,7 +1,16 @@
 import {AxiosRequestConfig} from "axios";
+import store from 'stores/Store';
 
-const authInterceptor = (config: AxiosRequestConfig) => {
-    return config;
+class AuthInterceptor {
+    public intercept(config: AxiosRequestConfig): Promise<AxiosRequestConfig> {
+        const token = store.getState().user.token;
+
+        if (token) {
+            config.headers['Authorization'] = 'Bearer ' + token;
+        }
+
+        return Promise.resolve(config);
+    }
 }
 
-export default authInterceptor;
+export default AuthInterceptor;

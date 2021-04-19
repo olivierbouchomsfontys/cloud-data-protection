@@ -1,5 +1,5 @@
 import store from '../stores/Store';
-import {http} from "../common/http";
+import {http} from "common/http";
 import {login, logout} from "../features/userSlice";
 import {ServiceBase} from "./base/serviceBase";
 import {AxiosResponse, CancelToken} from "axios";
