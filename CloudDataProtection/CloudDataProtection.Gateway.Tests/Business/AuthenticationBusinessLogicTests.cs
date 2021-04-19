@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
@@ -17,7 +16,8 @@ namespace CloudDataProtection.Gateway.Tests.Business
         private readonly User _register = new User
         {
             Email = "info@example.com",
-            Password = "password"
+            Password = "password",
+            Role = UserRole.Client
         };
         
         private readonly User _fetch = new User
@@ -25,7 +25,8 @@ namespace CloudDataProtection.Gateway.Tests.Business
             Id = 1,
             Email = "test@example.com",
             // Password: password
-            Password = "$2a$12$13vDgPeLSGdVMpCgs/jpquS1r/TOogVPS6nFDL1P8j4JWmFw3Q3XO"
+            Password = "$2a$12$13vDgPeLSGdVMpCgs/jpquS1r/TOogVPS6nFDL1P8j4JWmFw3Q3XO",
+            Role = UserRole.Client
         };
 
         public AuthenticationBusinessLogicTests()

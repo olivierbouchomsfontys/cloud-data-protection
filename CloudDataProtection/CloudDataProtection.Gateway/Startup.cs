@@ -2,12 +2,15 @@ using System.Text;
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Data;
 using CloudDataProtection.Data.Context;
+using CloudDataProtection.Dto;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Publisher;
 using CloudDataProtection.Password;
+using CloudDataProtection.Seeder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,10 +59,10 @@ namespace CloudDataProtection
 
             ConfigureAuthentication(services);
             
-            services.AddLazy<UserRegisteredMessagePublisher>();
+            services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
-
+            
             services.AddOcelot();
         }
 

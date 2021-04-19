@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import './login.css';
 import {AuthService} from "../services/authService";
-import {Button, Divider, Input, InputLabel, Typography} from "@material-ui/core";
+import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
 import {http} from "../common/http";
+import snackbarOptions from "../common/snackbar/options";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ const Login = () => {
     }
 
     const onError = (e: any) => {
-        enqueueSnackbar(e, { autoHideDuration: 6000 });
+        enqueueSnackbar(e, snackbarOptions);
     }
 
     const onFinish = () => {

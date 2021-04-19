@@ -4,6 +4,7 @@ import {selectAuthenticated, selectUser} from "../features/userSlice";
 import ClientRouter from "./client";
 import EmployeeRouter from "./employee";
 import AnonymousRouter from "./anonymous";
+import {UserRole} from "../services/result/loginResult";
 
 const Router = () => {
     const user = useSelector(selectUser);
@@ -13,7 +14,7 @@ const Router = () => {
         <Fragment>
             {
                 authenticated ?
-                    user.roleName === 'client' ?
+                    user.role === UserRole.Client ?
                         <ClientRouter /> :
                         <EmployeeRouter /> :
                     <AnonymousRouter />

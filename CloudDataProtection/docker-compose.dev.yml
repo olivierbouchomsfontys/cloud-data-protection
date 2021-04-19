@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  cdp_messagebroker_dev:
+    image: "rabbitmq:3-management"
+    ports:
+      # Web interface
+      - "7100:15672"
+      - "7101:5672"
+    volumes:
+      - cdp_rabbitmq:/rabbitmq
+  cdp_developmentdb_dev:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgresdevelopment
+
+volumes:
+  cdp_rabbitmq:
+    driver: local

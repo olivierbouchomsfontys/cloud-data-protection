@@ -1,3 +1,8 @@
+using System.Threading.Tasks;
+using CloudDataProtection.Business;
+using CloudDataProtection.Core.Messaging;
+using CloudDataProtection.Dto;
+using CloudDataProtection.Seeder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +14,10 @@ namespace CloudDataProtection
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build()
+                .Seed()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
@@ -23,6 +31,26 @@ namespace CloudDataProtection
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        }
+    }
+
+    public static class WebHostExtensions
+    {
+        public static IHost Seed(this IHost webHost)
+        {
+            using (var scope = webHost.Services.CreateScope())
+            {
+                var logic = scope.ServiceProvider.GetService<AuthenticationBusinessLogic>();
+                var publisher = scope.ServiceProvider.GetService<IMessagePublisher<UserResult>>();
+
+                UserSeeder service = new UserSeeder(logic, publisher);
+
+                var task = service.Seed();
+            
+                task.Wait();
+            }
+            
+            return webHost;
         }
     }
 }

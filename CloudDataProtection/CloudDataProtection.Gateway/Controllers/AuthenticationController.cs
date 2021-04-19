@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Rest.Errors;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Entities;
 using CloudDataProtection.Jwt;
-using CloudDataProtection.Messaging.Publisher;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +18,9 @@ namespace CloudDataProtection.Controllers
     {
         private readonly AuthenticationBusinessLogic _logic;
         private readonly IJwtHelper _jwtHelper;
-        private readonly Lazy<UserRegisteredMessagePublisher> _messagePublisher;
+        private readonly Lazy<IMessagePublisher<UserResult>> _messagePublisher;
 
-        public AuthenticationController(AuthenticationBusinessLogic logic, IJwtHelper jwtHelper, Lazy<UserRegisteredMessagePublisher> messagePublisher)
+        public AuthenticationController(AuthenticationBusinessLogic logic, IJwtHelper jwtHelper, Lazy<IMessagePublisher<UserResult>> messagePublisher)
         {
             _logic = logic;
             _jwtHelper = jwtHelper;
@@ -45,7 +45,8 @@ namespace CloudDataProtection.Controllers
                 User = new UserResult
                 {
                     Email = user.Email,
-                    Id = user.Id
+                    Id = user.Id,
+                    Role = user.Role
                 },
                 Token = _jwtHelper.GenerateToken(user)
             };
@@ -59,7 +60,8 @@ namespace CloudDataProtection.Controllers
         {
             User user = new User()
             {
-                Email = model.Email
+                Email = model.Email,
+                Role = UserRole.Client
             };
 
             // create user
@@ -70,7 +72,8 @@ namespace CloudDataProtection.Controllers
                 UserResult result = new UserResult
                 {
                     Email = user.Email,
-                    Id = user.Id
+                    Id = user.Id,
+                    Role = user.Role
                 };
 
                 await _messagePublisher.Value.Send(result);
@@ -79,7 +82,7 @@ namespace CloudDataProtection.Controllers
             }
             else
             {
-                return Problem(businessResult.Message);
+                return Conflict(businessResult.Message);
             }
         }
     }

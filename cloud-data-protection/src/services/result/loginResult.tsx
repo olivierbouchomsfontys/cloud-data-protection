@@ -6,5 +6,10 @@ export interface LoginResult {
 export interface LoginUserResult {
     id: number;
     email: string;
-    role: string;
+    role: UserRole;
+}
+
+export enum UserRole {
+    Client = 0,
+    Employee = 1
 }

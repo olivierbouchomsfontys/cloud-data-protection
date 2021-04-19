@@ -54,6 +54,18 @@ namespace CloudDataProtection.Business
             return BusinessResult<User>.Ok(user);
         }
 
+        public async Task<BusinessResult<User>> Get(string email)
+        {
+            User user = await _repository.Get(email);
+
+            if (user == null)
+            {
+                return BusinessResult<User>.Error($"Could not find user with email = {email}");
+            }
+            
+            return BusinessResult<User>.Ok(user);
+        }
+
         public async Task<BusinessResult<User>> Create(User user, string password)
         {
             if (user.Email == null || !new EmailAddressAttribute().IsValid(user.Email))
