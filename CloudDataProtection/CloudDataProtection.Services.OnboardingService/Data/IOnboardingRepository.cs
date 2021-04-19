@@ -8,6 +8,6 @@ namespace CloudDataProtection.Services.Onboarding.Data
 
         Task<Entities.Onboarding> Get(int id);
 
-        Task<Entities.Onboarding> GetByUserId(int userId);
+        Task<Entities.Onboarding> GetByUserId(long userId);
     }
 }

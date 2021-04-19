@@ -8,17 +8,19 @@ namespace CloudDataProtection.Core.Controllers
     {
         private readonly IJwtDecoder _jwtDecoder;
 
+        private bool _initialized = false;
+
         protected ServiceController(IJwtDecoder jwtDecoder)
         {
             _jwtDecoder = jwtDecoder;
-
-            Initialize();
         }
 
         private void Initialize()
         {
             _userId = _jwtDecoder.GetUserId(Request.Headers);
             _userRole = _jwtDecoder.GetUserRole(Request.Headers);
+
+            _initialized = true;
         }
 
         private long? _userId;
@@ -26,11 +28,33 @@ namespace CloudDataProtection.Core.Controllers
         /// <summary>
         /// Id of the current user
         /// </summary>
-        protected long UserId => _userId.GetValueOrDefault();
+        protected long UserId
+        {
+            get
+            {
+                if (!_initialized)
+                {
+                    Initialize();
+                }
+
+                return _userId.GetValueOrDefault();
+            }
+        }
 
         private UserRole? _userRole;
 
-        public UserRole UserRole => _userRole.GetValueOrDefault();
+        public UserRole? UserRole
+        {
+            get
+            {
+                if (!_initialized)
+                {
+                    Initialize();
+                }
+
+                return _userRole;
+            }
+        }
 
         /// <summary>
         /// If a user is authenticated

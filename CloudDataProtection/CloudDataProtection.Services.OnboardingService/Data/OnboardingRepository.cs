@@ -25,7 +25,7 @@ namespace CloudDataProtection.Services.Onboarding.Data
             return await _context.Onboarding.FindAsync(id);
         }
 
-        public async Task<Entities.Onboarding> GetByUserId(int userId)
+        public async Task<Entities.Onboarding> GetByUserId(long userId)
         {
             return await _context.Onboarding.FirstOrDefaultAsync(o => o.UserId == userId);
         }

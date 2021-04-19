@@ -22,13 +22,14 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult> IsComplete(int userId)
+        [Route("")]
+        public async Task<ActionResult> Get()
         {
-            BusinessResult<bool> businessResult = await _logic.Value.IsOnboarded(userId);
+            BusinessResult<bool> businessResult = await _logic.Value.IsOnboarded(UserId);
 
             if (!businessResult.Success)
             {
-                return NotFound(NotFoundResponse.Create("User", userId));
+                return NotFound(NotFoundResponse.Create("User", UserId));
             }
 
             IsCompleteResult result = new IsCompleteResult
