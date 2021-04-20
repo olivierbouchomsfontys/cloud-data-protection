@@ -2,6 +2,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
+using CloudDataProtection.Core.Jwt.Options;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Data;
@@ -62,6 +63,7 @@ namespace CloudDataProtection
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
+            services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
             
             services.AddOcelot();
         }
@@ -94,10 +96,11 @@ namespace CloudDataProtection
         {
             services.AddDbContext<IAuthenticationDbContext, AuthenticationDbContext>
                 (o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            
-            // TODO Use Azure Key Vault
-            byte[] key = Encoding.ASCII.GetBytes("jwtSecretButNowLonger");
 
+            JwtSecretOptions options = new JwtSecretOptions();
+            
+            Configuration.GetSection("Jwt").Bind(options);
+            
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -114,7 +117,7 @@ namespace CloudDataProtection
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        IssuerSigningKey = new SymmetricSecurityKey(options.Key),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };

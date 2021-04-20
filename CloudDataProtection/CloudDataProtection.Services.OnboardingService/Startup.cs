@@ -2,6 +2,7 @@ using System.Text;
 using AutoMapper;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
+using CloudDataProtection.Core.Jwt.Options;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Data;
@@ -71,9 +72,10 @@ namespace CloudDataProtection.Services.Onboarding
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            // TODO Use Azure Key Vault
-            byte[] key = Encoding.ASCII.GetBytes("jwtSecretButNowLonger");
-
+            JwtSecretOptions options = new JwtSecretOptions();
+            
+            Configuration.GetSection("Jwt").Bind(options);
+            
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,7 +88,7 @@ namespace CloudDataProtection.Services.Onboarding
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        IssuerSigningKey = new SymmetricSecurityKey(options.Key),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };

@@ -40,12 +40,12 @@ namespace CloudDataProtection
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                var logic = scope.ServiceProvider.GetService<AuthenticationBusinessLogic>();
-                var publisher = scope.ServiceProvider.GetService<IMessagePublisher<UserResult>>();
+                AuthenticationBusinessLogic logic = scope.ServiceProvider.GetService<AuthenticationBusinessLogic>();
+                IMessagePublisher<UserResult> publisher = scope.ServiceProvider.GetService<IMessagePublisher<UserResult>>();
 
                 UserSeeder service = new UserSeeder(logic, publisher);
 
-                var task = service.Seed();
+                Task task = service.Seed();
             
                 task.Wait();
             }
