@@ -46,11 +46,13 @@ namespace CloudDataProtection.CI.Secrets
                     if (token != null)
                     {
                         token.Replace(secret);
+                        
+                        File.WriteAllText(filePath, jObject.ToString());
+
+                        Console.Out.WriteLine($"Updated {target} in {filePath}");
                     }
                     
-                    File.WriteAllText(filePath, jObject.ToString());
-
-                    Console.Out.WriteLine($"Updated {target} in {filePath}");
+                    Console.Out.WriteLine($"Could not find {target} in {filePath}, skipping");
                 }
             }
         }
