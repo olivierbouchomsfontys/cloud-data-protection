@@ -1,5 +1,9 @@
 export abstract class ServiceBase {
     protected onError(error: any) {
+        if (error.__CANCEL__) {
+            return Promise.resolve();
+        }
+
         if (!error?.response?.data) {
             return ServiceBase.unknownError();
         }

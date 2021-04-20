@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './login.css';
 import {AuthService} from "services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
 import {http} from "common/http";
 import snackbarOptions from "common/snackbar/options";
+import {CancelTokenSource} from "axios";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -14,14 +15,22 @@ const Login = () => {
 
     const authService = new AuthService();
 
+    let cancelTokenSource: CancelTokenSource;
+
+    useEffect(() => {
+        return () => {
+            cancelTokenSource.cancel();
+        }
+    })
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        const cancelToken = http.CancelToken.source().token;
+        cancelTokenSource = http.CancelToken.source();
 
         const input = { email, password };
 
-        await authService.login(input, cancelToken)
+        await authService.login(input, cancelTokenSource.token)
             .then(() => onSuccess())
             .catch((e: any) => onError(e))
             .finally(() => onFinish());

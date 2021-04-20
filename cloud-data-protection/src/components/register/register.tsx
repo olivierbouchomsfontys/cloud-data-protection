@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AuthService} from "services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
@@ -6,6 +6,7 @@ import {http} from "common/http";
 import snackbarOptions from "common/snackbar/options";
 import { useHistory } from "react-router-dom";
 import "./register.css";
+import {CancelTokenSource} from "axios";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -18,10 +19,18 @@ const Register = () => {
 
     const authService = new AuthService();
 
+    let cancelTokenSource: CancelTokenSource;
+
+    useEffect(() => {
+        return () => {
+            cancelTokenSource.cancel();
+        }
+    })
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        const cancelToken = http.CancelToken.source().token;
+        cancelTokenSource = http.CancelToken.source();
 
         const input = { email, password };
 
@@ -30,7 +39,7 @@ const Register = () => {
             return;
         }
 
-        await authService.register(input, cancelToken)
+        await authService.register(input, cancelTokenSource.token)
             .then(() => onSuccess())
             .catch((e: any) => onError(e))
             .finally(() => onFinish());

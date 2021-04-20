@@ -5,6 +5,7 @@ import Onboarding from "../../entities/onboarding";
 import snackbarOptions from "common/snackbar/options";
 import {useSnackbar} from "notistack";
 import OnboardingStatus from "../../entities/onboardingStatus";
+import axios, {CancelTokenSource} from "axios";
 
 const OnboardingComponent = () => {
     const [onboarding, setOnboarding] = useState<Onboarding>();
@@ -13,18 +14,26 @@ const OnboardingComponent = () => {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await onboardingService.get()
-                .then(result => setOnboarding(result))
-                .catch((e: any) => onError(e))
-        };
+    let cancelTokenSource: CancelTokenSource;
 
+    const fetchData = async () => {
+        cancelTokenSource = axios.CancelToken.source();
+
+        await onboardingService.get(cancelTokenSource.token)
+            .then(result => setOnboarding(result))
+            .catch((e: string) => onError(e))
+    };
+
+    useEffect(() => {
         fetchData();
+
+        return () => {
+            cancelTokenSource.cancel();
+        }
     }, []);
 
-    const onError = (e: any) => {
-        enqueueSnackbar(e.toString(), snackbarOptions);
+    const onError = (e: string) => {
+        enqueueSnackbar(e, snackbarOptions);
     }
 
     return (
