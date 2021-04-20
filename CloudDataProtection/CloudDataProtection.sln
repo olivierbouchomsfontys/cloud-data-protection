@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Gateway.Tests", "CloudDataProtection.Gateway.Tests\CloudDataProtection.Gateway.Tests.csproj", "{888B7FED-C976-430C-9E24-CAD7677EB512}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.CI.Secrets", "CloudDataProtection.CI.Secrets\CloudDataProtection.CI.Secrets.csproj", "{6CD9D8BB-151A-4081-94FB-10BD6E54A38D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{888B7FED-C976-430C-9E24-CAD7677EB512}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{888B7FED-C976-430C-9E24-CAD7677EB512}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{888B7FED-C976-430C-9E24-CAD7677EB512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD9D8BB-151A-4081-94FB-10BD6E54A38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD9D8BB-151A-4081-94FB-10BD6E54A38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD9D8BB-151A-4081-94FB-10BD6E54A38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD9D8BB-151A-4081-94FB-10BD6E54A38D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
