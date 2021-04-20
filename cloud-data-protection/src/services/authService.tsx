@@ -15,7 +15,7 @@ export class AuthService extends ServiceBase {
     }
 
     public async register(input: RegisterInput, cancelToken?: CancelToken) {
-        await http.post('/Authentication/Register', input, { cancelToken: cancelToken })
+        await http.post('/Authentication/Register', input, { cancelToken })
             .catch((e: any) => this.onError(e));
     }
 
