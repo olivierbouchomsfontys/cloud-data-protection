@@ -10,7 +10,8 @@ import {
     ExitToApp
 } from '@material-ui/icons';
 import {
-    AppBar, Divider,
+    AppBar,
+    Divider,
     Drawer,
     ListItem,
     ListItemIcon,
@@ -26,6 +27,9 @@ const NavMenu = () => {
     const authenticated = useSelector(selectAuthenticated);
     const user = useSelector(selectUser);
 
+    /*
+        Returns the menu items for the current user
+     */
     const menuItems = (): JSX.Element[] => {
         const links: NavMenuItem[] = [];
 
@@ -38,6 +42,9 @@ const NavMenu = () => {
         return links.map(link => mapLink(link));
     }
 
+    /*
+        Returns the menu items for an authenticated user
+     */
     const userMenuItems = (): NavMenuItem[] => {
         const links: NavMenuItem[] = [];
 
@@ -53,6 +60,9 @@ const NavMenu = () => {
         return links;
     }
 
+    /*
+        Returns the menu items for a client
+     */
     const clientMenuItems = (): NavMenuItem[] => {
         const links: NavMenuItem[] = [];
 
@@ -61,12 +71,18 @@ const NavMenu = () => {
         return links;
     }
 
+    /*
+        Returns the menu items for an employee
+     */
     const employeeMenuItems = (): NavMenuItem[] => {
         const links: NavMenuItem[] = [];
 
         return links;
     }
 
+    /*
+        Returns the authentication related menu items
+     */
     const authMenuItems = (): JSX.Element[] => {
         const links = [];
 
@@ -80,6 +96,9 @@ const NavMenu = () => {
         return links.map(link => mapLink(link));
     }
 
+    /*
+        Maps a NavMenuItem to a JSX Element
+     */
     const mapLink = (link: NavMenuItem): JSX.Element =>  {
         return (
             <Link to={link.route} key={link.text}>
