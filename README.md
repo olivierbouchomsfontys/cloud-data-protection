@@ -34,3 +34,11 @@ Unix:
 
 Windows:
 `setx CDP_DEV_SENDGRID_SENDER {your email goes here}`
+
+## Database and messagebroker
+
+Navigation to the `CloudDataProtection` directory and run `./dev.sh`. This will create the required containers for the PostgreSQL database and RabbitMq messagebroker.
+
+## Logging in
+
+A client account can be created by registering a new account. It is not possible yet to change the password of the default (employee) user. An alternative is to change it by replacing the password hash in the database with your own.
