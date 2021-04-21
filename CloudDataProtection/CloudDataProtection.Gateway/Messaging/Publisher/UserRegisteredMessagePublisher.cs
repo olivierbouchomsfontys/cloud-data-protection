@@ -10,6 +10,6 @@ namespace CloudDataProtection.Messaging.Publisher
         {
         }
 
-        protected override string Subject => "UserRegistered";
+        protected override string RoutingKey => "UserRegistered";
     }
 }

@@ -16,8 +16,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private readonly ILogger<RabbitMqMessageListenerBase<TModel>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
-        protected abstract string Subject { get; }
-        protected abstract string QueueName { get; }
+        protected abstract string RoutingKey { get; }
+        protected abstract string Queue { get; }
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -102,8 +102,9 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
             
             // A queue should not be automatically deleted and should survive a broker restart
-            _channel.QueueDeclare(QueueName, exclusive: false, durable: true, autoDelete: false);
-            _channel.QueueBind(QueueName, _configuration.Exchange, Subject);
+            _channel.QueueDeclare(Queue, exclusive: false, durable: true, autoDelete: false);
+            _channel.QueueBind(Queue, _configuration.Exchange, RoutingKey);
         }
     }
 }
+

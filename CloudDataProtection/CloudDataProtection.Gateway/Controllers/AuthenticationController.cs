@@ -20,7 +20,8 @@ namespace CloudDataProtection.Controllers
         private readonly IJwtHelper _jwtHelper;
         private readonly Lazy<IMessagePublisher<UserResult>> _messagePublisher;
 
-        public AuthenticationController(AuthenticationBusinessLogic logic, IJwtHelper jwtHelper, Lazy<IMessagePublisher<UserResult>> messagePublisher)
+        public AuthenticationController(AuthenticationBusinessLogic logic, IJwtHelper jwtHelper, 
+            Lazy<IMessagePublisher<UserResult>> messagePublisher)
         {
             _logic = logic;
             _jwtHelper = jwtHelper;

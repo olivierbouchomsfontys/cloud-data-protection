@@ -10,7 +10,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
     {
         private readonly RabbitMqConfiguration _configuration;
 
-        protected abstract string Subject { get; }
+        protected abstract string RoutingKey { get; }
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -59,7 +59,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         {
             await Task.Run(() =>
             {
-                Channel.BasicPublish(_configuration.Exchange, Subject, message, body);
+                Channel.BasicPublish(_configuration.Exchange, RoutingKey, message, body);
             });
         }
     }

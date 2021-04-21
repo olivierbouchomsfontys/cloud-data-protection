@@ -17,8 +17,8 @@ namespace CloudDataProtection.Services.MailService.Messaging.Listener
             _logic = logic;
         }
 
-        protected override string Subject => "UserRegistered";
-        protected override string QueueName => "FE024009-9AC7-4F6C-B21A-02C07E06511B";
+        protected override string RoutingKey => "UserRegistered";
+        protected override string Queue => "FE024009-9AC7-4F6C-B21A-02C07E06511B";
 
         public override async Task HandleMessage(UserRegisteredModel model)
         {

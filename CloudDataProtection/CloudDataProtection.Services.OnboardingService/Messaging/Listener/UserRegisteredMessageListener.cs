@@ -17,8 +17,8 @@ namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
             _logic = logic;
         }
 
-        protected override string Subject => "UserRegistered";
-        protected override string QueueName => "42D7C890-F91D-4343-8D8D-0CA0F11AF793";
+        protected override string RoutingKey => "UserRegistered";
+        protected override string Queue => "42D7C890-F91D-4343-8D8D-0CA0F11AF793";
         public override async Task HandleMessage(UserRegisteredModel model)
         {
             if (model.Role == UserRegisteredRole.Client)
