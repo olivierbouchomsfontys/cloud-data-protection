@@ -1,0 +1,45 @@
+:root {
+    --drawerWidth: 16rem;
+}
+
+.nav__appbar {
+    margin-left: var(--drawerWidth)!important;
+
+    height: 4rem!important;
+    min-height: 4rem!important;
+    max-height: 4rem!important;
+    width: calc(100% - var(--drawerWidth))!important;
+}
+
+.nav__drawer {
+    width: var(--drawerWidth)!important;
+    flex-shrink: 0!important;
+}
+
+.nav__drawer > *:first-child {
+    padding-top: 4rem;
+}
+
+.nav__toolbar {
+    display: flex;
+    justify-content: space-between!important;
+}
+
+.nav__user {
+    color: white!important;
+    display: flex;
+}
+
+.nav__user__text {
+    margin-left: .5rem;
+}
+
+.nav__drawer a {
+    color: rgb(95, 99, 104);
+    text-decoration: none;
+}
+
+.nav__drawer__link {
+    font-weight: bold;
+    width: 16rem!important;
+}
