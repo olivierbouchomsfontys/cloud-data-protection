@@ -46,3 +46,7 @@ Unix:
 Windows:
 `setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_ID {your client id goes here}`
 `setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_SERCET {your client secret goes here}`
+
+## Logging in
+
+A client account can be created by registering a new account. It is not possible yet to change the password of the default (employee) user. An alternative is to change it by replacing the password hash in the database with your own.
