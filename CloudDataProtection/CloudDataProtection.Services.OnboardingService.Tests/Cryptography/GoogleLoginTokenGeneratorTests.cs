@@ -2,7 +2,7 @@
 using CloudDataProtection.Services.Onboarding.Cryptography.Generator;
 using Xunit;
 
-namespace CloudDataProtection.Services.OnboardingService.Tests.Crypto
+namespace CloudDataProtection.Services.OnboardingService.Tests.Cryptography
 {
     public class GoogleLoginTokenGeneratorTests
     {
