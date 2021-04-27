@@ -1,9 +1,9 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment} from "react";
 import {Route} from "react-router";
-import {Home} from "../../components/home/home";
-import Logout from "../../components/logout/logout";
+import Home from "components/home/home";
+import Logout from "components/logout/logout";
 import {Redirect} from "react-router-dom";
-import OnboardingComponent from "../../components/onboarding/onboarding";
+import OnboardingComponent from "components/onboarding/onboarding";
 
 const ClientRouter = () => {
     return (

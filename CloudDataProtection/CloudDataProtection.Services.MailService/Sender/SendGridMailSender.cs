@@ -1,10 +1,7 @@
-﻿using System;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Environment;
 using Microsoft.Extensions.Logging;
 using SendGrid;
-using SendGrid.Helpers.Errors.Model;
 using SendGrid.Helpers.Mail;
 
 namespace CloudDataProtection.Services.MailService.Sender
@@ -13,39 +10,9 @@ namespace CloudDataProtection.Services.MailService.Sender
     {
         private readonly ILogger<SendGridMailSender> _logger;
         
-        private string ApiKey
-        {
-            get
-            {
-                try
-                {
-                    return GetEnvironmentVariable("CDP_DEV_SENDGRID");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogCritical(e, "An error occurred while attempting to retrieve the API key for SendGrid");
+        private string ApiKey => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEV_SENDGRID");
 
-                    throw;
-                }
-            }
-        }
-
-        private string SenderEmail
-        {
-            get
-            {
-                try
-                {
-                    return GetEnvironmentVariable("CDP_DEV_SENDGRID_SENDER");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogCritical(e, "An error occurred while attempting to retrieve the sender email for SendGrid");
-
-                    throw;
-                }
-            }
-        }
+        private string SenderEmail => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEV_SENDGRID_SENDER");
 
         public SendGridMailSender(ILogger<SendGridMailSender> logger)
         {
@@ -73,38 +40,5 @@ namespace CloudDataProtection.Services.MailService.Sender
                 new EmailAddress(recipient),
                 subject, body, body);
         }
-
-        private static string GetEnvironmentVariable(string key)
-        {
-            string apiKey =
-                Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.Process);
-
-            if (apiKey == null)
-            {
-                apiKey = Environment.GetEnvironmentVariable(key);
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                // On Windows we can fallback to machine and user targets
-                if (apiKey == null)
-                {
-                    apiKey = Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.User);
-                }
-
-                if (apiKey == null)
-                {
-                    apiKey = Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.Machine);
-                }
-            }
-
-            if (apiKey == null)
-            {
-                throw new ArgumentException($"Environment variable {key} could not be retrieved");
-            }
-
-            return apiKey;
-        }
-
     }
 }

@@ -6,16 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Messaging\Publisher" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\CloudDataProtection.Core\CloudDataProtection.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+      <PackageReference Include="Flurl.Http" Version="3.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
         <PrivateAssets>all</PrivateAssets>

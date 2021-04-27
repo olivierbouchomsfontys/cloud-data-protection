@@ -1,8 +1,8 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment} from "react";
 import {Route} from "react-router";
-import {Home} from "../../components/home/home";
-import Login from "../../components/login/login";
-import Register from "../../components/register/register";
+import Home from "components/home/home";
+import Login from "components/login/login";
+import Register from "components/register/register";
 import {Redirect} from "react-router-dom";
 
 const AnonymousRouter = () => {

@@ -1,13 +1,20 @@
-using System.Text;
 using AutoMapper;
+using CloudDataProtection.Core.Cryptography.Aes;
+using CloudDataProtection.Core.Cryptography.Aes.Options;
+using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
-using CloudDataProtection.Services.Onboarding.Data;
+using CloudDataProtection.Services.Onboarding.Config;
+using CloudDataProtection.Services.Onboarding.Cryptography.Generator;
 using CloudDataProtection.Services.Onboarding.Data.Context;
+using CloudDataProtection.Services.Onboarding.Data.Repository;
 using CloudDataProtection.Services.Onboarding.Dto;
+using CloudDataProtection.Services.Onboarding.Entities;
+using CloudDataProtection.Services.Onboarding.Google.Credentials;
+using CloudDataProtection.Services.Onboarding.Google.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -40,14 +48,26 @@ namespace CloudDataProtection.Services.Onboarding
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "CloudDataProtection OnboardingService", Version = "v1"});
             });
-
-            services.AddDbContext<IOnboardingDbContext, OnboardingDbContext>
-                (o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();
+            services.AddScoped<IGoogleCredentialsRepository, GoogleCredentialsRepository>();
+            services.AddScoped<IGoogleLoginTokenRepository, LoginTokenRepository>();
+            services.Configure<GoogleOAuthV2Options>(options => Configuration.GetSection("Google:OAuth2").Bind(options));
+            
+            services.AddSingleton<ITokenGenerator, GoogleLoginTokenGenerator>();
+            services.AddSingleton<IGoogleOAuthV2CredentialsProvider, GoogleOAuthV2EnvironmentCredentialsProvider>();
+            
             services.AddLazy<OnboardingBusinessLogic>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
+            services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));
+
+            ConfigureDbEncryption();
+                            
+            services.AddDbContext<IOnboardingDbContext, OnboardingDbContext>(builder =>
+            {
+                builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddCors(options =>
             {
@@ -65,9 +85,21 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddAutoMapper(ConfigureMapper);
         }
 
+        private void ConfigureDbEncryption()
+        {
+            AesOptions aesOptions = new AesOptions();
+            
+            Configuration.GetSection("Persistence").Bind(aesOptions);
+                
+            OnboardingDbContext.Transformer = new AesTransformer(Options.Create(aesOptions));
+        }
+
         private void ConfigureMapper(IMapperConfigurationExpression config)
         {
-            config.CreateMap<Entities.Onboarding, OnboardingResult>();
+            config.CreateMap<Entities.Onboarding, OnboardingResult>()
+                .ForMember(m => m.LoginInfo, options => options.Ignore());
+
+            config.CreateMap<GoogleLoginInfo, GoogleLoginInfoResult>();
         }
 
         private void ConfigureAuthentication(IServiceCollection services)

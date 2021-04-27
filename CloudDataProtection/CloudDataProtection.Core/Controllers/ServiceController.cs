@@ -8,7 +8,7 @@ namespace CloudDataProtection.Core.Controllers
     {
         private readonly IJwtDecoder _jwtDecoder;
 
-        private bool _initialized = false;
+        private bool _initialized;
 
         protected ServiceController(IJwtDecoder jwtDecoder)
         {
@@ -59,6 +59,6 @@ namespace CloudDataProtection.Core.Controllers
         /// <summary>
         /// If a user is authenticated
         /// </summary>
-        protected bool IsAuthenticated => _userId.HasValue;
+        protected bool IsAuthenticated => UserId > 0;
     }
 }

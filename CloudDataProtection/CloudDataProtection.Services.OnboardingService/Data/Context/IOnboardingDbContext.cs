@@ -7,6 +7,10 @@ namespace CloudDataProtection.Services.Onboarding.Data.Context
     public interface IOnboardingDbContext : IDesignTimeDbContextFactory<OnboardingDbContext>
     {
         DbSet<Entities.Onboarding> Onboarding { get; set; }
+        
+        DbSet<Entities.GoogleCredentials> GoogleCredential { get; set; }
+        
+        DbSet<Entities.GoogleLoginToken> GoogleLoginToken { get; set; }
 
         Task<bool> SaveAsync();
     }

@@ -1,4 +1,4 @@
-import UserRole from "../../entities/userRole";
+import UserRole from "entities/userRole";
 
 export interface LoginResult {
     token: string;

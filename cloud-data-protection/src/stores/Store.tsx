@@ -1,8 +1,10 @@
 import {configureStore} from "@reduxjs/toolkit";
-import userReducer from '../features/userSlice';
+import userReducer from 'features/userSlice';
+import progressReducer from 'features/progressSlice';
 
 const store = configureStore({
     reducer: {
+        progress: progressReducer,
         user: userReducer
     }
 });

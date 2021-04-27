@@ -12,13 +12,6 @@ namespace CloudDataProtection.Core.Rest.Errors
         public int Status => (int) HttpStatusCode.NotFound;
         public string StatusDescription => "Not found";
 
-        public static NotFoundResponse RouteIncorrect()
-        {
-            string message = "Unknown route";
-            
-            return new NotFoundResponse(message);
-        }
-
         public static NotFoundResponse Create<T>(object identifier)
         {
             return Create(typeof(T), identifier, CrudAction.Find);

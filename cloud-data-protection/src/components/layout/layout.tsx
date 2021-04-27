@@ -1,15 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import NavMenu from "components/navMenu/navMenu";
+import {LinearProgress} from "@material-ui/core";
+import {useSelector} from "react-redux";
+import {selectLoading} from "features/progressSlice";
 
-export class Layout extends Component {
-    render () {
-        return (
-            <div style={{display: 'flex'}}>
-                <NavMenu />
-                <div className={'app__content'}>
-                    {this.props.children}
+const Layout : React.FunctionComponent = (props) => {
+    const loading = useSelector(selectLoading);
+
+    return (
+        <div style={{display: 'flex'}}>
+            <NavMenu />
+            <div className='app__wrapper'>
+                <LinearProgress className='app__content__progress'
+                                color='secondary'
+                                style={loading ? {visibility: 'visible'} : {visibility: 'hidden'}} />
+                <div className='app__content'>
+                    {props.children}
                 </div>
             </div>
-        );
-    }
+        </div>
+    )
 }
+
+export default Layout;
