@@ -6,10 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Messaging\Publisher" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\CloudDataProtection.Core\CloudDataProtection.Core.csproj" />
     </ItemGroup>
 
