@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
-using CloudDataProtection.Core.Messaging.RabbitMq.Extensions;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 

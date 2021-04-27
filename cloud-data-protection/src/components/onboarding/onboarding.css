@@ -1,0 +1,18 @@
+.onboarding__btn {
+    display: block!important;
+    margin-top: .5rem!important;
+}
+
+.onboarding__btn--connect {
+    margin-left: 1rem!important;
+}
+
+.onboarding__connect__container {
+    display: flex;
+    align-items: baseline;
+    margin-top: 1rem;
+}
+
+.onboarding__header__progress {
+    margin-bottom: 1rem;
+}

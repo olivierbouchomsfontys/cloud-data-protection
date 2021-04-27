@@ -1,0 +1,28 @@
+:root {
+    --card-margin: 2rem;
+}
+
+.home__features {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    padding-top: 1rem;
+}
+
+.home__features > *:not(:first-child) {
+    margin-left: calc(var(--card-margin) / 2);
+}
+
+.home__features > *:not(:last-child) {
+    margin-right: calc(var(--card-margin) / 2);
+}
+
+@media all and (max-width: 1366px) {
+    .home__features > *:not(:first-child) {
+        margin-left: calc(var(--card-margin) / 4);
+    }
+
+    .home__features > *:not(:last-child) {
+        margin-right: calc(var(--card-margin) / 4);
+    }
+}

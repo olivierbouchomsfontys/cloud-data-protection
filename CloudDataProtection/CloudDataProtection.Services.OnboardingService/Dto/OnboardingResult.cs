@@ -12,5 +12,7 @@ namespace CloudDataProtection.Services.Onboarding.Dto
         public OnboardingStatus Status { get; set; }
         
         public long UserId { get; set; }
+        
+        public GoogleLoginInfoResult LoginInfo { get; set; }
     }
 }

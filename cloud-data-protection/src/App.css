@@ -1,53 +1,39 @@
 @import "Typography.css";
 
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.app__content {
+.app__wrapper {
+  box-sizing: border-box;
   display: block;
   width: 100%;
-  padding: 5rem 1rem;
+  padding: 4rem 0;
   height: 100%;
 }
 
-/* Overrides and extensions */
+.app__content {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1rem 16%;
+}
 
-.divider--spaced {
-  margin-bottom: 1rem!important;
+.card__title {
+  display: flex;
+  align-items: center;
+}
+
+.card__title__icon {
+  margin-right: .5rem;
+}
+
+.card__title__text {
+  margin: 0;
+}
+
+.card__content {
+  margin-bottom: 0;
+}
+
+@media all and (max-width: 1366px) {
+  .app__content {
+    padding: 1rem 1rem;
+  }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Layout} from './components/layout/layout';
 import './App.css';
 import Router from "./router";
+import Layout from "./components/layout/layout";
 
 function App() {
     return (

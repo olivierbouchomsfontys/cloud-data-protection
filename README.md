@@ -34,3 +34,15 @@ Unix:
 
 Windows:
 `setx CDP_DEV_SENDGRID_SENDER {your email goes here}`
+
+## Google
+
+Create a Client ID and Client secret in the Google Cloud Console. Store the Client ID and Client Secret in an environment variable.
+
+Unix:
+`export CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_ID={your client id goes here}`
+`export CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_SERCET={your client secret goes here}`
+
+Windows:
+`setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_ID {your client id goes here}`
+`setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_SERCET {your client secret goes here}`

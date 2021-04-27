@@ -1,0 +1,24 @@
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace CloudDataProtection.Core.Environment
+{
+    public static class EnvironmentVariableHelper
+    {
+        public static string GetEnvironmentVariable(string key)
+        {
+            string apiKey =
+                System.Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.Process) ??
+                System.Environment.GetEnvironmentVariable(key);
+
+            if (apiKey == null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // On Windows we can fallback to machine and user targets
+                apiKey = System.Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.User) ?? 
+                         System.Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.Machine);
+            }
+
+            return apiKey;
+        }
+    }
+}

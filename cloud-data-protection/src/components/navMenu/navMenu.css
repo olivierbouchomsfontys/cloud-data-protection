@@ -43,3 +43,9 @@
     font-weight: bold;
     width: 16rem!important;
 }
+
+@media all and (max-width: 1366px) {
+    .nav__user__text {
+        display: none;
+    }
+}

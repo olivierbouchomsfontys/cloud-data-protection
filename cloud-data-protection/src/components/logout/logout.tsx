@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {AuthService} from "../../services/authService";
+import {AuthService} from "services/authService";
 import {useSnackbar} from 'notistack';
 import snackbarOptions from "common/snackbar/options";
 

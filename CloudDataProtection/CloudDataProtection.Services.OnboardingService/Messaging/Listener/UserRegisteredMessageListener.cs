@@ -12,7 +12,7 @@ namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
     {
         private readonly OnboardingBusinessLogic _logic;
 
-        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<UserRegisteredModel>> logger, OnboardingBusinessLogic logic) : base(options, logger)
+        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<UserRegisteredMessageListener> logger, OnboardingBusinessLogic logic) : base(options, logger)
         {
             _logic = logic;
         }

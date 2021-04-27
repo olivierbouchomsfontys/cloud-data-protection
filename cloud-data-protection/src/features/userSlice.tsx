@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {LoginResult} from "../services/result/loginResult";
-import User from "../entities/user";
+import {LoginResult} from "services/result/loginResult";
+import User from "entities/user";
 
 interface UserSliceState {
     user?: User;
@@ -44,7 +44,6 @@ export const userSlice = createSlice({
 
 export const {login, logout} = userSlice.actions;
 export const selectUser = (state: any) => state.user.user;
-export const selectToken = (state: any) => state.user.token;
 export const selectAuthenticated = (state: any) => state.user.user?.id !== undefined;
 
 export default userSlice.reducer;

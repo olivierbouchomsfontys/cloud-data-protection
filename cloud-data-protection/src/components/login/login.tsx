@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import './login.css';
 import {AuthService} from "services/authService";
 import {Button, Input, Typography} from "@material-ui/core";
 import {useSnackbar} from 'notistack';
 import {http} from "common/http";
 import snackbarOptions from "common/snackbar/options";
 import {CancelTokenSource} from "axios";
+import {startLoading, stopLoading} from "common/progress/helper";
+import './login.css';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -19,12 +20,14 @@ const Login = () => {
 
     useEffect(() => {
         return () => {
-            cancelTokenSource.cancel();
+            cancelTokenSource?.cancel();
         }
     })
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+
+        startLoading();
 
         cancelTokenSource = http.CancelToken.source();
 
@@ -46,6 +49,8 @@ const Login = () => {
 
     const onFinish = () => {
         setPassword('');
+
+        stopLoading();
     }
 
     return (
@@ -55,7 +60,7 @@ const Login = () => {
                 <Input className='login__form__input' autoFocus={true} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <Input className='login__form__input' type="password" placeholder="Password" value={password}
                        onChange={(e) => setPassword(e.target.value)}/>
-                <Button className='login__form__submit' type="submit" color='primary'>Log in</Button>
+                <Button className='login__form__submit' type="submit" variant='contained' color='primary'>Log in</Button>
             </form>
         </div>
     )

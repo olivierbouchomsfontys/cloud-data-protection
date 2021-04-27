@@ -1,4 +1,3 @@
-using System.Text;
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
@@ -11,7 +10,6 @@ using CloudDataProtection.Dto;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Publisher;
 using CloudDataProtection.Password;
-using CloudDataProtection.Seeder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

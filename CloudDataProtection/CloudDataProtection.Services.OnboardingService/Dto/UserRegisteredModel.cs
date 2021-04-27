@@ -1,4 +1,5 @@
-﻿namespace CloudDataProtection.Services.Onboarding.Dto
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace CloudDataProtection.Services.Onboarding.Dto
 {
     public class UserRegisteredModel
     {
