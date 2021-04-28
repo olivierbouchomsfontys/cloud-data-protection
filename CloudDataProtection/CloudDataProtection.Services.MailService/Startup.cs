@@ -2,6 +2,8 @@ using CloudDataProtection.Services.MailService.Business;
 using CloudDataProtection.Services.MailService.Messaging.Listener;
 using CloudDataProtection.Services.MailService.Sender;
 using CloudDataProtection.Core.Messaging.RabbitMq;
+using CloudDataProtection.Services.MailService.SendGrid;
+using CloudDataProtection.Services.MailService.SendGrid.Credentials;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,8 @@ namespace CloudDataProtection.Services.MailService
 
             services.AddSingleton<IMailSender, SendGridMailSender>();
             services.AddSingleton<RegistrationMailLogic>();
+            
+            services.AddSingleton<ISendGridCredentialsProvider, SendGridEnvironmentCredentialsProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

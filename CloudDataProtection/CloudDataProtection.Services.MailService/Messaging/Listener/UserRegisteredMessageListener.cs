@@ -11,7 +11,7 @@ namespace CloudDataProtection.Services.MailService.Messaging.Listener
     {
         private readonly RegistrationMailLogic _logic;
 
-        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<UserRegisteredModel>> logger, RegistrationMailLogic logic) : base(options, logger)
+        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<UserRegisteredMessageListener> logger, RegistrationMailLogic logic) : base(options, logger)
         {
             _logic = logic;
         }
