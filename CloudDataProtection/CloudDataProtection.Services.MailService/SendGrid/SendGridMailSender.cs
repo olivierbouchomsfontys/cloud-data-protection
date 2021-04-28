@@ -1,29 +1,29 @@
-﻿using System.Threading.Tasks;
-using CloudDataProtection.Core.Environment;
+﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using CloudDataProtection.Services.MailService.Sender;
+using CloudDataProtection.Services.MailService.SendGrid.Credentials;
 using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace CloudDataProtection.Services.MailService.Sender
+namespace CloudDataProtection.Services.MailService.SendGrid
 {
     public class SendGridMailSender : IMailSender
     {
+        private readonly ISendGridCredentialsProvider _credentialsProvider;
         private readonly ILogger<SendGridMailSender> _logger;
         
-        private string ApiKey => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEV_SENDGRID");
-
-        private string SenderEmail => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEV_SENDGRID_SENDER");
-
-        public SendGridMailSender(ILogger<SendGridMailSender> logger)
+        public SendGridMailSender(ISendGridCredentialsProvider credentialsProvider, ILogger<SendGridMailSender> logger)
         {
+            _credentialsProvider = credentialsProvider;
             _logger = logger;
         }
         
         public async Task Send(string recipient, string subject, string body)
         {
-            SendGridClient client = new SendGridClient(ApiKey);
+            SendGridClient client = new SendGridClient(_credentialsProvider.ApiKey);
 
-            SendGridMessage message = Compose(recipient, subject, body, SenderEmail);
+            SendGridMessage message = Compose(recipient, subject, body, _credentialsProvider.SenderEmail);
 
             Response response = await client.SendEmailAsync(message);
 
@@ -38,7 +38,12 @@ namespace CloudDataProtection.Services.MailService.Sender
             return MailHelper.CreateSingleEmail(
                 new EmailAddress(sender, "Cloud Data Protection (development)"), 
                 new EmailAddress(recipient),
-                subject, body, body);
+                subject, StripHtml(body), body);
+        }
+
+        private static string StripHtml(string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
         }
     }
 }
