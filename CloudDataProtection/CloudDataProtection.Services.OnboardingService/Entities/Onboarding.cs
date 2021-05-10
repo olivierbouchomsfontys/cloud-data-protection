@@ -34,11 +34,6 @@ namespace CloudDataProtection.Services.Onboarding.Entities
         /// <summary>
         /// Backup scheme is set
         /// </summary>
-        SchemeEntered = 20,
-
-        /// <summary>
-        /// Onboarding is completed
-        /// </summary>
-        Complete = 1000
+        SchemeEntered = 20
     }
 }
