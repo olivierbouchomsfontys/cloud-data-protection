@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Dto;
@@ -17,7 +18,7 @@ namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
             _logic = logic;
         }
 
-        protected override string RoutingKey => "UserRegistered";
+        protected override string RoutingKey => RoutingKeys.UserRegistered;
         protected override string Queue => "42D7C890-F91D-4343-8D8D-0CA0F11AF793";
         public override async Task HandleMessage(UserRegisteredModel model)
         {

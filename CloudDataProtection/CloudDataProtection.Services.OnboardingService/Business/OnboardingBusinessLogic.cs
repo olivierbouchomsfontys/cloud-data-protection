@@ -73,6 +73,13 @@ namespace CloudDataProtection.Services.Onboarding.Business
 
             return BusinessResult<Entities.Onboarding>.Ok(onboarding);
         }
+        
+        public async Task<BusinessResult<Entities.Onboarding>> Update(Entities.Onboarding onboarding)
+        {
+            await _onboardingRepository.Update(onboarding);
+            
+            return BusinessResult<Entities.Onboarding>.Ok(onboarding);
+        }
 
         public async Task<BusinessResult<GoogleCredentials>> CreateCredentials(string code, string token)
         {
@@ -145,6 +152,6 @@ namespace CloudDataProtection.Services.Onboarding.Business
             };
 
             return BusinessResult<GoogleLoginInfo>.Ok(info);
-        } 
+        }
     }
 }

@@ -22,6 +22,7 @@ import {Link} from "react-router-dom";
 import NavMenuItem from "components/navMenu/navMenuItem";
 import UserRole from "entities/userRole";
 import './navMenu.css';
+import { NavLink } from 'reactstrap';
 
 const NavMenu = () => {
     const authenticated = useSelector(selectAuthenticated);
@@ -101,12 +102,12 @@ const NavMenu = () => {
      */
     const mapLink = (link: NavMenuItem): JSX.Element =>  {
         return (
-            <Link to={link.route} key={link.text}>
+            <NavLink to={link.route} tag={Link} key={link.text}>
                 <ListItem button className='nav__drawer__link'>
                     <ListItemIcon>{link.icon}</ListItemIcon>
                     <ListItemText primary={link.text}/>
                 </ListItem>
-            </Link>
+            </NavLink>
         )
     }
 

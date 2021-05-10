@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Services.MailService.Business;
 using CloudDataProtection.Services.MailService.Dto;
 using CloudDataProtection.Core.Messaging.RabbitMq;
@@ -11,12 +12,12 @@ namespace CloudDataProtection.Services.MailService.Messaging.Listener
     {
         private readonly RegistrationMailLogic _logic;
 
-        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<UserRegisteredModel>> logger, RegistrationMailLogic logic) : base(options, logger)
+        public UserRegisteredMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<UserRegisteredMessageListener> logger, RegistrationMailLogic logic) : base(options, logger)
         {
             _logic = logic;
         }
 
-        protected override string RoutingKey => "UserRegistered";
+        protected override string RoutingKey => RoutingKeys.UserRegistered;
         protected override string Queue => "FE024009-9AC7-4F6C-B21A-02C07E06511B";
 
         public override async Task HandleMessage(UserRegisteredModel model)

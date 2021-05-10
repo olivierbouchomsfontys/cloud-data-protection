@@ -13,6 +13,27 @@
     margin-top: 1rem;
 }
 
+.onboarding__scheme {
+    margin-top: 1rem;
+}
+
 .onboarding__header__progress {
     margin-bottom: 1rem;
+}
+
+.onboarding__scheme__select {
+    margin-top: 1rem;
+}
+
+.onboarding__scheme__form__submit {
+    display: block!important;
+    margin-right: 0!important;
+    margin-left: auto!important;
+}
+
+.onboarding__backup-config__list > .MuiListItem-root {
+    padding: .25rem 0!important;
+}
+.onboarding__backup-config__list .MuiListItemIcon-root {
+    min-width: 3rem!important;
 }

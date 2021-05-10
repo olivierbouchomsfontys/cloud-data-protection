@@ -26,7 +26,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             {
                 if (_connectionFactory == null)
                 {
-                    _connectionFactory = new ConnectionFactory()
+                    _connectionFactory = new ConnectionFactory
                     {
                         HostName = _configuration.Hostname,
                         Port = _configuration.Port,
@@ -59,14 +59,14 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
             EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += async (sender,args) => await HandleMessage(sender, args);
+            consumer.Received += async (_ ,args) => await HandleMessage(args);
 
             _channel.BasicConsume(string.Empty, false, consumer);
 
             return Task.CompletedTask;
         }
 
-        private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
+        private async Task HandleMessage(BasicDeliverEventArgs args)
         {
             TModel model = args.GetModel<TModel>();
          

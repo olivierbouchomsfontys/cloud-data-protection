@@ -1,7 +1,7 @@
 import {ServiceBase} from "services/base/serviceBase";
 import {http} from "common/http";
 import {AxiosResponse, CancelToken} from "axios";
-import OnboardingResult from "services/result/onboardingResult";
+import OnboardingResult from "services/result/onboarding/onboardingResult";
 
 class OnboardingService extends ServiceBase {
     public async get(cancelToken?: CancelToken): Promise<OnboardingResult> {

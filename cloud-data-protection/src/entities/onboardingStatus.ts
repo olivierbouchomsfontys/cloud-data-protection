@@ -5,6 +5,9 @@ enum OnboardingStatus {
     // Account (e.g. Google Workspace) is connected
     AccountConnected = 10,
 
+    // Backup scheme is set
+    SchemeEntered = 20,
+
     // Onboarding is completed
     Complete = 1000
 }
