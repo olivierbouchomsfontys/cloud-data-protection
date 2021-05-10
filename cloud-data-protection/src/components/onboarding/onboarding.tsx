@@ -145,8 +145,7 @@ const OnboardingComponent = () => {
                     <GoogleButton
                         className='onboarding__btn--connect MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-contained MuiButton-containedPrimary'
                         options={options}
-                        // TODO Get url from service
-                        apiUrl='localhost:5000/Onboarding/GoogleLogin'
+                        apiUrl={OnboardingService.googleLoginUrl}
                         defaultStyle={false}>
                         Authenticate
                     </GoogleButton>
