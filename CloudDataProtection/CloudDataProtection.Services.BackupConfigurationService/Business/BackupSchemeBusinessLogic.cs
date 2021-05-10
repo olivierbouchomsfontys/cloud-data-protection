@@ -22,7 +22,6 @@ namespace CloudDataProtection.Services.Subscription.Business
             return BusinessResult<BackupScheme>.Ok(scheme);
         }
 
-        
         public async Task<BusinessResult<BackupScheme>> Get(long id)
         {
             BackupScheme scheme = await _repository.Get(id);
