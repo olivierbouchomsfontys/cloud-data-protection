@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CloudDataProtection.Core.Controllers;
 using CloudDataProtection.Core.Jwt;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Rest.Errors;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Config;
 using CloudDataProtection.Services.Onboarding.Dto;
 using CloudDataProtection.Services.Onboarding.Entities;
-using Microsoft.AspNetCore.Authorization;
+using CloudDataProtection.Services.Onboarding.Messaging.Client.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -22,11 +23,15 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         private readonly Lazy<OnboardingBusinessLogic> _logic;
         private readonly IMapper _mapper;
         private readonly OnboardingOptions _options;
+        private readonly Lazy<IRpcClientBase<GetUserEmailInput, GetUserEmailOutput>> _client;
 
-        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder, IMapper mapper, IOptions<OnboardingOptions> options) : base(jwtDecoder)
+        private static Random _random = new Random();
+
+        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder, IMapper mapper, IOptions<OnboardingOptions> options, Lazy<IRpcClientBase<GetUserEmailInput, GetUserEmailOutput>> client) : base(jwtDecoder)
         {
             _logic = logic;
             _mapper = mapper;
+            _client = client;
             _options = options.Value;
         }
         
@@ -73,6 +78,18 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
             }
             
             return Redirect(_options.RedirectUri);
+        }
+
+        [HttpGet]
+        [Route("RpcDemo")]
+        public async Task<ActionResult> RpcDemo()
+        {
+            object response = await _client.Value.Request(new GetUserEmailInput
+            {
+                UserId = _random.Next(0, 100)
+            });
+
+            return Ok(response);
         }
     }
 }
