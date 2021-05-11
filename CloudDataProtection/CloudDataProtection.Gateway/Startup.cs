@@ -61,8 +61,6 @@ namespace CloudDataProtection
             
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
 
-            services.AddHostedService<GetUserEmailRpcServer>();
-            
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
             

@@ -144,7 +144,11 @@ namespace CloudDataProtection.Services.Onboarding
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1");
+                    c.ConfigObject.DisplayRequestDuration = true;
+                });
             }
 
             app.UseHttpsRedirection();

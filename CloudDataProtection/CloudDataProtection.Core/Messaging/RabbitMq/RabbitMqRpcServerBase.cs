@@ -19,7 +19,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private readonly RabbitMqConfiguration _configuration;
 
         private const string QueueName = "rpc_queue";
-
+        
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
         {
@@ -35,12 +35,24 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                         Password = _configuration.Password
                     };
                 }
-                
+
                 return _connectionFactory;
             }
         }
 
-        private IConnection Connection => ConnectionFactory.CreateConnection();
+        private IConnection _connection;
+        private IConnection Connection
+        {
+            get
+            {
+                if (_connection == null || !_connection.IsOpen)
+                {
+                    _connection = ConnectionFactory.CreateConnection();
+                }
+                
+                return _connection;
+            }
+        }
 
         private IModel _channel;
 
@@ -136,8 +148,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private void DoSendResponse(IBasicProperties message, byte[] body, string routingKey)
         {
-            _logger.LogInformation("Message sent to {Exchange} with routing key {RoutingKey}", _configuration.Exchange, routingKey);
-
             _channel.BasicPublish(_configuration.Exchange, routingKey, message, body);
         }
     }

@@ -12,17 +12,20 @@ using RabbitMQ.Client.Events;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
+    /// <summary>
+    /// Single use RPC Client for RabbitMq
+    /// </summary>
     public abstract class RabbitMqRpcClientBase<TRequest, TResponse> : IRpcClientBase<TRequest, TResponse>
     {
-        private readonly ILogger<RabbitMqRpcClientBase<TRequest, TResponse>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
-        private readonly IBasicProperties _properties;
-
         private const string Queue = "rpc_queue";
+        
+        private bool _isUsed = false;
 
-        private readonly IDictionary<string, TResponse> _responses = new Dictionary<string, TResponse>();
-        private readonly IList<string> _correlationIds = new List<string>();
+        private TResponse _response;
+        
+        private string _correlationId;
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -43,17 +46,61 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                 return _connectionFactory;
             }
         }
-        
-        private IConnection Connection => ConnectionFactory.CreateConnection();
 
-        private readonly IModel _requestChannel;
-        private readonly IModel _replyChannel;
-
-        public RabbitMqRpcClientBase(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcClientBase<TRequest, TResponse>> logger)
+        private IConnection _connection;
+        private IConnection Connection
         {
-            _logger = logger;
-            _configuration = options.Value;
+            get
+            {
+                if (_connection == null || !_connection.IsOpen)
+                {
+                    _connection = ConnectionFactory.CreateConnection();
+                }
+                
+                return _connection;
+            }
+        }
 
+        private IBasicProperties _properties;
+
+        private IModel _requestChannel;
+        private IModel _replyChannel;
+
+        public RabbitMqRpcClientBase(IOptions<RabbitMqConfiguration> options)
+        {
+            _configuration = options.Value;
+        }
+
+        public async Task<TResponse> Request(TRequest request)
+        {
+            Init();
+
+            byte[] body = JsonSerializer.SerializeToUtf8Bytes(request, typeof(TRequest));
+
+            try
+            {
+                return await DoRequest(_properties, body);
+            } 
+            finally
+            {
+                _connection?.Close();
+                _connection?.Dispose();
+                
+                _requestChannel?.Close();
+                _requestChannel?.Dispose();
+
+                _replyChannel?.Close();
+                _replyChannel?.Dispose();
+            }
+        }
+
+        private void Init()
+        {
+            if (_isUsed)
+            {
+                throw new InvalidOperationException("Client has already been used!");
+            }
+            
             _requestChannel = Connection.CreateModel();
             _replyChannel = Connection.CreateModel();
             
@@ -80,13 +127,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _properties.ReplyTo = replyQueueName;
             _properties.ContentType = _configuration.ContentType;
             _properties.Persistent = true;
-        }
 
-        public async Task<TResponse> Request(TRequest request)
-        {
-            byte[] body = JsonSerializer.SerializeToUtf8Bytes(request, typeof(TRequest));
-
-            return await DoRequest(_properties, body);
+            _isUsed = true;
         }
                 
         private async Task<TResponse> DoRequest(IBasicProperties message, byte[] body)
@@ -96,45 +138,37 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             message.ClearCorrelationId();
             message.CorrelationId = correlationId;
             
-            _correlationIds.Add(message.CorrelationId);
-            
-            _logger.LogInformation("Message sent to {Exchange}", _configuration.Exchange);
+            _correlationId = message.CorrelationId;
             
             _requestChannel.BasicPublish(_configuration.Exchange, "", message, body);
             
-            while (!_responses.ContainsKey(correlationId))
+            while (_response == null)
             {
-                await Task.Delay(100);
+                await Task.Delay(8);
             }
-            
-            return _responses[correlationId];
+
+            return _response;
         }
 
         private void OnResponseReceived(BasicDeliverEventArgs args)
         {
-            string correlationId = args.BasicProperties.CorrelationId;
-
-            if (args.BasicProperties.IsReplyToPresent())
+            if (ShouldHandleResponse(args))
             {
-                return;
-            }
-            
-            if (args.BasicProperties.IsCorrelationIdPresent() && _correlationIds.Contains(correlationId))
-            {
-                TResponse model = args.GetModel<TResponse>();
+                _response = args.GetModel<TResponse>();
                 
-                _logger.LogInformation("Handling message with correlation id {CorrelationId} subject {GetSubject} and model {Model}", args.BasicProperties.CorrelationId, args.RoutingKey, model);
-                
-                _responses.Add(correlationId, model);
-
-                _correlationIds.Remove(args.BasicProperties.CorrelationId);
-
                 _replyChannel.BasicAck(args.DeliveryTag, false);
             }
-            else
+        }
+
+        private bool ShouldHandleResponse(BasicDeliverEventArgs args)
+        {
+            if (args.BasicProperties.IsReplyToPresent())
             {
-                _replyChannel.BasicReject(args.DeliveryTag, false);
+                return false;
             }
+            
+            return args.BasicProperties.IsCorrelationIdPresent() && 
+                   args.BasicProperties.CorrelationId == _correlationId;
         }
     }
 }
