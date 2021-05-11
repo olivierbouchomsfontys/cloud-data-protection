@@ -68,6 +68,11 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private async Task HandleMessage(BasicDeliverEventArgs args)
         {
+            if (args.RoutingKey != RoutingKey)
+            {
+                return;
+            }
+            
             TModel model = args.GetModel<TModel>();
          
             _logger.LogInformation("Handling message with subject {GetSubject} and model {Model}", args.RoutingKey, model);

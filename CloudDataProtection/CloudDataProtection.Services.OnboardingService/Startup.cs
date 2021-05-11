@@ -16,6 +16,8 @@ using CloudDataProtection.Services.Onboarding.Dto;
 using CloudDataProtection.Services.Onboarding.Entities;
 using CloudDataProtection.Services.Onboarding.Google.Credentials;
 using CloudDataProtection.Services.Onboarding.Google.Options;
+using CloudDataProtection.Services.Onboarding.Messaging.Client;
+using CloudDataProtection.Services.Onboarding.Messaging.Client.Dto;
 using CloudDataProtection.Services.Onboarding.Messaging.Listener;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +62,8 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddSingleton<IGoogleOAuthV2CredentialsProvider, GoogleOAuthV2EnvironmentCredentialsProvider>();
             
             services.AddLazy<OnboardingBusinessLogic>();
+            
+            services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));
@@ -140,7 +144,11 @@ namespace CloudDataProtection.Services.Onboarding
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1");
+                    c.ConfigObject.DisplayRequestDuration = true;
+                });
             }
 
             app.UseHttpsRedirection();

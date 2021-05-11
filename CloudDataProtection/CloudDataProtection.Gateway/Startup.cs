@@ -9,6 +9,7 @@ using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Publisher;
+using CloudDataProtection.Messaging.Server;
 using CloudDataProtection.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -59,7 +60,7 @@ namespace CloudDataProtection
             ConfigureAuthentication(services);
             
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
-            
+
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
             
