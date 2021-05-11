@@ -22,8 +22,6 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         private readonly IMapper _mapper;
         private readonly OnboardingOptions _options;
 
-        private static Random _random = new Random();
-
         public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder, IMapper mapper, IOptions<OnboardingOptions> options) : base(jwtDecoder)
         {
             _logic = logic;
