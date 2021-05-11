@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Messaging.RabbitMq.Extensions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -22,10 +18,15 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private const string Queue = "rpc_queue";
         
         private bool _isUsed = false;
-
-        private TResponse _response;
         
         private string _correlationId;
+        
+        private IBasicProperties _properties;
+
+        private IModel _requestChannel;
+        private IModel _replyChannel;
+        
+        private TResponse _response;
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -61,10 +62,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             }
         }
 
-        private IBasicProperties _properties;
-
-        private IModel _requestChannel;
-        private IModel _replyChannel;
 
         public RabbitMqRpcClient(IOptions<RabbitMqConfiguration> options)
         {

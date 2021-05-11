@@ -20,6 +20,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private const string QueueName = "rpc_queue";
         
+        private IModel _channel;
+
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
         {
@@ -53,9 +55,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                 return _connection;
             }
         }
-
-        private IModel _channel;
-
+        
         public RabbitMqRpcServer(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcServer<TRequest, TResponse>> logger)
         {
             _logger = logger;
