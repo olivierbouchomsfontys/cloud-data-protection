@@ -7,7 +7,7 @@ namespace CloudDataProtection.Services.Onboarding.Messaging.Client
 {
     public class GetUserEmailRpcClient : RabbitMqRpcClient<GetUserEmailInput, GetUserEmailOutput>
     {
-        public GetUserEmailRpcClient(IOptions<RabbitMqConfiguration> options, ILogger<GetUserEmailRpcClient> logger) : base(options, logger)
+        public GetUserEmailRpcClient(IOptions<RabbitMqConfiguration> options) : base(options)
         {
         }
     }

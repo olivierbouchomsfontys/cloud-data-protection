@@ -1,24 +1,24 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using CloudDataProtection.Services.MailService.Business.Base;
 using CloudDataProtection.Services.MailService.Sender;
 
 namespace CloudDataProtection.Services.MailService.Business
 {
-    public class RegistrationMailLogic : MailLogicBase
+    public class AccountMailLogic : MailLogicBase
     {
         private readonly IMailSender _sender;
 
-        public RegistrationMailLogic(IMailSender sender)
+        public AccountMailLogic(IMailSender sender)
         {
             _sender = sender;
         }
 
-        public async Task SendUserRegistered(string email)
+        public async Task SendAccountConnected(string email)
         {
-            string subject = "Welcome to Cloud Data Protection";
+            string subject = "Google account connected";
             string content = @"
 <p>Dear Sir / Madam,</br></br>
-    Congratulations! You just completed the first step to securing all your company data. Please log in to your account and complete your registration.</br></br>
+    Congratulations! You just connected your Google account to Cloud Data Protection. If you did not perform this action, please contact us by replying to this email.</br></br>
     Yours sincerely,</br></br>
     Olivier Bouchoms
   </p>";

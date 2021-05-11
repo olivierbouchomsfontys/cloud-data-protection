@@ -5,5 +5,7 @@
         public const string BackupConfigurationEntered = "BackupConfigurationEntered";
 
         public const string UserRegistered = "UserRegistered";
+
+        public const string GoogleAccountConnected = "GoogleAccountConnected";
     }
 }

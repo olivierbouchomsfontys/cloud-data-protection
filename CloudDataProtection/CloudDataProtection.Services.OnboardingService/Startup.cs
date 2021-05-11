@@ -19,6 +19,8 @@ using CloudDataProtection.Services.Onboarding.Google.Options;
 using CloudDataProtection.Services.Onboarding.Messaging.Client;
 using CloudDataProtection.Services.Onboarding.Messaging.Client.Dto;
 using CloudDataProtection.Services.Onboarding.Messaging.Listener;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +58,10 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();
             services.AddScoped<IGoogleCredentialsRepository, GoogleCredentialsRepository>();
             services.AddScoped<IGoogleLoginTokenRepository, LoginTokenRepository>();
+
+            services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
+            services.AddLazy<IMessagePublisher<GoogleAccountConnectedModel>, GoogleAccountConnectedMessagePublisher>();
+            
             services.Configure<GoogleOAuthV2Options>(options => Configuration.GetSection("Google:OAuth2").Bind(options));
             
             services.AddSingleton<ITokenGenerator, GoogleLoginTokenGenerator>();
