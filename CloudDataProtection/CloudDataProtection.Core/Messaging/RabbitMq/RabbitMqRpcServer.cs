@@ -13,9 +13,9 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
-    public abstract class RabbitMqRpcServerBase<TRequest, TResponse> : BackgroundService, IRpcServerBase<TRequest, TResponse>
+    public abstract class RabbitMqRpcServer<TRequest, TResponse> : BackgroundService, IRpcServer<TRequest, TResponse>
     {
-        private readonly ILogger<RabbitMqRpcServerBase<TRequest, TResponse>> _logger;
+        private readonly ILogger<RabbitMqRpcServer<TRequest, TResponse>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
         private const string QueueName = "rpc_queue";
@@ -56,7 +56,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private IModel _channel;
 
-        public RabbitMqRpcServerBase(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcServerBase<TRequest, TResponse>> logger)
+        public RabbitMqRpcServer(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcServer<TRequest, TResponse>> logger)
         {
             _logger = logger;
             _configuration = options.Value;

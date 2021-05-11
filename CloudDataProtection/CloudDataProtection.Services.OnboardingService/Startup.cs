@@ -63,7 +63,7 @@ namespace CloudDataProtection.Services.Onboarding
             
             services.AddLazy<OnboardingBusinessLogic>();
             
-            services.AddLazy<IRpcClientBase<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
+            services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));

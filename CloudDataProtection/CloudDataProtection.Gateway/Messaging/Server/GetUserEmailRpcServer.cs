@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Messaging.Server
 {
-    public class GetUserEmailRpcServer : RabbitMqRpcServerBase<GetUserEmailInput, GetUserEmailOutput>
+    public class GetUserEmailRpcServer : RabbitMqRpcServer<GetUserEmailInput, GetUserEmailOutput>
     {
         public GetUserEmailRpcServer(IOptions<RabbitMqConfiguration> options, ILogger<GetUserEmailRpcServer> logger) : base(options, logger)
         {

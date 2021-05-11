@@ -15,7 +15,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
     /// <summary>
     /// Single use RPC Client for RabbitMq
     /// </summary>
-    public abstract class RabbitMqRpcClientBase<TRequest, TResponse> : IRpcClientBase<TRequest, TResponse>
+    public abstract class RabbitMqRpcClient<TRequest, TResponse> : IRpcClient<TRequest, TResponse>
     {
         private readonly RabbitMqConfiguration _configuration;
 
@@ -66,7 +66,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private IModel _requestChannel;
         private IModel _replyChannel;
 
-        public RabbitMqRpcClientBase(IOptions<RabbitMqConfiguration> options)
+        public RabbitMqRpcClient(IOptions<RabbitMqConfiguration> options)
         {
             _configuration = options.Value;
         }

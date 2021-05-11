@@ -2,7 +2,7 @@
 
 namespace CloudDataProtection.Core.Messaging
 {
-    public interface IRpcServerBase<TRequest, TResponse>
+    public interface IRpcServer<TRequest, TResponse>
     {
         Task<TResponse> HandleMessage(TRequest model);
     }

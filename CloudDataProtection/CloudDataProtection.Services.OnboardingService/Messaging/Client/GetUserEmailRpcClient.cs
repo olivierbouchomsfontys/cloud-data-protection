@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.Onboarding.Messaging.Client
 {
-    public class GetUserEmailRpcClient : RabbitMqRpcClientBase<GetUserEmailInput, GetUserEmailOutput>
+    public class GetUserEmailRpcClient : RabbitMqRpcClient<GetUserEmailInput, GetUserEmailOutput>
     {
         public GetUserEmailRpcClient(IOptions<RabbitMqConfiguration> options, ILogger<GetUserEmailRpcClient> logger) : base(options, logger)
         {
