@@ -26,9 +26,12 @@ namespace CloudDataProtection.Services.MailService
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             
             services.AddHostedService<UserRegisteredMessageListener>();
+            services.AddHostedService<GoogleAccountConnectedMessageListener>();
 
             services.AddSingleton<IMailSender, SendGridMailSender>();
+            
             services.AddSingleton<RegistrationMailLogic>();
+            services.AddSingleton<AccountMailLogic>();
             
             services.AddSingleton<ISendGridCredentialsProvider, SendGridEnvironmentCredentialsProvider>();
         }

@@ -3,9 +3,9 @@ import {http} from "common/http";
 import {login, logout} from "features/userSlice";
 import {ServiceBase} from "./base/serviceBase";
 import {AxiosResponse, CancelToken} from "axios";
-import {LoginInput} from "./input/loginInput";
-import {LoginResult} from "./result/loginResult";
-import {RegisterInput} from "./input/registerInput";
+import {LoginInput} from "services/input/login/loginInput";
+import {LoginResult} from "services/result/login/loginResult";
+import {RegisterInput} from "services/input/register/registerInput";
 
 export class AuthService extends ServiceBase {
     public async login(input: LoginInput, cancelToken?: CancelToken) {

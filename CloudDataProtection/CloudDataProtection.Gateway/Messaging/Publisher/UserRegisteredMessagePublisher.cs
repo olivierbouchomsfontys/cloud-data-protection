@@ -1,4 +1,5 @@
-﻿using CloudDataProtection.Core.Messaging.RabbitMq;
+﻿using CloudDataProtection.Core.Messaging;
+using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Dto;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +11,6 @@ namespace CloudDataProtection.Messaging.Publisher
         {
         }
 
-        protected override string RoutingKey => "UserRegistered";
+        protected override string RoutingKey => RoutingKeys.UserRegistered;
     }
 }

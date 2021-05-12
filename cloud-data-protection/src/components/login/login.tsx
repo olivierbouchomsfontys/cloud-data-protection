@@ -6,6 +6,7 @@ import {http} from "common/http";
 import snackbarOptions from "common/snackbar/options";
 import {CancelTokenSource} from "axios";
 import {startLoading, stopLoading} from "common/progress/helper";
+import { useHistory } from "react-router-dom";
 import './login.css';
 
 const Login = () => {
@@ -13,6 +14,8 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const { enqueueSnackbar } = useSnackbar();
+
+    const history = useHistory();
 
     const authService = new AuthService();
 
@@ -41,6 +44,8 @@ const Login = () => {
 
     const onSuccess = () => {
         setEmail('');
+
+        history.push('/');
     }
 
     const onError = (e: any) => {

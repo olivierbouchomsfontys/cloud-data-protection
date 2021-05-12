@@ -5,6 +5,7 @@ import ClientRouter from "./client";
 import EmployeeRouter from "./employee";
 import AnonymousRouter from "./anonymous";
 import UserRole from "entities/userRole";
+import {Switch} from "react-router-dom";
 
 const Router = () => {
     const user = useSelector(selectUser);
@@ -12,13 +13,15 @@ const Router = () => {
 
     return (
         <Fragment>
-            {
-                authenticated ?
-                    user.role === UserRole.Client ?
-                        <ClientRouter /> :
-                        <EmployeeRouter /> :
-                    <AnonymousRouter />
-            }
+                <Switch>
+                    {
+                        authenticated ?
+                            user.role === UserRole.Client ?
+                                <ClientRouter /> :
+                                <EmployeeRouter /> :
+                            <AnonymousRouter />
+                    }
+                </Switch>
         </Fragment>
     )
 }

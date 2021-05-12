@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CloudDataProtection.Core.Controllers;
 using CloudDataProtection.Core.Jwt;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Rest.Errors;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Config;
 using CloudDataProtection.Services.Onboarding.Dto;
 using CloudDataProtection.Services.Onboarding.Entities;
-using Microsoft.AspNetCore.Authorization;
+using CloudDataProtection.Services.Onboarding.Messaging.Client.Dto;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -22,11 +24,21 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         private readonly Lazy<OnboardingBusinessLogic> _logic;
         private readonly IMapper _mapper;
         private readonly OnboardingOptions _options;
+        private readonly Lazy<IMessagePublisher<GoogleAccountConnectedModel>> _messagePublisher;
+        private readonly Lazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>> _getUserEmailClient;
 
-        public OnboardingController(Lazy<OnboardingBusinessLogic> logic, IJwtDecoder jwtDecoder, IMapper mapper, IOptions<OnboardingOptions> options) : base(jwtDecoder)
+        public OnboardingController(
+            Lazy<OnboardingBusinessLogic> logic, 
+            IJwtDecoder jwtDecoder, 
+            IMapper mapper, 
+            IOptions<OnboardingOptions> options, 
+            Lazy<IMessagePublisher<GoogleAccountConnectedModel>> messagePublisher, 
+            Lazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>> getUserEmailClient) : base(jwtDecoder)
         {
             _logic = logic;
             _mapper = mapper;
+            _messagePublisher = messagePublisher;
+            _getUserEmailClient = getUserEmailClient;
             _options = options.Value;
         }
         
@@ -71,6 +83,16 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
             {
                 return Problem(businessResult.Message);
             }
+
+            long userId = businessResult.Data.UserId;
+
+            GetUserEmailInput input = new GetUserEmailInput(userId);
+
+            GetUserEmailOutput response = await _getUserEmailClient.Value.Request(input);
+
+            GoogleAccountConnectedModel model = new GoogleAccountConnectedModel(userId, response.Email);
+
+            await _messagePublisher.Value.Send(model);
             
             return Redirect(_options.RedirectUri);
         }

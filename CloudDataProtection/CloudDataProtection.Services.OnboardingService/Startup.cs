@@ -5,6 +5,7 @@ using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
+using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Config;
@@ -15,6 +16,11 @@ using CloudDataProtection.Services.Onboarding.Dto;
 using CloudDataProtection.Services.Onboarding.Entities;
 using CloudDataProtection.Services.Onboarding.Google.Credentials;
 using CloudDataProtection.Services.Onboarding.Google.Options;
+using CloudDataProtection.Services.Onboarding.Messaging.Client;
+using CloudDataProtection.Services.Onboarding.Messaging.Client.Dto;
+using CloudDataProtection.Services.Onboarding.Messaging.Listener;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +58,10 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();
             services.AddScoped<IGoogleCredentialsRepository, GoogleCredentialsRepository>();
             services.AddScoped<IGoogleLoginTokenRepository, LoginTokenRepository>();
+
+            services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
+            services.AddLazy<IMessagePublisher<GoogleAccountConnectedModel>, GoogleAccountConnectedMessagePublisher>();
+            
             services.Configure<GoogleOAuthV2Options>(options => Configuration.GetSection("Google:OAuth2").Bind(options));
             
             services.AddSingleton<ITokenGenerator, GoogleLoginTokenGenerator>();
@@ -59,9 +69,13 @@ namespace CloudDataProtection.Services.Onboarding
             
             services.AddLazy<OnboardingBusinessLogic>();
             
+            services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
+            
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));
 
+            services.AddHostedService<BackupConfigurationEnteredMessageListener>();
+            
             ConfigureDbEncryption();
                             
             services.AddDbContext<IOnboardingDbContext, OnboardingDbContext>(builder =>
@@ -136,7 +150,11 @@ namespace CloudDataProtection.Services.Onboarding
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1");
+                    c.ConfigObject.DisplayRequestDuration = true;
+                });
             }
 
             app.UseHttpsRedirection();

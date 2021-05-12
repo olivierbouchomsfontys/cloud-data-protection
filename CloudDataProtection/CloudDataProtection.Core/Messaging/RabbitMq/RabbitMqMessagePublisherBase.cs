@@ -18,7 +18,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             {
                 if (_connectionFactory == null)
                 {
-                    _connectionFactory = new ConnectionFactory()
+                    _connectionFactory = new ConnectionFactory
                     {
                         HostName = _configuration.Hostname,
                         Port = _configuration.Port,

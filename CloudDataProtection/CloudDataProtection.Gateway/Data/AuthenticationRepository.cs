@@ -14,7 +14,7 @@ namespace CloudDataProtection.Data
             _context = context;
         }
         
-        public async Task<User> Get(int id)
+        public async Task<User> Get(long id)
         {
             return await _context.User.FirstOrDefaultAsync(u => u.Id == id);
         }
