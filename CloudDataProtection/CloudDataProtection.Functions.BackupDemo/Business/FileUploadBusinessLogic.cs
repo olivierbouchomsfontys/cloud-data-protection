@@ -23,12 +23,16 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
         private string ConnectionString => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_CONNECTION");
 
         private readonly IFileTransformer _transformer;
+        private readonly ITransformer _stringTransformer;
 
         private const int FilenameHashWorkFactor = 4;
 
-        public FileUploadBusinessLogic(IFileTransformer transformer)
+        private const string FileNameKey = "original_name";
+
+        public FileUploadBusinessLogic(IFileTransformer transformer, ITransformer stringTransformer)
         {
             _transformer = transformer;
+            _stringTransformer = stringTransformer;
         }
 
         public async Task<BusinessResult<File>> Upload(IFormFile input)
@@ -38,10 +42,16 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             string blobName = GetBlobName(input);
 
             BlobClient blobClient = client.GetBlobClient(blobName);
+            
+            IDictionary<string, string> tags = new Dictionary<string, string>();
+
+            tags.Add(FileNameKey, _stringTransformer.Encrypt(input.FileName));
 
             using (Stream stream = _transformer.Encrypt(input.OpenReadStream()))
             {
                 Response<BlobContentInfo> response = await blobClient.UploadAsync(stream);
+
+                blobClient.SetTags(tags);
 
                 File file = new File
                 {
@@ -63,15 +73,19 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
             BlobClient blobClient = client.GetBlobClient(id);
 
-            Response<BlobProperties> properties= blobClient.GetProperties();
+            Response<BlobProperties> properties = blobClient.GetProperties();
 
-            if (properties.IsSuccessStatusCode())
+            Response<GetBlobTagResult> tags = blobClient.GetTags();
+
+            string originalFileName = _stringTransformer.Decrypt(tags.Value.Tags[FileNameKey]);
+
+            if (properties.IsSuccessStatusCode() && tags.IsSuccessStatusCode())
             {
                 File file = new File
                 {
                     StorageId = id,
                     Bytes = (int) properties.Value.ContentLength,
-                    Name = blobClient.Name
+                    Name = originalFileName
                 };
                 
                 return BusinessResult<File>.Ok(file);

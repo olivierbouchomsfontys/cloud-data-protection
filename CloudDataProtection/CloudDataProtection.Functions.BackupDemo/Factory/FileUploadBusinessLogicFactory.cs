@@ -2,6 +2,7 @@
 using CloudDataProtection.Core.Cryptography.Aes.Options;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Functions.BackupDemo.Business;
+using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Functions.BackupDemo.Factory
 {
@@ -23,8 +24,9 @@ namespace CloudDataProtection.Functions.BackupDemo.Factory
             };
 
             AesStreamTransformer transformer = new AesStreamTransformer(options);
-            
-            return new FileUploadBusinessLogic(transformer);
+            AesTransformer stringTransformer = new AesTransformer(Options.Create(options));
+
+            return new FileUploadBusinessLogic(transformer, stringTransformer);
         }
     }
 }
