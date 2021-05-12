@@ -1,6 +1,5 @@
 import {Button, Typography} from "@material-ui/core";
 import React, {FormEvent, useEffect, useState} from "react";
-import './demo.css';
 import {formatBytes} from "common/formatting/fileFormat";
 import {CancelTokenSource} from "axios";
 import {http} from "common/http";
@@ -8,9 +7,12 @@ import DemoService from "services/demoService";
 import {useSnackbar} from "notistack";
 import {startLoading, stopLoading} from "common/progress/helper";
 import snackbarOptions from "common/snackbar/options";
+import FileUploadResult from "services/result/demo/fileUploadResult";
+import './demo.css';
 
 const Demo = () => {
     const [selectedFile, setSelectedFile] = useState<File>();
+    const [uploadedFile, setUploadedFile] = useState<FileUploadResult>();
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -42,6 +44,10 @@ const Demo = () => {
         startLoading();
 
         await demoService.upload(selectedFile, cancelTokenSource.token)
+            .then((result) => setUploadedFile(result))
+            .then(() => enqueueSnackbar('File upload succeeded', snackbarOptions))
+            .then(() => setSelectedFile(undefined))
+            .catch((e) => onError(e))
             .finally(() => stopLoading());
     }
 
@@ -61,24 +67,44 @@ const Demo = () => {
         setSelectedFile(e.target.files[0]);
     }
 
+    const copyToClipboard = async (e: any) => {
+        await navigator.clipboard.writeText(e.target.innerText);
+
+        enqueueSnackbar('Code has been copied to the clipboard', { ...snackbarOptions, autoHideDuration: 2500 });
+    }
+
+    const onError = (e: any) => {
+        enqueueSnackbar(e, snackbarOptions);
+    }
+
     return (
         <div className='backup-demo'>
             <Typography variant='h1' className='backup-demo__header'>Backup demo</Typography>
-            <p>
-                Get a taste of the performance and security Cloud Data Protection offers. Upload a file to get started.
-            </p>
-            <form  onSubmit={(e) => onSubmit(e)}>
-                <Button className='backup-demo__form__upload' variant='contained' component="label">
-                    {selectedFile ?
-                        <span>{selectedFile.name} ({formatBytes(selectedFile.size)})</span> :
-                        <span>Select a file</span>
+            <div className='backup-demo__upload'>
+                <Typography variant='h2' className='backup-demo__header'>Upload file</Typography>
+                <p>
+                    Get a taste of the performance and security Cloud Data Protection offers. Upload a file to get started.
+                </p>
+                <form  onSubmit={(e) => onSubmit(e)}>
+                    <Button className='backup-demo__upload__form__select-file' variant='contained' component="label">
+                        {selectedFile ?
+                            <span>{selectedFile.name} ({formatBytes(selectedFile.size)})</span> :
+                            <span>Select a file</span>
+                        }
+                        <input type="file" hidden onChange={(e) => onFileSelect(e)} />
+                    </Button>
+
+                    {uploadedFile &&
+                        <div className='backup-demo__uploaded-file'>
+                            Your file has been uploaded. You can access it by saving this code to the clipboard: <code className='backup-demo__uploaded-file__id' onClick={e => copyToClipboard(e)}>{uploadedFile.storageId}</code>
+                        </div>
                     }
-                    <input type="file" hidden onChange={(e) => onFileSelect(e)} />
-                </Button>
-                <Button className='backup-demo__form__submit' type='submit' color='primary' variant='contained' disabled={selectedFile === undefined}>
-                    Submit
-                </Button>
-            </form>
+
+                    <Button className='backup-demo__form__submit' type='submit' color='primary' variant='contained' disabled={selectedFile === undefined}>
+                        Submit
+                    </Button>
+                </form>
+            </div>
         </div>
     )
 

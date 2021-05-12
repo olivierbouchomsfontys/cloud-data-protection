@@ -47,6 +47,16 @@ Windows:
 `setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_ID {your client id goes here}`
 `setx CDP_DEV_ONBOARDING_GOOGLE_OAUTH2_CLIENT_SERCET {your client secret goes here}`
 
+## Blob storage
+
+Create a Azure account. Create a blob storage account and retrieve the connection string.
+
+Unix:
+`export CDP_DEMO_BLOB_CONNECTION={your connection string goes here}`
+
+Windows:
+`setx CDP_DEMO_BLOB_CONNECTION {your connection string goes here}`
+
 ## Logging in
 
 A client account can be created by registering a new account. It is not possible yet to change the password of the default (employee) user. An alternative is to change it by replacing the password hash in the database with your own.

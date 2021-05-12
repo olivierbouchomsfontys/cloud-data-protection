@@ -4,6 +4,8 @@
         <AzureFunctionsVersion>V3</AzureFunctionsVersion>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.8.3" />
+        <PackageReference Include="BCrypt-Official" Version="0.1.107" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
     </ItemGroup>
     <ItemGroup>
@@ -14,5 +16,8 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\CloudDataProtection.Core\CloudDataProtection.Core.csproj" />
     </ItemGroup>
 </Project>

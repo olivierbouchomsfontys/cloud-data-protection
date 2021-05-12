@@ -3,3 +3,16 @@
     margin-right: 0!important;
     margin-left: auto!important;
 }
+
+.backup-demo__uploaded-file__id:hover{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.backup-demo__uploaded-file {
+    margin-top: 1rem;
+}
+
+.backup-demo__upload {
+    margin-top: 1rem;
+}
