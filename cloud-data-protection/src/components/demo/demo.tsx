@@ -1,4 +1,4 @@
-import {Button, Typography} from "@material-ui/core";
+import {Button, Input, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import React, {FormEvent, useEffect, useState} from "react";
 import {formatBytes} from "common/formatting/fileFormat";
 import {CancelTokenSource} from "axios";
@@ -8,11 +8,16 @@ import {useSnackbar} from "notistack";
 import {startLoading, stopLoading} from "common/progress/helper";
 import snackbarOptions from "common/snackbar/options";
 import FileUploadResult from "services/result/demo/fileUploadResult";
+import FileInfoResult from "services/result/demo/fileInfoResult";
 import './demo.css';
+import {Description, Crop} from "@material-ui/icons";
 
 const Demo = () => {
     const [selectedFile, setSelectedFile] = useState<File>();
     const [uploadedFile, setUploadedFile] = useState<FileUploadResult>();
+
+    const [fileId, setFileId] = useState('');
+    const [fileInfo, setFileInfo] = useState<FileInfoResult>();
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -25,6 +30,15 @@ const Demo = () => {
             cancelTokenSource?.cancel();
         }
     })
+
+    useEffect(() => {
+        startLoading();
+
+        setFileInfo(undefined);
+
+        onFileIdChange()
+            .finally(() => stopLoading());
+    }, [fileId])
 
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -67,6 +81,16 @@ const Demo = () => {
         setSelectedFile(e.target.files[0]);
     }
 
+    const onFileIdChange = async () => {
+        cancelTokenSource = http.CancelToken.source();
+
+        startLoading();
+
+        await demoService.getFileInfo(fileId, cancelTokenSource.token)
+            .then((result) => setFileInfo(result))
+            .catch((e) => console.log(e));
+    }
+
     const copyToClipboard = async (e: any) => {
         await navigator.clipboard.writeText(e.target.innerText);
 
@@ -79,9 +103,9 @@ const Demo = () => {
 
     return (
         <div className='backup-demo'>
-            <Typography variant='h1' className='backup-demo__header'>Backup demo</Typography>
+            <Typography variant='h1'>Backup demo</Typography>
             <div className='backup-demo__upload'>
-                <Typography variant='h2' className='backup-demo__header'>Upload file</Typography>
+                <Typography variant='h2'>Upload file</Typography>
                 <p>
                     Get a taste of the performance and security Cloud Data Protection offers. Upload a file to get started.
                 </p>
@@ -96,7 +120,7 @@ const Demo = () => {
 
                     {uploadedFile &&
                         <div className='backup-demo__uploaded-file'>
-                            Your file has been uploaded. You can access it by saving this code to the clipboard: <code className='backup-demo__uploaded-file__id' onClick={e => copyToClipboard(e)}>{uploadedFile.storageId}</code>
+                            Your file has been uploaded. You can access it later by saving this code. Click it to copy to the clipboard: <code className='backup-demo__uploaded-file__id' onClick={e => copyToClipboard(e)}>{uploadedFile.storageId}</code>
                         </div>
                     }
 
@@ -104,6 +128,44 @@ const Demo = () => {
                         Submit
                     </Button>
                 </form>
+            </div>
+            <div className='backup-demo__retrieve'>
+                <Typography variant='h2'>Retrieve file</Typography>
+                <p>
+                    Retrieve a file by entering a code in the text field below.
+                </p>
+                <Input className='backup-demo__retrieve__input' type="text" placeholder="Enter code" value={fileId} onChange={(e) => setFileId(e.target.value)}/>
+                {fileInfo &&
+                    <div className='backup-demo__retrieve__file-info'>
+                        <Typography variant='h5'>File info</Typography>
+                        <List className='onboarding__backup-config__list' dense={true}>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <Description />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Name: {fileInfo.encryptedName}
+                                </ListItemText>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <Crop />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Size: {formatBytes(fileInfo.bytes)}
+                                </ListItemText>
+                            </ListItem>
+                        </List>
+                    </div>
+                }
+                <div className='backup-demo__retrieve__btn-container'>
+                    <Button className='backup-demo__retrieve' variant='contained' disabled={true}>
+                        Download encrypted
+                    </Button>
+                    <Button className='backup-demo__retrieve' color='primary' variant='contained' disabled={true}>
+                        Download original
+                    </Button>
+                </div>
             </div>
         </div>
     )

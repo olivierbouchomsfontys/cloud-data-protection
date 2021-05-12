@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Functions.BackupDemo.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.WindowsAzure.Storage.Blob;
+using BlobProperties = Azure.Storage.Blobs.Models.BlobProperties;
+using File = CloudDataProtection.Functions.BackupDemo.Entities.File;
 
 namespace CloudDataProtection.Functions.BackupDemo.Business
 {
@@ -27,9 +31,9 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             _transformer = transformer;
         }
 
-        public async Task<BusinessResult<Entities.File>> Upload(IFormFile input)
+        public async Task<BusinessResult<File>> Upload(IFormFile input)
         {
-            BlobContainerClient client = await GetContainer();
+            BlobContainerClient client = await GetContainerClient();
 
             string blobName = GetBlobName(input);
 
@@ -39,18 +43,41 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             {
                 Response<BlobContentInfo> response = await blobClient.UploadAsync(stream);
 
-                Entities.File file = new Entities.File
+                File file = new File
                 {
                     StorageId = blobName
                 };
 
                 if (response.IsSuccessStatusCode())
                 {
-                    return BusinessResult<Entities.File>.Ok(file);
+                    return BusinessResult<File>.Ok(file);
                 }
 
-                return BusinessResult<Entities.File>.Error("An unknown error occured while processing the file.");
+                return BusinessResult<File>.Error("An unknown error occured while processing the file.");
             }      
+        }
+
+        public async Task<BusinessResult<File>> GetInfo(string id)
+        {
+            BlobContainerClient client = await GetContainerClient();
+
+            BlobClient blobClient = client.GetBlobClient(id);
+
+            Response<BlobProperties> properties= blobClient.GetProperties();
+
+            if (properties.IsSuccessStatusCode())
+            {
+                File file = new File
+                {
+                    StorageId = id,
+                    Bytes = (int) properties.Value.ContentLength,
+                    Name = blobClient.Name
+                };
+                
+                return BusinessResult<File>.Ok(file);
+            }
+
+            return BusinessResult<File>.Error("An unknown error occured while retrieving info of the file.");
         }
 
         private string GetBlobName(IFormFile input)
@@ -64,7 +91,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             return string.Join("_", hash.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private async Task<BlobContainerClient> GetContainer()
+        private async Task<BlobContainerClient> GetContainerClient()
         {
             string containerName = "demo-blobstorage";
             
