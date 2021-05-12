@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Services.BackupConfigurationService.Tests", "CloudDataProtection.Services.BackupConfigurationService.Tests\CloudDataProtection.Services.BackupConfigurationService.Tests.csproj", "{0361FF26-94EF-4BE0-8F99-315AC12DD635}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDataProtection.Functions.BackupDemo", "CloudDataProtection.Functions.BackupDemo\CloudDataProtection.Functions.BackupDemo.csproj", "{D86C9823-47E3-4CFA-B1C2-0293B4BCD39C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{0361FF26-94EF-4BE0-8F99-315AC12DD635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0361FF26-94EF-4BE0-8F99-315AC12DD635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0361FF26-94EF-4BE0-8F99-315AC12DD635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86C9823-47E3-4CFA-B1C2-0293B4BCD39C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86C9823-47E3-4CFA-B1C2-0293B4BCD39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86C9823-47E3-4CFA-B1C2-0293B4BCD39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86C9823-47E3-4CFA-B1C2-0293B4BCD39C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
