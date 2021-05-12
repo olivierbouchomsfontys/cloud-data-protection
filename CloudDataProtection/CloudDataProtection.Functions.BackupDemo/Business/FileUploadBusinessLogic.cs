@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Core.Result;
+using CloudDataProtection.Functions.BackupDemo.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace CloudDataProtection.Functions.BackupDemo.Business
@@ -15,6 +17,15 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
     public class FileUploadBusinessLogic
     {
         private string ConnectionString => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_CONNECTION");
+
+        private readonly IFileTransformer _transformer;
+
+        private const int FilenameHashWorkFactor = 4;
+
+        public FileUploadBusinessLogic(IFileTransformer transformer)
+        {
+            _transformer = transformer;
+        }
 
         public async Task<BusinessResult<Entities.File>> Upload(IFormFile input)
         {
@@ -24,22 +35,21 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
             BlobClient blobClient = client.GetBlobClient(blobName);
 
-            using (Stream stream = input.OpenReadStream())
+            using (Stream stream = _transformer.Encrypt(input.OpenReadStream()))
             {
                 Response<BlobContentInfo> response = await blobClient.UploadAsync(stream);
-                
+
                 Entities.File file = new Entities.File
                 {
                     StorageId = blobName
                 };
 
-
-                if (response.GetRawResponse().Status.ToString().StartsWith("2"))
+                if (response.IsSuccessStatusCode())
                 {
                     return BusinessResult<Entities.File>.Ok(file);
                 }
 
-                return BusinessResult<Entities.File>.Error("an unknown error occured while processing the file.");
+                return BusinessResult<Entities.File>.Error("An unknown error occured while processing the file.");
             }      
         }
 
@@ -47,7 +57,11 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
         {
             string blobName = Guid.NewGuid() + "_" + input.FileName;
 
-            return BCrypt.Net.BCrypt.HashPassword(blobName, 8);
+            string hash = BCrypt.Net.BCrypt.HashPassword(blobName, FilenameHashWorkFactor);
+
+            char[] invalidChars = Path.GetInvalidFileNameChars().Append('.').ToArray();
+
+            return string.Join("_", hash.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries));
         }
 
         private async Task<BlobContainerClient> GetContainer()

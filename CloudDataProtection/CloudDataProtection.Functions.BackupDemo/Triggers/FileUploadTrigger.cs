@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Functions.BackupDemo.Business;
 using CloudDataProtection.Functions.BackupDemo.Entities;
+using CloudDataProtection.Functions.BackupDemo.Factory;
 using CloudDataProtection.Functions.BackupDemo.Triggers.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -36,7 +36,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
 
         private static async Task<IActionResult> DoFileUpload(IFormFile file)
         {
-            FileUploadBusinessLogic logic = new FileUploadBusinessLogic();
+            FileUploadBusinessLogic logic = FileUploadBusinessLogicFactory.Instance.GetLogic();
 
             BusinessResult<File> result = await logic.Upload(file);
 

@@ -49,13 +49,23 @@ Windows:
 
 ## Blob storage
 
-Create a Azure account. Create a blob storage account and retrieve the connection string.
+Create a Azure account. Create a blob storage account and retrieve the connection string. Store it in an environment variable.
 
 Unix:
 `export CDP_DEMO_BLOB_CONNECTION={your connection string goes here}`
 
 Windows:
 `setx CDP_DEMO_BLOB_CONNECTION {your connection string goes here}`
+
+We also need an AES256 encryption key and Iv. Generate it and store it in environment variables. The used key size is 256, while the used block size is 128.
+
+Unix:
+`export CDP_DEMO_BLOB_AES_KEY={your AES key goes here}`
+`export CDP_DEMO_BLOB_AES_IV={your AES Iv goes here}`
+
+Windows:
+`setx CDP_DEMO_BLOB_AES_KEY {your AES key goes here}`
+`setx CDP_DEMO_BLOB_AES_IV {your AES Iv goes here}`
 
 ## Logging in
 
