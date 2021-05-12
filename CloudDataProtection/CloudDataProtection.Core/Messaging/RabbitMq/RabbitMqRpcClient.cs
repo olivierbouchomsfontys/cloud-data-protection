@@ -107,8 +107,9 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _requestChannel.QueueDeclare(Queue, exclusive: false, durable: false, autoDelete: false);
             _requestChannel.QueueBind(Queue, _configuration.Exchange, "");
             
+            
             // Create and bind RPC reply queue
-            string replyQueueName = $"rpc_reply_queue{DateTime.Now:s}";
+            string replyQueueName = $"rpc_reply_queue_{Guid.NewGuid().ToString()}";
                 
             _replyChannel.QueueDeclare(replyQueueName, false, false, false);
             _replyChannel.QueueBind(replyQueueName, _configuration.Exchange, replyQueueName);

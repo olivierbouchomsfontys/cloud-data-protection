@@ -17,9 +17,9 @@ namespace CloudDataProtection.Services.MailService.Business
         {
             string subject = "Welcome to Cloud Data Protection";
             string content = @"
-<p>Dear Sir / Madam,</br></br>
-    Congratulations! You just completed the first step to securing all your company data. Please log in to your account and complete your registration.</br></br>
-    Yours sincerely,</br></br>
+<p>Dear Sir / Madam,<br><br>
+    Congratulations! You just completed the first step to securing all your company data. Please log in to your account and complete your registration.<br><br>
+    Yours sincerely,<br><br>
     Olivier Bouchoms
   </p>";
             

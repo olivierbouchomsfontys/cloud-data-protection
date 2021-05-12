@@ -119,7 +119,7 @@ namespace CloudDataProtection.Services.Onboarding.Business
             await _credentialsRepository.Create(credentials);
             await _onboardingRepository.Update(onboarding);
 
-            return BusinessResult<GoogleCredentials>.Ok();
+            return BusinessResult<GoogleCredentials>.Ok(credentials);
         }
         
         public async Task<BusinessResult<GoogleLoginInfo>> GetLoginInfo(long userId)

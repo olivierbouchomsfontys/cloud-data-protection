@@ -61,8 +61,12 @@ namespace CloudDataProtection
             
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
 
+            services.AddTransient<UserBusinessLogic>();
+
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
+
+            services.AddHostedService<GetUserEmailRpcServer>();
             
             services.AddOcelot();
         }

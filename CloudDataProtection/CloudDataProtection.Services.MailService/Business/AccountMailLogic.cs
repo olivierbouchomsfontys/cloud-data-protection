@@ -17,9 +17,9 @@ namespace CloudDataProtection.Services.MailService.Business
         {
             string subject = "Google account connected";
             string content = @"
-<p>Dear Sir / Madam,</br></br>
-    Congratulations! You just connected your Google account to Cloud Data Protection. If you did not perform this action, please contact us by replying to this email.</br></br>
-    Yours sincerely,</br></br>
+<p>Dear Sir / Madam,<br><br>
+    Congratulations! You just connected your Google account to Cloud Data Protection. If you did not perform this action, please contact us by replying to this email.<br><br>
+    Yours sincerely,<br><br>
     Olivier Bouchoms
   </p>";
             
