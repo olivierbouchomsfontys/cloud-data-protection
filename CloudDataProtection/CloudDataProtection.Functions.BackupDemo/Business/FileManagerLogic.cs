@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Azure.Storage.Sas;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Functions.BackupDemo.Extensions;
 using CloudDataProtection.Functions.BackupDemo.Triggers.Dto;
 using Microsoft.AspNetCore.Http;
-using Microsoft.WindowsAzure.Storage.Blob;
 using BlobProperties = Azure.Storage.Blobs.Models.BlobProperties;
 using File = CloudDataProtection.Functions.BackupDemo.Entities.File;
 
@@ -29,6 +27,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
         private const int FilenameHashWorkFactor = 4;
 
         private const string FileNameKey = "original_name";
+        private const string ContentTypeKey = "content_type";
 
         public FileManagerLogic(IFileTransformer transformer, ITransformer stringTransformer)
         {
@@ -47,11 +46,9 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             IDictionary<string, string> tags = new Dictionary<string, string>();
 
             tags.Add(FileNameKey, _stringTransformer.Encrypt(input.FileName));
-            tags.Add("content_type", _stringTransformer.Encrypt(input.ContentType));
+            tags.Add(ContentTypeKey, _stringTransformer.Encrypt(input.ContentType));
 
-            Stream inputStream = input.OpenReadStream();
-            
-            using (Stream stream = _transformer.Encrypt(inputStream))
+            using (Stream stream = _transformer.Encrypt(input.OpenReadStream()))
             {
                 Response<BlobContentInfo> response = await blobClient.UploadAsync(stream);
 
@@ -107,7 +104,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             Response<GetBlobTagResult> tags = blobClient.GetTags();
             
             string originalFileName = _stringTransformer.Decrypt(tags.Value.Tags[FileNameKey]);
-            string contentType = _stringTransformer.Decrypt(tags.Value.Tags["content_type"]);
+            string contentType = _stringTransformer.Decrypt(tags.Value.Tags[ContentTypeKey]);
 
             if (decrypt)
             {
@@ -119,12 +116,8 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
         private async Task<BusinessResult<FileDownloadResult>> DownloadAndDecrypt(string fileName, string contentType, BlobClient client)
         {
-            MemoryStream memoryStream = new MemoryStream();
-
             BlobDownloadInfo response = await client.DownloadAsync();
             
-            // response.Content.CopyTo(memoryStream);
-
             byte[] decrypted = _transformer.Decrypt(response.Content);
 
             if (decrypted == null || decrypted.Length == 0)

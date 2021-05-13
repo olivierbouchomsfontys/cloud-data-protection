@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace CloudDataProtection.Functions.BackupDemo.Triggers.Dto
+﻿namespace CloudDataProtection.Functions.BackupDemo.Triggers.Dto
 {
     public class FileDownloadResult
     {

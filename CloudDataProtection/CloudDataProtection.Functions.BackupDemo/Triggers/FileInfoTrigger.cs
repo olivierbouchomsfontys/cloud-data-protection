@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Functions.BackupDemo.Business;
@@ -28,7 +27,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
                 return new BadRequestResult();
             }
             
-            logger.LogInformation("Received request for filefilem with id {Id}", id);
+            logger.LogInformation("Received request for file retrieval with id {Id}", id);
 
             return await DoGetFileInfo(id);
         }
