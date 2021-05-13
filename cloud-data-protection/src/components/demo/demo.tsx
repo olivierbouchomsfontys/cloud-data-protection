@@ -9,8 +9,8 @@ import {startLoading, stopLoading} from "common/progress/helper";
 import snackbarOptions from "common/snackbar/options";
 import FileUploadResult from "services/result/demo/fileUploadResult";
 import FileInfoResult from "services/result/demo/fileInfoResult";
+import {Crop, Description} from "@material-ui/icons";
 import './demo.css';
-import {Description, Crop} from "@material-ui/icons";
 
 const Demo = () => {
     const [selectedFile, setSelectedFile] = useState<File>();
@@ -34,10 +34,7 @@ const Demo = () => {
     useEffect(() => {
         startLoading();
 
-        setFileInfo(undefined);
-
-        onFileIdChange()
-            .finally(() => stopLoading());
+        onFileIdChange();
     }, [fileId])
 
     const onSubmit = async (e: FormEvent) => {
@@ -88,7 +85,8 @@ const Demo = () => {
 
         await demoService.getFileInfo(fileId, cancelTokenSource.token)
             .then((result) => setFileInfo(result))
-            .catch((e) => console.log(e));
+            .catch((e) => console.log(e))
+            .finally(() => stopLoading());
     }
 
     const copyToClipboard = async (e: any) => {
@@ -97,8 +95,25 @@ const Demo = () => {
         enqueueSnackbar('Code has been copied to the clipboard', { ...snackbarOptions, autoHideDuration: 2500 });
     }
 
+    const download = async (decrypt: boolean) => {
+        if (!fileId) {
+            enqueueSnackbar('Please enter a file code.');
+            return;
+        }
+
+        cancelTokenSource = http.CancelToken.source();
+
+        startLoading();
+
+        await demoService.downloadFile(fileId, decrypt, cancelTokenSource.token)
+            .catch((e) => onError(e))
+            .finally(() => stopLoading());
+    }
+
     const onError = (e: any) => {
-        enqueueSnackbar(e, snackbarOptions);
+        if (e instanceof String) {
+            enqueueSnackbar(e, snackbarOptions);
+        }
     }
 
     return (
@@ -159,10 +174,10 @@ const Demo = () => {
                     </div>
                 }
                 <div className='backup-demo__retrieve__btn-container'>
-                    <Button className='backup-demo__retrieve' variant='contained' disabled={true}>
+                    <Button className='backup-demo__retrieve' variant='contained' disabled={true} onClick={() => download(false)}>
                         Download encrypted
                     </Button>
-                    <Button className='backup-demo__retrieve' color='primary' variant='contained' disabled={true}>
+                    <Button className='backup-demo__retrieve' color='primary' variant='contained' disabled={fileInfo === undefined} onClick={() => download(true)}>
                         Download original
                     </Button>
                 </div>

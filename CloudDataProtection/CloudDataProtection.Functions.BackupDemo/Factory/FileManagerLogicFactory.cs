@@ -6,14 +6,14 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Functions.BackupDemo.Factory
 {
-    public class FileUploadBusinessLogicFactory
+    public class FileManagerLogicFactory
     {
-        private static FileUploadBusinessLogicFactory _instance;
+        private static FileManagerLogicFactory _instance;
 
-        public static FileUploadBusinessLogicFactory Instance =>
-            _instance ?? (_instance = new FileUploadBusinessLogicFactory());
+        public static FileManagerLogicFactory Instance =>
+            _instance ?? (_instance = new FileManagerLogicFactory());
 
-        public FileUploadBusinessLogic GetLogic()
+        public FileManagerLogic GetLogic()
         {
             AesOptions options = new AesOptions
             {
@@ -26,7 +26,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Factory
             AesStreamTransformer transformer = new AesStreamTransformer(options);
             AesTransformer stringTransformer = new AesTransformer(Options.Create(options));
 
-            return new FileUploadBusinessLogic(transformer, stringTransformer);
+            return new FileManagerLogic(transformer, stringTransformer);
         }
     }
 }

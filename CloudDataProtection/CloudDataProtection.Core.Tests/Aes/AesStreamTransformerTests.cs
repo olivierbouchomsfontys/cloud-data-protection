@@ -51,13 +51,10 @@ namespace CloudDataProtection.Core.Tests.Aes
                 test.Write(encryptedBytes);
                 test.Flush();
 
-                using (MemoryStream decrypted = _transformer.Decrypt(test) as MemoryStream)
-                {
-                    byte[] decryptedBytes = decrypted.ToArray();
+                byte[] decrypted = _transformer.Decrypt(test);
 
-                    Assert.Equal(bytes, decryptedBytes);
-                    Assert.Equal(data, Encoding.UTF8.GetString(decryptedBytes));
-                }
+                Assert.Equal(bytes, decrypted);
+                Assert.Equal(data, Encoding.UTF8.GetString(decrypted));
             }
         }
     }

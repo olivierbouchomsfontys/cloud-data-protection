@@ -36,41 +36,44 @@ namespace CloudDataProtection.Core.Cryptography.Aes
             CryptoStream cryptoStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write);
 
             input.Position = 0;
-
             input.CopyTo(cryptoStream);
 
             cryptoStream.FlushFinalBlock();
 
             outputStream.Flush();
-
             outputStream.Position = 0;
 
             return outputStream;
         }
 
-        public Stream Decrypt(Stream input)
+        public byte[] Decrypt(Stream input)
         {
             if (input == null)
             {
                 throw new ArgumentException(nameof(input));
             }
 
-            using (System.Security.Cryptography.Aes aes = CreateAesManaged())
+            using (MemoryStream outputStream = new MemoryStream())
             {
-                using (MemoryStream outputStream = new MemoryStream())
+                using (System.Security.Cryptography.Aes aes = CreateAesManaged())
                 {
                     using (ICryptoTransform cryptoTransform = aes.CreateDecryptor())
                     {
                         using (CryptoStream cryptoStream =
                             new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
                         {
-                            input.Position = 0;
+                            byte[] buffer = new byte[2048];
 
-                            input.CopyTo(cryptoStream);
-
+                            int read;
+                            
+                            while((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                cryptoStream.Write(buffer, 0, read);
+                            }
+                            
                             cryptoStream.FlushFinalBlock();
-
-                            return outputStream;
+            
+                            return outputStream.ToArray();
                         }
                     }
                 }

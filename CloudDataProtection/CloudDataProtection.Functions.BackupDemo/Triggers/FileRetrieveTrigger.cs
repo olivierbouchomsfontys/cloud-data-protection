@@ -28,14 +28,14 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
                 return new BadRequestResult();
             }
             
-            logger.LogInformation("Received request for file with id {Id}", id);
+            logger.LogInformation("Received request for filefilem with id {Id}", id);
 
             return await DoGetFileInfo(id);
         }
 
         private static async Task<IActionResult> DoGetFileInfo(string id)
         {
-            FileUploadBusinessLogic logic = FileUploadBusinessLogicFactory.Instance.GetLogic();
+            FileManagerLogic logic = FileManagerLogicFactory.Instance.GetLogic();
 
             BusinessResult<File> result = await logic.GetInfo(id);
 

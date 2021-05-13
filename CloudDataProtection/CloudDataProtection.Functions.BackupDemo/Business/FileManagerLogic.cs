@@ -11,6 +11,7 @@ using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Functions.BackupDemo.Extensions;
+using CloudDataProtection.Functions.BackupDemo.Triggers.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Blob;
 using BlobProperties = Azure.Storage.Blobs.Models.BlobProperties;
@@ -18,7 +19,7 @@ using File = CloudDataProtection.Functions.BackupDemo.Entities.File;
 
 namespace CloudDataProtection.Functions.BackupDemo.Business
 {
-    public class FileUploadBusinessLogic
+    public class FileManagerLogic
     {
         private string ConnectionString => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_CONNECTION");
 
@@ -29,7 +30,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
         private const string FileNameKey = "original_name";
 
-        public FileUploadBusinessLogic(IFileTransformer transformer, ITransformer stringTransformer)
+        public FileManagerLogic(IFileTransformer transformer, ITransformer stringTransformer)
         {
             _transformer = transformer;
             _stringTransformer = stringTransformer;
@@ -46,8 +47,11 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             IDictionary<string, string> tags = new Dictionary<string, string>();
 
             tags.Add(FileNameKey, _stringTransformer.Encrypt(input.FileName));
+            tags.Add("content_type", _stringTransformer.Encrypt(input.ContentType));
 
-            using (Stream stream = _transformer.Encrypt(input.OpenReadStream()))
+            Stream inputStream = input.OpenReadStream();
+            
+            using (Stream stream = _transformer.Encrypt(inputStream))
             {
                 Response<BlobContentInfo> response = await blobClient.UploadAsync(stream);
 
@@ -94,6 +98,56 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             return BusinessResult<File>.Error("An unknown error occured while retrieving info of the file.");
         }
 
+        public async Task<BusinessResult<FileDownloadResult>> Download(string id, bool decrypt)
+        {
+            BlobContainerClient client = await GetContainerClient();
+
+            BlobClient blobClient = client.GetBlobClient(id);
+
+            Response<GetBlobTagResult> tags = blobClient.GetTags();
+            
+            string originalFileName = _stringTransformer.Decrypt(tags.Value.Tags[FileNameKey]);
+            string contentType = _stringTransformer.Decrypt(tags.Value.Tags["content_type"]);
+
+            if (decrypt)
+            {
+                return await DownloadAndDecrypt(originalFileName, contentType, blobClient);
+            }
+
+            return await DownloadRaw(originalFileName, blobClient);
+        }
+
+        private async Task<BusinessResult<FileDownloadResult>> DownloadAndDecrypt(string fileName, string contentType, BlobClient client)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+
+            BlobDownloadInfo response = await client.DownloadAsync();
+            
+            // response.Content.CopyTo(memoryStream);
+
+            byte[] decrypted = _transformer.Decrypt(response.Content);
+
+            if (decrypted == null || decrypted.Length == 0)
+            {
+                return BusinessResult<FileDownloadResult>.Error("An unknown error occured while attempting to retrieve the file");
+            }
+
+            FileDownloadResult result = new FileDownloadResult
+            {
+                Bytes = decrypted,
+                Type = FileDownloadResultType.Bytes,
+                FileName = fileName,
+                ContentType = contentType
+            };
+            
+            return BusinessResult<FileDownloadResult>.Ok(result);
+        }
+
+        private async Task<BusinessResult<FileDownloadResult>> DownloadRaw(string fileName, BlobClient client)
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetBlobName(IFormFile input)
         {
             string blobName = Guid.NewGuid() + "_" + input.FileName;
@@ -102,7 +156,9 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
             char[] invalidChars = Path.GetInvalidFileNameChars().Append('.').ToArray();
 
-            return string.Join("_", hash.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries));
+            string[] sanitizedHash = hash.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries);
+
+            return string.Join("_", sanitizedHash);
         }
 
         private async Task<BlobContainerClient> GetContainerClient()
