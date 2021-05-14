@@ -17,6 +17,8 @@ namespace CloudDataProtection.Core.Cryptography.Aes
             IV = _options.Iv
         };
 
+        private const int DefaultBufferSize = 2048;
+        
         public AesStreamTransformer(AesOptions options)
         {
             _options = options;
@@ -62,7 +64,12 @@ namespace CloudDataProtection.Core.Cryptography.Aes
                         using (CryptoStream cryptoStream =
                             new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
                         {
-                            byte[] buffer = new byte[2048];
+                            byte[] buffer = new byte[Math.Min(DefaultBufferSize, input.Length)];
+
+                            if (input.CanSeek)
+                            {
+                                input.Seek(0, SeekOrigin.Begin);
+                            }
 
                             int read;
                             
