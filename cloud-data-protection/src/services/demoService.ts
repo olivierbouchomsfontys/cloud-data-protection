@@ -38,7 +38,6 @@ class DemoService extends ServiceBase {
             responseType = 'json';
         }
 
-
         return await http.get('/demo/file/download', { cancelToken: cancelToken, params: { id: id, decrypt: decrypt }, headers: headers, responseType: responseType })
             .then((response: AxiosResponse) => {
                 if (DemoService.shouldDownload(response)) {

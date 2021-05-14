@@ -5,7 +5,7 @@ using CloudDataProtection.Core.Cryptography.Aes.Options;
 
 namespace CloudDataProtection.Core.Cryptography.Aes
 {
-    public class AesStreamTransformer : IFileTransformer
+    public class AesStreamTransformer : IDataTransformer
     {
         private readonly AesOptions _options;
 
@@ -64,11 +64,16 @@ namespace CloudDataProtection.Core.Cryptography.Aes
                         using (CryptoStream cryptoStream =
                             new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
                         {
-                            byte[] buffer = new byte[Math.Min(DefaultBufferSize, input.Length)];
+                            byte[] buffer;
 
                             if (input.CanSeek)
                             {
+                                buffer = new byte[Math.Min(DefaultBufferSize, input.Length)];
                                 input.Seek(0, SeekOrigin.Begin);
+                            }
+                            else
+                            {
+                                buffer = new byte[DefaultBufferSize];
                             }
 
                             int read;

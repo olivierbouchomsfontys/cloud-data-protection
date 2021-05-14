@@ -135,7 +135,7 @@ const Demo = () => {
 
                     {uploadedFile &&
                         <div className='backup-demo__uploaded-file'>
-                            Your file has been uploaded. You can access it later by saving this code. Click it to copy to the clipboard: <code className='backup-demo__uploaded-file__id' onClick={e => copyToClipboard(e)}>{uploadedFile.storageId}</code>
+                            Your file has been uploaded. You can access it later by saving this code. Click it to copy to the clipboard: <code className='backup-demo__uploaded-file__id' onClick={(e) => copyToClipboard(e)}>{uploadedFile.storageId}</code>
                         </div>
                     }
 

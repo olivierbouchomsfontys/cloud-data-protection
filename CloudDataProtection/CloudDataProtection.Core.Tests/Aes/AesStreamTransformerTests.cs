@@ -9,7 +9,7 @@ namespace CloudDataProtection.Core.Tests.Aes
 {
     public class AesStreamTransformerTests
     {
-        private readonly IFileTransformer _transformer;
+        private readonly IDataTransformer _transformer;
 
         public AesStreamTransformerTests()
         {

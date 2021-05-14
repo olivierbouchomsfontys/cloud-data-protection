@@ -21,7 +21,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
     {
         private string ConnectionString => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_CONNECTION");
 
-        private readonly IFileTransformer _transformer;
+        private readonly IDataTransformer _transformer;
         private readonly ITransformer _stringTransformer;
 
         private const int FilenameHashWorkFactor = 4;
@@ -29,7 +29,9 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
         private const string FileNameKey = "original_name";
         private const string ContentTypeKey = "content_type";
 
-        public FileManagerLogic(IFileTransformer transformer, ITransformer stringTransformer)
+        private const string ContainerName = "cdp-demo-blobstorage";
+
+        public FileManagerLogic(IDataTransformer transformer, ITransformer stringTransformer)
         {
             _transformer = transformer;
             _stringTransformer = stringTransformer;
@@ -101,7 +103,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
             BlobClient blobClient = client.GetBlobClient(id);
 
-            Response<GetBlobTagResult> tags = blobClient.GetTags();
+            Response<GetBlobTagResult> tags = await blobClient.GetTagsAsync();
             
             string originalFileName = _stringTransformer.Decrypt(tags.Value.Tags[FileNameKey]);
             string contentType = _stringTransformer.Decrypt(tags.Value.Tags[ContentTypeKey]);
@@ -156,20 +158,13 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
         private async Task<BlobContainerClient> GetContainerClient()
         {
-            string containerName = "demo-blobstorage";
-            
             BlobServiceClient client = new BlobServiceClient(ConnectionString);
 
-            List<BlobContainerItem> containers = client.GetBlobContainers().ToList();
-            
-            // Create the container if it doesn't exist
-            if (containers.FirstOrDefault(c => c.Name.Equals(containerName)) == null)
-            {
-                Response<BlobContainerClient> response = await client.CreateBlobContainerAsync(containerName);
-                return response.Value;
-            }
+            BlobContainerClient containerClient = client.GetBlobContainerClient(ContainerName);
 
-            return client.GetBlobContainerClient(containerName);
+            await containerClient.CreateIfNotExistsAsync();
+
+            return containerClient;
         }
     }
 }
