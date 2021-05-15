@@ -40,14 +40,19 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
 
             if (!result.Success)
             {
+                if (result.Message == "Not found")
+                {
+                    return new NotFoundResult();
+                }
+                
                 return new InternalServerErrorResult();
             }
 
             FileInfoResult dto = new FileInfoResult
             {
-                EncryptedName = result.Data.Name,
-                Url = result.Data.Url,
-                Bytes = result.Data.Bytes
+                Name = result.Data.Name,
+                Bytes = result.Data.Bytes,
+                ContentType = result.Data.ContentType
             };
             
             return new OkObjectResult(dto);

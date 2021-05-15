@@ -1,7 +1,8 @@
 interface FileInfoResult {
     bytes: number;
     url: string;
-    encryptedName: string;
+    name: string;
+    contentType: string;
 }
 
 export default FileInfoResult;
