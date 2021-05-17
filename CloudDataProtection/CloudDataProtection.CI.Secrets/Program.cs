@@ -24,6 +24,7 @@ namespace CloudDataProtection.CI.Secrets
 
             string solutionDirectory = Directory.GetCurrentDirectory();
 
+            Console.WriteLine("\n=== CloudDataProtection Secret Manager===\n");
             Console.Out.WriteLine($"Environment: {environment}");
             Console.Out.WriteLine($"Target: {target}");
             
@@ -34,8 +35,6 @@ namespace CloudDataProtection.CI.Secrets
                 Console.Error.WriteLine($"Could not find directory {solutionDirectory}!");
                 Environment.Exit(1);
             }
-
-            Console.WriteLine($"Base directory: {solutionDirectory}");
 
             string[] subDirectories = Directory.GetDirectories(solutionDirectory);
 
