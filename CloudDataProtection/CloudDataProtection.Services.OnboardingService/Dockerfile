@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ./CloudDataProtection.Core/ ./CloudDataProtection.Core/
 
-ENV ProjectName=CloudDataProtection.Gateway
+ENV ProjectName=CloudDataProtection.Services.OnboardingService
 
 COPY ./${ProjectName}/ ./${ProjectName}
 
@@ -15,4 +15,4 @@ FROM mcr.microsoft.com/dotnet/sdk:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 EXPOSE 80/tcp
-ENTRYPOINT ["dotnet", "CloudDataProtection.Gateway.dll"]
+ENTRYPOINT ["dotnet", "CloudDataProtection.Services.OnboardingService.dll"]
