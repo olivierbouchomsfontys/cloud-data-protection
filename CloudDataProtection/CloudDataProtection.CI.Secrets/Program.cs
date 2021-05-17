@@ -6,6 +6,16 @@ namespace CloudDataProtection.CI.Secrets
 {
     class Program
     {
+        /// <summary>
+        /// Usage from CI:
+        /// Working directory: ./CloudDataProtection
+        ///
+        /// Arguments should be in this order because of the very simple setup. This might be improved in the feature.
+        /// 
+        /// Command: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Environemt" --secret SuperSecretKey --target "TargetProperty"
+        /// Example: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Test" --secret SuperSecretKey --target "Jwt.Secret"
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             string environment = args[1];
@@ -51,8 +61,10 @@ namespace CloudDataProtection.CI.Secrets
 
                         Console.Out.WriteLine($"Updated {target} in {filePath}");
                     }
-                    
-                    Console.Out.WriteLine($"Could not find {target} in {filePath}, skipping");
+                    else
+                    {
+                        Console.Out.WriteLine($"Could not find {target} in {filePath}, skipping");
+                    }
                 }
             }
         }
