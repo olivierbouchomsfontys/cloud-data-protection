@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.Onboarding.Messaging.Publisher
 {
-    public class GoogleAccountConnectedMessagePublisher : RabbitMqMessagePublisherBase<GoogleAccountConnectedModel>
+    public class GoogleAccountConnectedMessagePublisher : RabbitMqMessagePublisher<GoogleAccountConnectedModel>
     {
         public GoogleAccountConnectedMessagePublisher(IOptions<RabbitMqConfiguration> options) : base(options)
         {

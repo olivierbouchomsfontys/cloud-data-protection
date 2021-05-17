@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.Subscription.Messaging.Publisher
 {
-    public class BackupConfigurationEnteredMessagePublisher : RabbitMqMessagePublisherBase<BackupConfigurationEnteredModel>
+    public class BackupConfigurationEnteredMessagePublisher : RabbitMqMessagePublisher<BackupConfigurationEnteredModel>
     {
         public BackupConfigurationEnteredMessagePublisher(IOptions<RabbitMqConfiguration> options) : base(options)
         {

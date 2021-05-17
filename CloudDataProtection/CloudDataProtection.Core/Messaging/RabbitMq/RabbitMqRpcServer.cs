@@ -34,7 +34,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                         HostName = _configuration.Hostname,
                         Port = _configuration.Port,
                         UserName = _configuration.UserName,
-                        Password = _configuration.Password
+                        Password = _configuration.Password,
+                        VirtualHost = _configuration.VirtualHost
                     };
                 }
 

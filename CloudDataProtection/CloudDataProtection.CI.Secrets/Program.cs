@@ -12,7 +12,7 @@ namespace CloudDataProtection.CI.Secrets
         ///
         /// Arguments should be in this order because of the very simple setup. This might be improved in the feature.
         /// 
-        /// Command: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Environemt" --secret SuperSecretKey --target "TargetProperty"
+        /// Command: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Environment" --secret SuperSecretKey --target "TargetProperty"
         /// Example: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Test" --secret SuperSecretKey --target "Jwt.Secret"
         /// </summary>
         /// <param name="args"></param>
@@ -24,7 +24,7 @@ namespace CloudDataProtection.CI.Secrets
 
             string solutionDirectory = Directory.GetCurrentDirectory();
 
-            Console.WriteLine("\n=== CloudDataProtection Secret Manager===\n");
+            Console.WriteLine("\n=== CloudDataProtection Secret Manager ===\n");
             Console.Out.WriteLine($"Environment: {environment}");
             Console.Out.WriteLine($"Target: {target}");
             
