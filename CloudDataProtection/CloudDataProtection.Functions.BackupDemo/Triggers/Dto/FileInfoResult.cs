@@ -2,10 +2,10 @@
 {
     public class FileInfoResult
     {
-        public string EncryptedName { get; set; }
+        public string Name { get; set; }
 
-        public string Url { get; set; }
+        public long Bytes { get; set; }
         
-        public int Bytes { get; set; }
+        public string ContentType { get; set; }
     }
 }

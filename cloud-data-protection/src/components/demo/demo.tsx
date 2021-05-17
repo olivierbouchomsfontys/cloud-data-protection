@@ -9,7 +9,7 @@ import {startLoading, stopLoading} from "common/progress/helper";
 import snackbarOptions from "common/snackbar/options";
 import FileUploadResult from "services/result/demo/fileUploadResult";
 import FileInfoResult from "services/result/demo/fileInfoResult";
-import {Crop, Description} from "@material-ui/icons";
+import {CloudUpload, Crop, Description, Info} from "@material-ui/icons";
 import './demo.css';
 
 const Demo = () => {
@@ -85,7 +85,7 @@ const Demo = () => {
 
         await demoService.getFileInfo(fileId, cancelTokenSource.token)
             .then((result) => setFileInfo(result))
-            .catch((e) => console.log(e))
+            .catch((e) => setFileInfo(undefined))
             .finally(() => stopLoading());
     }
 
@@ -140,7 +140,7 @@ const Demo = () => {
                     }
 
                     <Button className='backup-demo__form__submit' type='submit' color='primary' variant='contained' disabled={selectedFile === undefined}>
-                        Submit
+                        Upload file
                     </Button>
                 </form>
             </div>
@@ -159,7 +159,7 @@ const Demo = () => {
                                     <Description />
                                 </ListItemIcon>
                                 <ListItemText>
-                                    Name: {fileInfo.encryptedName}
+                                    Name: {fileInfo.name}
                                 </ListItemText>
                             </ListItem>
                             <ListItem>
@@ -170,15 +170,20 @@ const Demo = () => {
                                     Size: {formatBytes(fileInfo.bytes)}
                                 </ListItemText>
                             </ListItem>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <Info />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Type: {fileInfo.contentType}
+                                </ListItemText>
+                            </ListItem>
                         </List>
                     </div>
                 }
                 <div className='backup-demo__retrieve__btn-container'>
-                    <Button className='backup-demo__retrieve' variant='contained' disabled={true} onClick={() => download(false)}>
-                        Download encrypted
-                    </Button>
                     <Button className='backup-demo__retrieve' color='primary' variant='contained' disabled={fileInfo === undefined} onClick={() => download(true)}>
-                        Download original
+                        Download file
                     </Button>
                 </div>
             </div>

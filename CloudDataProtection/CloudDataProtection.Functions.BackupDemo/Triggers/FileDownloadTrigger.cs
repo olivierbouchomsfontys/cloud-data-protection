@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CloudDataProtection.Functions.BackupDemo.Triggers
 {
-    public class FileDownloadTrigger
+    public static class FileDownloadTrigger
     {
         [FunctionName("FileDownload")]
         public static async Task<IActionResult> RunAsync(

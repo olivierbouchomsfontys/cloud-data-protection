@@ -2,6 +2,7 @@
 using CloudDataProtection.Core.Cryptography.Aes.Options;
 using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Functions.BackupDemo.Business;
+using CloudDataProtection.Functions.BackupDemo.Service;
 using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Functions.BackupDemo.Factory
@@ -10,8 +11,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Factory
     {
         private static FileManagerLogicFactory _instance;
 
-        public static FileManagerLogicFactory Instance =>
-            _instance ?? (_instance = new FileManagerLogicFactory());
+        public static FileManagerLogicFactory Instance => _instance ??= new FileManagerLogicFactory();
 
         public FileManagerLogic GetLogic()
         {
@@ -23,10 +23,11 @@ namespace CloudDataProtection.Functions.BackupDemo.Factory
                 EncryptionIv = EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_AES_IV")
             };
 
-            AesStreamTransformer transformer = new AesStreamTransformer(options);
-            AesTransformer stringTransformer = new AesTransformer(Options.Create(options));
+            IDataTransformer transformer = new AesStreamTransformer(options);
+            ITransformer stringTransformer = new AesTransformer(Options.Create(options));
+            IFileService fileService = new BlobStorageFileService();
 
-            return new FileManagerLogic(transformer, stringTransformer);
+            return new FileManagerLogic(fileService, transformer, stringTransformer);
         }
     }
 }
