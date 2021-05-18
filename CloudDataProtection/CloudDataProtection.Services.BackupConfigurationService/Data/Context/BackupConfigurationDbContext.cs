@@ -22,23 +22,6 @@ namespace CloudDataProtection.Services.Subscription.Data.Context
             
         }
         
-        public BackupConfigurationDbContext CreateDbContext(string[] args)
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.Development.json")
-                .Build();
-
-            DbContextOptionsBuilder<BackupConfigurationDbContext> builder =
-                new DbContextOptionsBuilder<BackupConfigurationDbContext>();
-
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            builder.UseNpgsql(connectionString);
-
-            return new BackupConfigurationDbContext(builder.Options);
-        }
-        
         public async Task<bool> SaveAsync()
         {
             return await SaveChangesAsync() > 0;

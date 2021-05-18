@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace CloudDataProtection.Data.Context
 {
-    public interface IAuthenticationDbContext : IDesignTimeDbContextFactory<AuthenticationDbContext>
+    public interface IAuthenticationDbContext
     {
         DbSet<Entities.User> User { get; set; }
 

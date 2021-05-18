@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Messaging;
+using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Seeder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +18,7 @@ namespace CloudDataProtection
         {
             CreateHostBuilder(args)
                 .Build()
+                .Migrate<IAuthenticationDbContext, AuthenticationDbContext>()
                 .Seed()
                 .Run();
         }

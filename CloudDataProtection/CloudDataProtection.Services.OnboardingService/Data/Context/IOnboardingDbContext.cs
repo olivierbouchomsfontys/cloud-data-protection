@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace CloudDataProtection.Services.Onboarding.Data.Context
 {
-    public interface IOnboardingDbContext : IDesignTimeDbContextFactory<OnboardingDbContext>
+    public interface IOnboardingDbContext
     {
         DbSet<Entities.Onboarding> Onboarding { get; set; }
         

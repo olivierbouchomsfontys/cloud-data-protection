@@ -29,22 +29,6 @@ namespace CloudDataProtection.Services.Onboarding.Data.Context
             
         }
 
-        public OnboardingDbContext CreateDbContext(string[] args)
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.Development.json")
-                .Build();
-            
-            DbContextOptionsBuilder<OnboardingDbContext> builder = new DbContextOptionsBuilder<OnboardingDbContext>();
-            
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            builder.UseNpgsql(connectionString);
-
-            return new OnboardingDbContext(builder.Options);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

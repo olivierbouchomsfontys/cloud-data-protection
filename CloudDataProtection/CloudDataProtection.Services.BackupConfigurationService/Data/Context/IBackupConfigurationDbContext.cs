@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace CloudDataProtection.Services.Subscription.Data.Context
 {
-    public interface IBackupConfigurationDbContext : IDesignTimeDbContextFactory<BackupConfigurationDbContext>
+    public interface IBackupConfigurationDbContext
     {
         DbSet<Entities.BackupConfiguration> BackupConfiguration { get; set; }
         DbSet<Entities.BackupScheme> BackupScheme { get; set; }
