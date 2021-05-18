@@ -10,10 +10,10 @@ namespace CloudDataProtection.CI.Secrets
         /// Usage from CI:
         /// Working directory: ./CloudDataProtection
         ///
-        /// Arguments should be in this order because of the very simple setup. This might be improved in the feature.
+        /// Arguments should be in this order because of the very simple setup. This might be improved in the feature. The service argument is optional.
         /// 
-        /// Command: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Environment" --secret SuperSecretKey --target "TargetProperty"
-        /// Example: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Test" --secret SuperSecretKey --target "Jwt.Secret"
+        /// Command: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Environment" --secret SuperSecretKey --target "TargetProperty" --service "CloudDataProtection.MicroService"
+        /// Example: dotnet run --project ./CloudDataProtection.CI.Secrets/*.csproj -- --env "Test" --secret SuperSecretKey --target "Jwt.Secret" --service "CloudDataProtection.Services.OnboardingService"
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
@@ -21,12 +21,21 @@ namespace CloudDataProtection.CI.Secrets
             string environment = args[1];
             string secret = args[3];
             string target = args[5];
+            string service = null;
+
+            if (args.Length == 8)
+            {
+                service = args[7];
+            }
+
+            bool setAllServices = string.IsNullOrWhiteSpace(service);
 
             string solutionDirectory = Directory.GetCurrentDirectory();
 
             Console.WriteLine("\n=== CloudDataProtection Secret Manager ===\n");
             Console.Out.WriteLine($"Environment: {environment}");
-            Console.Out.WriteLine($"Target: {target}");
+            Console.Out.WriteLine($"Target variable: {target}");
+            Console.Out.WriteLine($"Target project: {service ?? "all"}");
             
             DirectoryInfo directoryInfo = new DirectoryInfo(solutionDirectory);
             
@@ -36,7 +45,9 @@ namespace CloudDataProtection.CI.Secrets
                 Environment.Exit(1);
             }
 
-            string[] subDirectories = Directory.GetDirectories(solutionDirectory);
+            string[] subDirectories = setAllServices
+                ? Directory.GetDirectories(solutionDirectory)
+                : new [] { Path.Combine(solutionDirectory, service) };
 
             foreach (string directory in subDirectories)
             {
