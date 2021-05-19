@@ -14,5 +14,5 @@ RUN dotnet publish ./${ProjectName}/${ProjectName}.csproj -c Release -o /app/out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as run-env
 WORKDIR /app
 COPY --from=build-env /app/out .
-EXPOSE 80/tcp
+EXPOSE 5051/tcp
 ENTRYPOINT ["dotnet", "CloudDataProtection.Services.MailService.dll"]
