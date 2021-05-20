@@ -8,6 +8,8 @@ Author: Olivier Bouchoms
 
 Email: o.bouchoms@student.fontys.nl
 
+Build status: [![Build Status](https://dev.azure.com/OlivierBouchomsFontys/CloudDataProtection/_apis/build/status/CloudDataProtection%20test?branchName=test)](https://dev.azure.com/OlivierBouchomsFontys/CloudDataProtection/_apis/build/status/CloudDataProtection%20test?branchName=test)
+
 Branches:
 
 * Master: production environment (n.a.)
