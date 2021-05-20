@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cloud-data-protection-frontend
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_react
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_react:latest
         imagePullPolicy: Always
         env:
         - name: NODE_ENV
@@ -28,7 +28,7 @@ spec:
         ports:
         - containerPort: 80
       - name: cloud-data-protection-gateway
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_gateway
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_gateway:latest
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_ENVIRONMENT
@@ -40,7 +40,7 @@ spec:
         ports:
         - containerPort: 5001
       - name: cloud-data-protection-onboarding-service
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_onboarding_service
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_onboarding_service:latest
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_ENVIRONMENT
@@ -62,7 +62,7 @@ spec:
         ports:
         - containerPort: 5021
       - name: cloud-data-protection-backup-config-service
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_backup_config_service
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_backup_config_service:latest
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_ENVIRONMENT
@@ -74,7 +74,7 @@ spec:
         ports:
         - containerPort: 5031
       - name: cloud-data-protection-mail-service
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_mail_service
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_mail_service:latest
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_ENVIRONMENT
