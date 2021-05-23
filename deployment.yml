@@ -24,7 +24,7 @@ spec:
         resources:
           limits:
             memory: "128Mi"
-            cpu: "250m"
+            cpu: "150m"
         ports:
         - containerPort: 80
       - name: cloud-data-protection-gateway
@@ -36,7 +36,7 @@ spec:
         resources:
           limits:
             memory: "256Mi"
-            cpu: "250m"
+            cpu: "300m"
         ports:
         - containerPort: 5001
       - name: cloud-data-protection-onboarding-service
@@ -58,7 +58,7 @@ spec:
         resources:
           limits:
             memory: "256Mi"
-            cpu: "250m"
+            cpu: "300m"
         ports:
         - containerPort: 5021
       - name: cloud-data-protection-backup-config-service
@@ -70,7 +70,7 @@ spec:
         resources:
           limits:
             memory: "256Mi"
-            cpu: "250m"
+            cpu: "300m"
         ports:
         - containerPort: 5031
       - name: cloud-data-protection-mail-service
@@ -92,7 +92,7 @@ spec:
         resources:
           limits:
             memory: "256Mi"
-            cpu: "250m"
+            cpu: "200m"
         ports:
         - containerPort: 5051
     
