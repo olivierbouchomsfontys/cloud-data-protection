@@ -5,7 +5,6 @@ using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.BackupConfigurationService.Tests.Mocks;
 using CloudDataProtection.Services.Subscription.Business;
 using CloudDataProtection.Services.Subscription.Entities;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CloudDataProtection.Services.BackupConfigurationService.Tests.Business

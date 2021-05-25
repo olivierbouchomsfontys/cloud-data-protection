@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using CloudDataProtection.Core.Result;
+using CloudDataProtection.Functions.BackupDemo.Authentication;
 using CloudDataProtection.Functions.BackupDemo.Business;
 using CloudDataProtection.Functions.BackupDemo.Factory;
 using CloudDataProtection.Functions.BackupDemo.Triggers.Dto;
@@ -16,9 +17,14 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
     {
         [FunctionName("FileDownload")]
         public static async Task<IActionResult> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
             HttpRequest request, ILogger logger)
         {
+            if (!request.HttpContext.IsAuthenticated())
+            {
+                return new UnauthorizedResult();
+            }
+            
             string id = request.Query["id"];
             string decryptString = request.Query["decrypt"];
 

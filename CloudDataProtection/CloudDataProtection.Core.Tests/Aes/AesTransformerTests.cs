@@ -63,5 +63,21 @@ namespace CloudDataProtection.Core.Tests.Aes
 
             Assert.Equal(expected, decrypted);
         }
+
+        [Fact]
+        public void TestEncryptNullReturnsNull()
+        {
+            string encrypt = _transformer.Encrypt(null);
+
+            Assert.Null(encrypt);
+        }
+
+        [Fact]
+        public void TestDecryptNullReturnsNull()
+        {
+            string decrypted = _transformer.Decrypt(null);
+
+            Assert.Null(decrypted);
+        }
     }
 }

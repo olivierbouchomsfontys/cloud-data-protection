@@ -14,7 +14,7 @@ namespace CloudDataProtection.Core.Jwt
         
         public int? GetUserId(IHeaderDictionary headers)
         {
-            int? userId = headers
+            int? userId = headers?
                 .Where(header => header.Key == "Authorization")
                 .Select(header => header.Value)
                 .Select(value => value.ToString())
@@ -28,7 +28,7 @@ namespace CloudDataProtection.Core.Jwt
 
         public UserRole? GetUserRole(IHeaderDictionary headers)
         {
-            UserRole? role = headers
+            UserRole? role = headers?
                 .Where(header => header.Key == "Authorization")
                 .Select(header => header.Value)
                 .Select(value => value.ToString())

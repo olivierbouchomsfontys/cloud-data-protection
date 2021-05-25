@@ -10,6 +10,7 @@ using CloudDataProtection.Dto;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Publisher;
 using CloudDataProtection.Messaging.Server;
+using CloudDataProtection.Ocelot;
 using CloudDataProtection.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -68,7 +69,10 @@ namespace CloudDataProtection
 
             services.AddHostedService<GetUserEmailRpcServer>();
             
-            services.AddOcelot();
+            services.AddOcelot()
+                .AddDelegatingHandler<BackupDemoFileDownloadHandler>()
+                .AddDelegatingHandler<BackupDemoFileUploadHandler>()
+                .AddDelegatingHandler<BackupDemoFileInfoHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

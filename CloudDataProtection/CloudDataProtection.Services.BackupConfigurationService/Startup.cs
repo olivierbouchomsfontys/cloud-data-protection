@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;

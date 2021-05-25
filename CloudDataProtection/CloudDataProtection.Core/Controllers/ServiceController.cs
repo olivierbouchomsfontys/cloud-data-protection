@@ -43,7 +43,7 @@ namespace CloudDataProtection.Core.Controllers
 
         private UserRole? _userRole;
 
-        public UserRole? UserRole
+        protected UserRole? UserRole
         {
             get
             {

@@ -71,6 +71,57 @@
       ],
       "UpstreamPathTemplate": "/backupconfiguration",
       "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/api/FileUpload",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7071
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DelegatingHandlers": ["BackupDemoFileUploadHandler"],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/api/FileInfo",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7071
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileInfoHandler"],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/api/FileDownload",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7071
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file/download",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileDownloadHandler"],
+      "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
   "GlobalConfiguration": {

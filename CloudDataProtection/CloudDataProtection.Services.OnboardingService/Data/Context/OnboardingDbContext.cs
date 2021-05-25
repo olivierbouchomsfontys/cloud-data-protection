@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Cryptography.Attributes;
 using CloudDataProtection.Services.Onboarding.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace CloudDataProtection.Services.Onboarding.Data.Context
 {

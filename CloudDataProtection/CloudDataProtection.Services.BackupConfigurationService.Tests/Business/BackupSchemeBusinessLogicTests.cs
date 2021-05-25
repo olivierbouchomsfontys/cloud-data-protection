@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Entities;
 using CloudDataProtection.Core.Result;

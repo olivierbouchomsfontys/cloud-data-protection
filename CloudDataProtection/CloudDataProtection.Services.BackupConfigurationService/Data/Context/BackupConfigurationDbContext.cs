@@ -1,8 +1,6 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CloudDataProtection.Services.Subscription.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace CloudDataProtection.Services.Subscription.Data.Context
 {

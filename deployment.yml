@@ -33,6 +33,11 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Test"
+        - name: CDP_BACKUP_DEMO_FUNCTIONS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cdp-backup-demo-api-key
+              key: value
         resources:
           limits:
             memory: "256Mi"
