@@ -14,7 +14,7 @@
 
 | Name | Location   |
 | ---  | ---        |
-| BackupDemo | ❓ |
+| BackupDemo (test) | https://clouddataprotection-test-backupdemo.azurewebsites.net/api |
 
 # Secrets
 

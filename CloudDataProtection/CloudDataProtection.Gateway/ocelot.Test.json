@@ -73,55 +73,43 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
       "DownstreamPathTemplate": "/api/FileUpload",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7071
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/demo/file",
       "UpstreamHttpMethod": [ "POST" ],
-      "DelegatingHandlers": ["BackupDemoFileUploadHandler"],
-      "DangerousAcceptAnyServerCertificateValidator": true
+      "DelegatingHandlers": ["BackupDemoFileUploadHandler"]
     },
     {
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
       "DownstreamPathTemplate": "/api/FileInfo",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7071
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/demo/file",
       "UpstreamHttpMethod": [ "GET" ],
-      "DelegatingHandlers": ["BackupDemoFileInfoHandler"],
-      "DangerousAcceptAnyServerCertificateValidator": true
+      "DelegatingHandlers": ["BackupDemoFileInfoHandler"]
     },
     {
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
       "DownstreamPathTemplate": "/api/FileDownload",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7071
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/demo/file/download",
       "UpstreamHttpMethod": [ "GET" ],
-      "DelegatingHandlers": ["BackupDemoFileDownloadHandler"],
-      "DangerousAcceptAnyServerCertificateValidator": true
+      "DelegatingHandlers": ["BackupDemoFileDownloadHandler"]
     }
   ],
   "GlobalConfiguration": {
