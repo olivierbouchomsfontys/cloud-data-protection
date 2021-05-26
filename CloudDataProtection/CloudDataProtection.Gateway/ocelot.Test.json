@@ -39,7 +39,7 @@
           "Port": 5021
         }
       ],
-      "UpstreamPathTemplate": "/onboarding/GoogleLogin",
+      "UpstreamPathTemplate": "/callback/GoogleLogin",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
