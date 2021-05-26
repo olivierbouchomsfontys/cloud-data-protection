@@ -8,7 +8,7 @@ In the project directory, you can run:
 
 ### `docker build`
 
-Builds a Docker image. Use `docker build . --build-arg REACT_BUILD_ENV=test -t cdp_react` to add a custom tag and environment   .
+Builds a Docker image. Use `docker build . -t cdp_react` to add a custom tag.
 
 ### `npm start`
 

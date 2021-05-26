@@ -146,7 +146,7 @@ namespace CloudDataProtection.Services.Onboarding.Business
             GoogleLoginInfo info = new GoogleLoginInfo
             {
                 State = newToken.Token,
-                ClientId = "364619700008-1dhdub112k4k52lquhaj5nasaqasd757.apps.googleusercontent.com",
+                ClientId = _credentialsProvider.ClientId,
                 RedirectUri = _oAuthV2Options.RedirectUri,
                 Scopes = _oAuthV2Options.Scopes
             };

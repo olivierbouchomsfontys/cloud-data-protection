@@ -9,8 +9,6 @@ namespace CloudDataProtection.Core.Tests.Jwt
     {
         private readonly IJwtDecoder _jwtDecoder;
         
-        // User id: 11
-        // User role: UserRole.Client
         private const int UserId = 11;
         private const UserRole UserRole = Controllers.Data.UserRole.Client;
         
