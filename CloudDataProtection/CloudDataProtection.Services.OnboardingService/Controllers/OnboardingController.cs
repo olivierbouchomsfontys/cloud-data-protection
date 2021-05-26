@@ -71,6 +71,7 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/GoogleLogin")]
         public async Task<ActionResult> GoogleLogin()
         {
             string code = Request.Query["code"];
