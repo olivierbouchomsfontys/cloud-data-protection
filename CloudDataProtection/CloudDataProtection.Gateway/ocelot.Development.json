@@ -41,7 +41,7 @@
           "Port": 5021
         }
       ],
-      "UpstreamPathTemplate": "/GoogleLogin",
+      "UpstreamPathTemplate": "/Onboarding/GoogleLogin",
       "UpstreamHttpMethod": [ "GET" ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },

@@ -1,9 +1,0 @@
-﻿{
-  "ReRoutes": [
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5020",
-    "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration"
-  }
-}
