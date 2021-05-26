@@ -1,3 +1,13 @@
+# Environments
+
+## Test
+
+|           | Url   |
+| ---           | ---   |
+| Public url    | https://clouddataprotectiontest.westeurope.cloudapp.azure.com/                |
+| Backend       | https://clouddataprotectiontestbackend.westeurope.cloudapp.azure.com          |
+| Loadbalancer  | http://clouddataprotectiontestloadbalancer.francecentral.cloudapp.azure.com/  |
+
 # Services
 
 ## Kubernetes
