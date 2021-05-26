@@ -31,7 +31,7 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/onboarding/GoogleLogin",
+      "DownstreamPathTemplate": "/GoogleLogin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
