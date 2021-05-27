@@ -1,6 +1,6 @@
 .register {
     margin: 0 auto;
-    width: 32rem;
+    width: min(100%, 32rem);
 }
 
 .register__header {

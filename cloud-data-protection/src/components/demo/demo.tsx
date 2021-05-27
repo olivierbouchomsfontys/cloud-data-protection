@@ -139,9 +139,11 @@ const Demo = () => {
                         </div>
                     }
 
-                    <Button className='backup-demo__form__submit' type='submit' color='primary' variant='contained' disabled={selectedFile === undefined}>
-                        Upload file
-                    </Button>
+                    <div className='backup-demo__upload__btn-container'>
+                        <Button className='backup-demo__form__submit' type='submit' color='primary' variant='contained' disabled={selectedFile === undefined}>
+                            Upload file
+                        </Button>
+                    </div>
                 </form>
             </div>
             <div className='backup-demo__retrieve'>

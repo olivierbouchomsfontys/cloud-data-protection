@@ -5,9 +5,9 @@ import {Accessibility, Crop, Lock} from "@material-ui/icons";
 
 const Home = () => {
     return (
-        <div className='Home'>
-            <Typography variant='h1'>Cloud Data Protection</Typography>
-            <Typography variant='subtitle2'>SaaS backup solution for Google Drive</Typography>
+        <div className='home'>
+            <Typography variant='h1' className='home__title'>Cloud Data Protection</Typography>
+            <Typography variant='subtitle2' className='home__subtitle'>SaaS backup solution for Google Drive</Typography>
             <p>
                 Cloud Data Protection is a SaaS backup and recovery solution for Google Drive.
             </p>

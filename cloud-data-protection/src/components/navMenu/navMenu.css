@@ -41,11 +41,8 @@
 
 .nav__drawer__link {
     font-weight: bold;
-    width: 16rem!important;
+    width: var(--drawerWidth)!important;
 }
 
 @media all and (max-width: 1366px) {
-    .nav__user__text {
-        display: none;
-    }
 }

@@ -1,0 +1,21 @@
+@media all and (min-width: 601px) and (max-width: 768px) {
+    :root {
+        --drawerWidth: 3.5rem;
+    }
+
+    .nav-link .MuiListItemIcon-root {
+        min-width: 0;
+    }
+
+    .nav-link .MuiListItemText-root {
+        display: none;
+    }
+
+    .MuiToolbar-regular {
+        height: 100%;
+    }
+
+    .nav__user__text {
+        display: none;
+    }
+}
