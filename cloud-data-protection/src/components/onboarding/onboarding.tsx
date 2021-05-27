@@ -140,7 +140,9 @@ const OnboardingComponent = () => {
             }
             {onboarding?.status === OnboardingStatus.None &&
                 <div className='onboarding__connect__container'>
-                    Get started by connecting your company Google Workspace account.
+                    <p>
+                        Get started by connecting your company Google Workspace account.
+                    </p>
 
                     <GoogleButton
                         className='onboarding__btn--connect MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-contained MuiButton-containedPrimary'

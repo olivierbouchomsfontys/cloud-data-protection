@@ -1,0 +1,41 @@
+@media all and (max-width: 600px) {
+    :root {
+        --drawerWidth: 3.5rem;
+    }
+
+    .nav-link .MuiListItemIcon-root {
+        min-width: 0;
+    }
+
+    .nav-link .MuiListItemText-root {
+        display: none;
+    }
+
+    .home__features {
+        grid-auto-columns: 100%;
+        grid-auto-flow: row;
+    }
+
+    .home__features > :not(:first-child) {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 1rem;
+    }
+
+    .home__features > :not(:last-child) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .MuiToolbar-regular {
+        height: 100%;
+    }
+
+    .nav__user__text {
+        display: none;
+    }
+
+    .home__title {
+        display: none;
+    }
+}

@@ -21,19 +21,28 @@
     margin-top: 1rem;
 }
 
+.backup-demo__upload__btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
 .backup-demo__retrieve__btn-container {
     display: flex;
     justify-content: flex-end;
-}
-
-.backup-demo__retrieve__btn-container > button:last-of-type {
-    margin-left: 1rem !important;
+    margin-top: 1rem;
 }
 
 .backup-demo__retrieve__input {
-    width: 40rem;
+    width: min(100%, 44rem);
 }
 
 .backup-demo__retrieve__file-info {
     margin-top: 1rem;
+}
+
+@media all and (max-width: 768px) {
+    .backup-demo .MuiButtonBase-root {
+        width: 100%!important;
+    }
 }

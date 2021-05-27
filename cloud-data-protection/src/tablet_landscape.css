@@ -1,0 +1,9 @@
+@media all and (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --drawerWidth: 12rem;
+    }
+
+    .nav-link .MuiListItemIcon-root {
+        min-width: 2.5rem;
+    }
+}

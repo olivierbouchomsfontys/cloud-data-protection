@@ -4,12 +4,12 @@
 }
 
 .onboarding__btn--connect {
-    margin-left: 1rem!important;
+    display: block!important;
+    margin-left: auto!important;
+    margin-right: 0!important;
 }
 
 .onboarding__connect__container {
-    display: flex;
-    align-items: baseline;
     margin-top: 1rem;
 }
 
@@ -29,6 +29,7 @@
     display: block!important;
     margin-right: 0!important;
     margin-left: auto!important;
+    margin-top: 1rem!important;
 }
 
 .onboarding__backup-config__list > .MuiListItem-root {

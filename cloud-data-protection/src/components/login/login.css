@@ -1,6 +1,6 @@
 .login {
     margin: 0 auto;
-    width: 32rem;
+    width: min(100%, 32rem);
 }
 
 .login__header {
