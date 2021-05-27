@@ -7,6 +7,7 @@ using CloudDataProtection.Services.Onboarding.Data.Repository;
 using CloudDataProtection.Services.Onboarding.Entities;
 using CloudDataProtection.Services.Onboarding.Google.Credentials;
 using CloudDataProtection.Services.Onboarding.Google.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
@@ -37,6 +38,7 @@ namespace CloudDataProtection.Services.OnboardingService.Tests.Business
             var onboardingMock = new Mock<IOnboardingRepository>();
             var loginTokenMock = new Mock<IGoogleLoginTokenRepository>();
             var credentialsMock = new Mock<IGoogleCredentialsRepository>();
+            var loggerMock = new Mock<ILogger<OnboardingBusinessLogic>>();
 
             onboardingMock.Setup(repository => repository.Create(_create))
                 .Callback(() => _create.Id = 2)
@@ -48,7 +50,7 @@ namespace CloudDataProtection.Services.OnboardingService.Tests.Business
             _logic = new OnboardingBusinessLogic
                 (onboardingMock.Object, credentialsMock.Object, loginTokenMock.Object, new GoogleLoginTokenGenerator(), 
                 new GoogleOAuthV2EnvironmentCredentialsProvider(),
-                Options.Create(new GoogleOAuthV2Options()));
+                Options.Create(new GoogleOAuthV2Options()), loggerMock.Object);
         }
 
         #region Onboarding
