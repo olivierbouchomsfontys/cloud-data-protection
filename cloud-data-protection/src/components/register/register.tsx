@@ -7,6 +7,7 @@ import snackbarOptions from "common/snackbar/options";
 import { useHistory } from "react-router-dom";
 import "./register.css";
 import {CancelTokenSource} from "axios";
+import {startLoading, stopLoading} from "common/progress/helper";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -39,6 +40,8 @@ const Register = () => {
             return;
         }
 
+        startLoading();
+
         await authService.register(input, cancelTokenSource.token)
             .then(() => onSuccess())
             .catch((e: any) => onError(e))
@@ -60,6 +63,8 @@ const Register = () => {
     const onFinish = () => {
         setPassword("");
         setRepeatPassword('');
+
+        stopLoading();
     }
 
     return (

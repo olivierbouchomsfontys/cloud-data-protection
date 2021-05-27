@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Messaging.Publisher
 {
-    public class UserRegisteredMessagePublisher : RabbitMqMessagePublisherBase<UserResult>
+    public class UserRegisteredMessagePublisher : RabbitMqMessagePublisher<UserResult>
     {
         public UserRegisteredMessagePublisher(IOptions<RabbitMqConfiguration> options) : base(options)
         {

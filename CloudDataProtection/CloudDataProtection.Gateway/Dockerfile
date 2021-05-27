@@ -1,13 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
 WORKDIR /app
 
-COPY . .
-RUN dotnet restore
+COPY ./CloudDataProtection.Core/ ./CloudDataProtection.Core/
 
-RUN dotnet publish ./ApiGateway.csproj -c Release -o /app/out
+ENV ProjectName=CloudDataProtection.Gateway
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0
+COPY ./${ProjectName}/ ./${ProjectName}
+
+RUN dotnet restore ./${ProjectName}/${ProjectName}.csproj
+
+RUN dotnet publish ./${ProjectName}/${ProjectName}.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as run-env
 WORKDIR /app
 COPY --from=build-env /app/out .
-EXPOSE 80/tcp
-ENTRYPOINT ["dotnet", "ApiGateway.dll"]
+EXPOSE 5001/tcp
+ENTRYPOINT ["dotnet", "CloudDataProtection.Gateway.dll"]

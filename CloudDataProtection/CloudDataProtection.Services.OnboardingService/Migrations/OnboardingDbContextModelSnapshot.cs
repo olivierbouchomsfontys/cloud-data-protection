@@ -3,7 +3,6 @@ using System;
 using CloudDataProtection.Services.Onboarding.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Services.Onboarding.Migrations

@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
-    public abstract class RabbitMqMessagePublisherBase<TModel> : IMessagePublisher<TModel> where TModel : class  
+    public abstract class RabbitMqMessagePublisher<TModel> : IMessagePublisher<TModel> where TModel : class  
     {
         private readonly RabbitMqConfiguration _configuration;
 
@@ -23,10 +23,11 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                         HostName = _configuration.Hostname,
                         Port = _configuration.Port,
                         UserName = _configuration.UserName,
-                        Password = _configuration.Password
+                        Password = _configuration.Password,
+                        VirtualHost = _configuration.VirtualHost,
                     };
-                }
-
+                };
+                
                 return _connectionFactory;
             }
         }
@@ -35,7 +36,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         
         private IModel Channel { get; } 
 
-        protected RabbitMqMessagePublisherBase(IOptions<RabbitMqConfiguration> options)
+        protected RabbitMqMessagePublisher(IOptions<RabbitMqConfiguration> options)
         {
             _configuration = options.Value;
             

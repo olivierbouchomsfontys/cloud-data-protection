@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
 {
-    public class BackupConfigurationEnteredMessageListener : RabbitMqMessageListenerBase<BackupConfigurationEnteredModel>
+    public class BackupConfigurationEnteredMessageListener : RabbitMqMessageListener<BackupConfigurationEnteredModel>
     {
         private readonly IServiceScope _scope;
 

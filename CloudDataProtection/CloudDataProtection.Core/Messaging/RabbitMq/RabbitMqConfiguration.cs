@@ -9,6 +9,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         public string Password { get; set; }
         
+        public string VirtualHost { get; set; }
+        
         public int Port { get; set; }
         
         public string ContentType { get; set; }

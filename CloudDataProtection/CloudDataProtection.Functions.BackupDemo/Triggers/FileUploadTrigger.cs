@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using CloudDataProtection.Core.Result;
+using CloudDataProtection.Functions.BackupDemo.Authentication;
 using CloudDataProtection.Functions.BackupDemo.Business;
 using CloudDataProtection.Functions.BackupDemo.Entities;
 using CloudDataProtection.Functions.BackupDemo.Factory;
@@ -18,9 +19,14 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
     {
         [FunctionName("FileUpload")]
         public static async Task<IActionResult> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
             HttpRequest request, ILogger logger)
         {
+            if (!request.HttpContext.IsAuthenticated())
+            {
+                return new UnauthorizedResult();
+            }
+
             IFormFile file = request.Form.Files.FirstOrDefault();
 
             if (file == null)

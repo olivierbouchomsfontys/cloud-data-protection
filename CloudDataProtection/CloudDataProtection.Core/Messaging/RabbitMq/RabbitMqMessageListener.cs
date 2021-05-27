@@ -11,9 +11,9 @@ using RabbitMQ.Client.Events;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
-    public abstract class RabbitMqMessageListenerBase<TModel> : BackgroundService, IMessageListener<TModel> where TModel : class
+    public abstract class RabbitMqMessageListener<TModel> : BackgroundService, IMessageListener<TModel> where TModel : class
     {
-        private readonly ILogger<RabbitMqMessageListenerBase<TModel>> _logger;
+        private readonly ILogger<RabbitMqMessageListener<TModel>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
         protected abstract string RoutingKey { get; }
@@ -31,7 +31,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                         HostName = _configuration.Hostname,
                         Port = _configuration.Port,
                         UserName = _configuration.UserName,
-                        Password = _configuration.Password
+                        Password = _configuration.Password,
+                        VirtualHost = _configuration.VirtualHost
                     };
                 }
                 
@@ -43,7 +44,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private IModel _channel; 
 
-        protected RabbitMqMessageListenerBase(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListenerBase<TModel>> logger)
+        protected RabbitMqMessageListener(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessageListener<TModel>> logger)
         {
             _logger = logger;
             _configuration = options.Value;

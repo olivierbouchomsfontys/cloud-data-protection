@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Cryptography.Attributes;
 using CloudDataProtection.Services.Onboarding.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace CloudDataProtection.Services.Onboarding.Data.Context
 {
@@ -27,22 +25,6 @@ namespace CloudDataProtection.Services.Onboarding.Data.Context
         public OnboardingDbContext(DbContextOptions<OnboardingDbContext> options) : base(options)
         {
             
-        }
-
-        public OnboardingDbContext CreateDbContext(string[] args)
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.Development.json")
-                .Build();
-            
-            DbContextOptionsBuilder<OnboardingDbContext> builder = new DbContextOptionsBuilder<OnboardingDbContext>();
-            
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            builder.UseNpgsql(connectionString);
-
-            return new OnboardingDbContext(builder.Options);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

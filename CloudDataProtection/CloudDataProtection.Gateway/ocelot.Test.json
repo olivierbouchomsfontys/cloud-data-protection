@@ -1,8 +1,119 @@
 ﻿{
   "ReRoutes": [
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/onboarding",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5021
+        }
+      ],
+      "UpstreamPathTemplate": "/onboarding",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/onboarding/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5021
+        }
+      ],
+      "UpstreamPathTemplate": "/onboarding/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Onboarding/GoogleLogin",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5021
+        }
+      ],
+      "UpstreamPathTemplate": "/Callback/GoogleLogin",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/backupscheme",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "UpstreamPathTemplate": "/backupscheme",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamPathTemplate": "/backupconfiguration",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "UpstreamPathTemplate": "/backupconfiguration",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/FileUpload",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DelegatingHandlers": ["BackupDemoFileUploadHandler"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/FileInfo",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileInfoHandler"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/FileDownload",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "clouddataprotection-test-backupdemo.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/demo/file/download",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileDownloadHandler"]
+    }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5020",
+    "BaseUrl": "http://localhost:5001",
     "RequestIdKey": "OcRequestId",
     "AdministrationPath": "/administration"
   }

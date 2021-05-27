@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
 {
-    public class UserRegisteredMessageListener : RabbitMqMessageListenerBase<UserRegisteredModel>
+    public class UserRegisteredMessageListener : RabbitMqMessageListener<UserRegisteredModel>
     {
         private readonly OnboardingBusinessLogic _logic;
 

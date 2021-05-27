@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.MailService.Messaging.Listener
 {
-    public class GoogleAccountConnectedMessageListener : RabbitMqMessageListenerBase<GoogleAccountConnectedModel>
+    public class GoogleAccountConnectedMessageListener : RabbitMqMessageListener<GoogleAccountConnectedModel>
     {
         private readonly AccountMailLogic _logic;
 

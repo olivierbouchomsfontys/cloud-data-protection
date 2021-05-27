@@ -29,9 +29,8 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,7 +53,6 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
-    "@types/reactstrap": "^8.7.2",
-    "cross-env": "^7.0.3"
+    "@types/reactstrap": "^8.7.2"
   }
 }

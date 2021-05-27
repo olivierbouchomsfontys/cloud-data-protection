@@ -8,6 +8,8 @@ Author: Olivier Bouchoms
 
 Email: o.bouchoms@student.fontys.nl
 
+Build status: [![Build Status](https://dev.azure.com/OlivierBouchomsFontys/CloudDataProtection/_apis/build/status/CloudDataProtection%20test?branchName=test)](https://dev.azure.com/OlivierBouchomsFontys/CloudDataProtection/_apis/build/status/CloudDataProtection%20test?branchName=test)
+
 Branches:
 
 * Master: production environment (n.a.)
@@ -66,6 +68,16 @@ Unix:
 Windows:
 `setx CDP_DEMO_BLOB_AES_KEY {your AES key goes here}`
 `setx CDP_DEMO_BLOB_AES_IV {your AES Iv goes here}`
+
+## Function authentication
+
+Unix:
+`export CDP_BACKUP_DEMO_FUNCTIONS_KEY={your function key goes here}`
+`export CDP_BACKUP_DEMO_API_KEY={your function key goes here}`
+
+Windows:
+`setx CDP_BACKUP_DEMO_FUNCTIONS_KEY {your function key goes here}`
+`setx CDP_BACKUP_DEMO_API_KEY {your function key goes here}`
 
 ## Logging in
 

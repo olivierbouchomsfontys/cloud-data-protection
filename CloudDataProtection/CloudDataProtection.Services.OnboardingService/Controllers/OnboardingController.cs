@@ -76,6 +76,11 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
         {
             string code = Request.Query["code"];
             string token = Request.Query["state"];
+
+            if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(token))
+            {
+                return BadRequest();
+            }
             
             BusinessResult<GoogleCredentials> businessResult = await _logic.Value.CreateCredentials(code, token);
 

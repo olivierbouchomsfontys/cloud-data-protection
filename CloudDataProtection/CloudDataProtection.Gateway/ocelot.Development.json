@@ -41,7 +41,7 @@
           "Port": 5021
         }
       ],
-      "UpstreamPathTemplate": "/GoogleLogin",
+      "UpstreamPathTemplate": "/Onboarding/GoogleLogin",
       "UpstreamHttpMethod": [ "GET" ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },
@@ -91,6 +91,7 @@
       ],
       "UpstreamPathTemplate": "/demo/file",
       "UpstreamHttpMethod": [ "POST" ],
+      "DelegatingHandlers": ["BackupDemoFileUploadHandler"],
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
@@ -107,6 +108,7 @@
       ],
       "UpstreamPathTemplate": "/demo/file",
       "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileInfoHandler"],
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
@@ -123,6 +125,7 @@
       ],
       "UpstreamPathTemplate": "/demo/file/download",
       "UpstreamHttpMethod": [ "GET" ],
+      "DelegatingHandlers": ["BackupDemoFileDownloadHandler"],
       "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],

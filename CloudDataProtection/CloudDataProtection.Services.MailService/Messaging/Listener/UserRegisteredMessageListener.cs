@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace CloudDataProtection.Services.MailService.Messaging.Listener
 {
-    public class UserRegisteredMessageListener : RabbitMqMessageListenerBase<UserRegisteredModel>
+    public class UserRegisteredMessageListener : RabbitMqMessageListener<UserRegisteredModel>
     {
         private readonly RegistrationMailLogic _logic;
 

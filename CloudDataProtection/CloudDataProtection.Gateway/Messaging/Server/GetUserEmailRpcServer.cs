@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Core.Messaging.Rpc;

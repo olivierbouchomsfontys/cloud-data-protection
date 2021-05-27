@@ -1,6 +1,7 @@
-using System;
 using System.Threading.Tasks;
+using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Services.Subscription.Business;
+using CloudDataProtection.Services.Subscription.Data.Context;
 using CloudDataProtection.Services.Subscription.Seeder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace CloudDataProtection.Services.Subscription
         {
             CreateHostBuilder(args)
                 .Build()
+                .Migrate<IBackupConfigurationDbContext, BackupConfigurationDbContext>()
                 .Seed()
                 .Run();
         }

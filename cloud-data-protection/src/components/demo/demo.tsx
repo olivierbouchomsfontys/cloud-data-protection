@@ -9,7 +9,7 @@ import {startLoading, stopLoading} from "common/progress/helper";
 import snackbarOptions from "common/snackbar/options";
 import FileUploadResult from "services/result/demo/fileUploadResult";
 import FileInfoResult from "services/result/demo/fileInfoResult";
-import {CloudUpload, Crop, Description, Info} from "@material-ui/icons";
+import {Crop, Description, Info} from "@material-ui/icons";
 import './demo.css';
 
 const Demo = () => {
