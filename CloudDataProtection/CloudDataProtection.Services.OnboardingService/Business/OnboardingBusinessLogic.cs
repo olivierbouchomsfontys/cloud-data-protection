@@ -106,7 +106,7 @@ namespace CloudDataProtection.Services.Onboarding.Business
                 grant_type = _oAuthV2Options.GrantType
             };
             
-            _logger.LogInformation("Sending OAuthV2 request: {Request}", JsonConvert.SerializeObject(request));
+            _logger.LogInformation("Sending OAuthV2 request: {Request}", JsonConvert.SerializeObject(request.HidePII()));
             
             IFlurlResponse response = await _oAuthV2Options.Endpoint.PostUrlEncodedAsync(request);
 
