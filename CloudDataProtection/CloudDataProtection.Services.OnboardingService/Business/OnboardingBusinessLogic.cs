@@ -8,7 +8,9 @@ using CloudDataProtection.Services.Onboarding.Google.Credentials;
 using CloudDataProtection.Services.Onboarding.Google.Dto;
 using CloudDataProtection.Services.Onboarding.Google.Options;
 using Flurl.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace CloudDataProtection.Services.Onboarding.Business
 {
@@ -20,6 +22,7 @@ namespace CloudDataProtection.Services.Onboarding.Business
         private readonly ITokenGenerator _tokenGenerator;
 
         private readonly IGoogleOAuthV2CredentialsProvider _credentialsProvider;
+        private readonly ILogger<OnboardingBusinessLogic> _logger;
         private readonly GoogleOAuthV2Options _oAuthV2Options;
 
         public OnboardingBusinessLogic(IOnboardingRepository onboardingRepository, 
@@ -27,7 +30,8 @@ namespace CloudDataProtection.Services.Onboarding.Business
             IGoogleLoginTokenRepository loginTokenRepository, 
             ITokenGenerator tokenGenerator,
             IGoogleOAuthV2CredentialsProvider credentialsProvider,
-            IOptions<GoogleOAuthV2Options> oauthV2Options)
+            IOptions<GoogleOAuthV2Options> oauthV2Options,
+            ILogger<OnboardingBusinessLogic> logger)
         {
             _onboardingRepository = onboardingRepository;
             _credentialsRepository = credentialsRepository;
@@ -35,6 +39,7 @@ namespace CloudDataProtection.Services.Onboarding.Business
             _tokenGenerator = tokenGenerator;
             _credentialsProvider = credentialsProvider;
             _oAuthV2Options = oauthV2Options.Value;
+            _logger = logger;
         }
 
         public async Task<BusinessResult<Entities.Onboarding>> GetByUser(long userId)
@@ -100,6 +105,8 @@ namespace CloudDataProtection.Services.Onboarding.Business
                 redirect_uri = _oAuthV2Options.RedirectUri,
                 grant_type = _oAuthV2Options.GrantType
             };
+            
+            _logger.LogInformation("Sending OAuthV2 request: {Request}", JsonConvert.SerializeObject(request));
             
             IFlurlResponse response = await _oAuthV2Options.Endpoint.PostUrlEncodedAsync(request);
 
