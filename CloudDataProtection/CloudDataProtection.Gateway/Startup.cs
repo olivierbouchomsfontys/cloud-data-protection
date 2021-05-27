@@ -11,6 +11,7 @@ using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Publisher;
 using CloudDataProtection.Messaging.Server;
 using CloudDataProtection.Ocelot;
+using CloudDataProtection.Ocelot.Swagger;
 using CloudDataProtection.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,8 @@ namespace CloudDataProtection
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
+                c.DocumentFilter<OcelotControllerFilter>();
+                
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "CloudDataProtection ApiGateway", Version = "v1"});
             });
             
