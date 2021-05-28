@@ -10,7 +10,7 @@ namespace CloudDataProtection.Core.Jwt
 {
     public class JwtDecoder : IJwtDecoder
     {
-        private const string AuthenticationScheme = "Bearer";
+        private static readonly string AuthenticationScheme = "Bearer";
         
         public int? GetUserId(IHeaderDictionary headers)
         {

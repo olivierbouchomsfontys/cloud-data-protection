@@ -41,7 +41,7 @@ namespace CloudDataProtection.Controllers
 
             User user = businessResult.Data;
 
-            AuthenticateResult result = new AuthenticateResult()
+            AuthenticateResult result = new AuthenticateResult
             {
                 User = new UserResult
                 {

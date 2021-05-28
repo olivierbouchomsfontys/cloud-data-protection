@@ -18,7 +18,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private readonly ILogger<RabbitMqRpcServer<TRequest, TResponse>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
-        private const string QueueName = "rpc_queue";
+        private static readonly string QueueName = "rpc_queue";
         
         private IModel _channel;
 

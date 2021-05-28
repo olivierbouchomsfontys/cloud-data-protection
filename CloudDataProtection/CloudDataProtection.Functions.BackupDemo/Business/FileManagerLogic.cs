@@ -22,8 +22,8 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
 
         private const int FilenameHashWorkFactor = 4;
 
-        private const string FileNameKey = "original_name";
-        private const string ContentTypeKey = "content_type";
+        private static readonly string FileNameKey = "original_name";
+        private static readonly string ContentTypeKey = "content_type";
 
         public FileManagerLogic(IFileService fileService, IDataTransformer transformer, ITransformer stringTransformer)
         {

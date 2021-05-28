@@ -9,8 +9,6 @@ namespace CloudDataProtection.Services.BackupConfigurationService.Tests.Mocks
     {
         protected IList<TEntity> _data = new List<TEntity>();
 
-        public MockCrudRepositoryBase() { }
-
         public Task<TEntity> Get(long id) => Task.FromResult(_data.FirstOrDefault(e => e.Id == id));
 
         public Task<ICollection<TEntity>> GetAll() => Task.FromResult<ICollection<TEntity>>(_data.ToArray());
