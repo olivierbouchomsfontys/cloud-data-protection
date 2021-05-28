@@ -24,7 +24,7 @@ namespace CloudDataProtection.Services.Subscription
 {
     public class Startup
     {
-        private const string CorsPolicy = "cors-policy";
+        private static readonly string CorsPolicy = "cors-policy";
 
         public Startup(IConfiguration configuration)
         {

@@ -14,7 +14,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Service
     {
         private static string ConnectionString => EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_BLOB_CONNECTION");
 
-        private const string ContainerName = "cdp-demo-blobstorage";
+        private static readonly string ContainerName = "cdp-demo-blobstorage";
 
         public async Task<UploadResult> Upload(Stream stream, string uploadFileName, IDictionary<string, string> tags)
         {

@@ -15,9 +15,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
     {
         private readonly RabbitMqConfiguration _configuration;
 
-        private const string Queue = "rpc_queue";
-        
-        private bool _isUsed = false;
+        private static readonly string Queue = "rpc_queue";
         
         private string _correlationId;
         
@@ -94,11 +92,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         private void Init()
         {
-            if (_isUsed)
-            {
-                throw new InvalidOperationException("Client has already been used!");
-            }
-            
             _requestChannel = Connection.CreateModel();
             _replyChannel = Connection.CreateModel();
             

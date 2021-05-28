@@ -5,7 +5,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Authentication
 {
     public static class HttpContextExtensions
     {
-        private const string AuthIndex = "x-functions-key";
+        private static readonly string AuthIndex = "x-functions-key";
 
         private static readonly string ApiKey = EnvironmentVariableHelper.GetEnvironmentVariable("CDP_DEMO_API_KEY");
         

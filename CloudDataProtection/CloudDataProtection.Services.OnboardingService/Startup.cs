@@ -36,7 +36,7 @@ namespace CloudDataProtection.Services.Onboarding
 {
     public class Startup
     {
-        private const string CorsPolicy = "cors-policy";
+        private static readonly string CorsPolicy = "cors-policy";
         
         public Startup(IConfiguration configuration)
         {

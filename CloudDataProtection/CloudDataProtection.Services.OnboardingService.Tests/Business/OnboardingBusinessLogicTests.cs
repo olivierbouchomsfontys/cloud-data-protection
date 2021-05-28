@@ -24,7 +24,7 @@ namespace CloudDataProtection.Services.OnboardingService.Tests.Business
             Status = OnboardingStatus.None
         };
 
-        private readonly Onboarding.Entities.Onboarding _fetch = new Onboarding.Entities.Onboarding()
+        private readonly Onboarding.Entities.Onboarding _fetch = new Onboarding.Entities.Onboarding
         {
             UserId = 99,
             Status = OnboardingStatus.None,
