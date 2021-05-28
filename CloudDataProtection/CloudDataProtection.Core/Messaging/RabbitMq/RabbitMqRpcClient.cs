@@ -119,8 +119,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _properties.ReplyTo = replyQueueName;
             _properties.ContentType = _configuration.ContentType;
             _properties.Persistent = true;
-
-            _isUsed = true;
         }
                 
         private async Task<TResponse> DoRequest(IBasicProperties message, byte[] body)
