@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
@@ -12,6 +13,8 @@ namespace CloudDataProtection.Business
     {
         private readonly IAuthenticationRepository _repository;
         private readonly IUserHistoryRepository _userHistoryRepository;
+
+        private readonly string[] ServicesToDeleteData = new[] {"Onboarding", "Gateway", "BackupConfiguration"};
 
         public UserBusinessLogic(IAuthenticationRepository repository, IUserHistoryRepository userHistoryRepository, IPasswordHasher hasher)
         {
@@ -68,10 +71,19 @@ namespace CloudDataProtection.Business
             UserDeletionHistory history = await _userHistoryRepository.GetDelete(userId);
             
             history.Progress.Add(progress);
+                
+            IEnumerable<string> removed = history.Progress.Select(p => p.ServiceName);
+
+            bool isComplete = removed.All(r => ServicesToDeleteData.Contains(r));
+
+            if (isComplete)
+            {
+                history.CompletedAt = DateTime.Now;
+            }
 
             await _userHistoryRepository.Update(history);
 
-            return BusinessResult<UserDeletionHistory>.Ok();
+            return BusinessResult<UserDeletionHistory>.Ok(history);
         }
     }
 }

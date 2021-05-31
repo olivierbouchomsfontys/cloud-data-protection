@@ -11,5 +11,7 @@ namespace CloudDataProtection.Services.Onboarding.Data.Repository
         Task<Entities.Onboarding> GetByUserId(long userId);
         
         Task Update(Entities.Onboarding onboarding);
+        
+        Task Delete(Entities.Onboarding onboarding);
     }
 }

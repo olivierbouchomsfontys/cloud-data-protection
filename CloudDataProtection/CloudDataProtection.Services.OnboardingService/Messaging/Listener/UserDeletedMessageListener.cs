@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
-using CloudDataProtection.Services.Subscription.Business;
-using CloudDataProtection.Services.Subscription.Messaging.Dto;
+using CloudDataProtection.Services.Onboarding.Business;
+using CloudDataProtection.Services.Onboarding.Messaging.Publisher.Dto;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudDataProtection.Services.Subscription.Messaging.Listener
+namespace CloudDataProtection.Services.Onboarding.Messaging.Listener
 {
     public class UserDeletedMessageListener : RabbitMqMessageListener<UserDeletedModel>
     {
@@ -20,14 +20,14 @@ namespace CloudDataProtection.Services.Subscription.Messaging.Listener
         }
 
         protected override string RoutingKey => RoutingKeys.UserDeleted;
-        protected override string Queue => "997920BD-8CE0-4296-A844-135B6BCDE00A";
+        protected override string Queue => "4E252C81-09AD-4831-A4A7-AFA0073F2392";
         
         public override async Task HandleMessage(UserDeletedModel model)
         {
             DateTime start = DateTime.Now;
             
-            BackupConfigurationBusinessLogic logic =
-                _scope.ServiceProvider.GetRequiredService<BackupConfigurationBusinessLogic>();
+            OnboardingBusinessLogic logic =
+                _scope.ServiceProvider.GetRequiredService<OnboardingBusinessLogic>();
             
             await logic.DeleteByUser(model.UserId);
 

@@ -2,6 +2,7 @@
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
+using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,12 @@ namespace CloudDataProtection.Messaging.Listener
                 CompletedAt = model.CompletedAt,
             };
 
-            await logic.AddProgress(history, model.UserId);
+            BusinessResult<UserDeletionHistory> addProgressResult = await logic.AddProgress(history, model.UserId);
+
+            if (addProgressResult.Success && addProgressResult.Data.IsComplete)
+            {
+                // TODO Send message that user account has been completed
+            }
         }
     }
 }

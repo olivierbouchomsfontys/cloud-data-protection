@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.Result;
@@ -159,6 +160,36 @@ namespace CloudDataProtection.Services.Onboarding.Business
             };
 
             return BusinessResult<GoogleLoginInfo>.Ok(info);
+        }
+
+        public async Task<BusinessResult<Entities.Onboarding>> DeleteByUser(long userId)
+        {
+            BusinessResult<Entities.Onboarding> getOnboardingResult = await GetByUser(userId);
+
+            if (getOnboardingResult.Success && getOnboardingResult.Data != null)
+            {
+                var onboarding = getOnboardingResult.Data;
+                
+               await _onboardingRepository.Delete(onboarding);
+
+               return BusinessResult<Entities.Onboarding>.Ok(onboarding);
+            }
+
+            ICollection<GoogleLoginToken> loginTokens = await _loginTokenRepository.GetAllByUser(userId);
+
+            if (loginTokens.Any())
+            {
+                await _loginTokenRepository.Delete(loginTokens);
+            }
+
+            GoogleCredentials credentials = await _credentialsRepository.GetByUserId(userId);
+
+            if (credentials != null)
+            {
+                await _credentialsRepository.Delete(credentials);
+            }
+            
+            return BusinessResult<Entities.Onboarding>.Error("An unknown error occured while removing onboarding data");
         }
     }
 }

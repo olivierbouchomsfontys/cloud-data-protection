@@ -24,6 +24,8 @@ namespace CloudDataProtection.Entities
         public DateTime? CompletedAt { get; set; }
         
         public List<UserDeletionHistoryProgress> Progress { get; set; }
+
+        public bool IsComplete => CompletedAt.HasValue;
     }
 
     [Table("UserDeletionHistoryProgress")]
