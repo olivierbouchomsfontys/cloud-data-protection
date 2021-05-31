@@ -6,6 +6,7 @@ namespace CloudDataProtection.Controllers
     [Route("")]
     public class StatusController : ControllerBase
     {
+        [HttpGet]
         [Route("")]
         public ActionResult Status()
         {
