@@ -4,8 +4,8 @@
 
 |           | Url   |
 | ---           | ---   |
-| Public url    | https://clouddataprotectiontest.westeurope.cloudapp.azure.com/                |
-| Backend       | https://clouddataprotectiontestbackend.westeurope.cloudapp.azure.com          |
+| Public url    | https://clouddataprotection.francecentral.cloudapp.azure.com/                |
+| Backend       | https://clouddataprotectionbackend.francecentral.cloudapp.azure.com          |
 | Loadbalancer  | http://clouddataprotectiontestloadbalancer.francecentral.cloudapp.azure.com/  |
 
 # Services
