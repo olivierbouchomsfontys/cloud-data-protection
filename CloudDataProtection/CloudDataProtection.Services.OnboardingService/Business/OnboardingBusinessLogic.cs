@@ -112,6 +112,11 @@ namespace CloudDataProtection.Services.Onboarding.Business
 
             GoogleOAuthV2Response responseBody = await response.GetJsonAsync<GoogleOAuthV2Response>();
 
+            if (responseBody.RefreshToken == null)
+            {
+                return BusinessResult<GoogleCredentials>.Error("No refresh token has been returned. The Google account is probably already connected to Cloud Data Protection.");
+            }
+
             GoogleCredentials credentials = new GoogleCredentials
             {
                 RefreshToken = responseBody.RefreshToken,

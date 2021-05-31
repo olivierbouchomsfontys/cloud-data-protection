@@ -86,7 +86,9 @@ namespace CloudDataProtection.Services.Onboarding.Controllers
 
             if (!businessResult.Success)
             {
-                return Problem(businessResult.Message);
+                string url = string.Concat(_options.RedirectUri, "?message=", businessResult.Message);
+                
+                return Redirect(url);
             }
 
             long userId = businessResult.Data.UserId;
