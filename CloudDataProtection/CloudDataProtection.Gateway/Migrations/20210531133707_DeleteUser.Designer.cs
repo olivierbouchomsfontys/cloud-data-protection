@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CloudDataProtection.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20210531121045_DeleteUserAccount")]
-    partial class DeleteUserAccount
+    [Migration("20210531133707_DeleteUser")]
+    partial class DeleteUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,9 @@ namespace CloudDataProtection.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HashedEmail")
                         .HasColumnType("text");
 
                     b.Property<long>("UserId")

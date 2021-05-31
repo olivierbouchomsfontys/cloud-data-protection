@@ -56,6 +56,9 @@ namespace CloudDataProtection.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("HashedEmail")
+                        .HasColumnType("text");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 

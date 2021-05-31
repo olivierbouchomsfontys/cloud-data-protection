@@ -15,8 +15,13 @@ namespace CloudDataProtection.Entities
         [Required]
         public long UserId { get; set; }
         
+        /// <summary>
+        /// Email address of the deleted user. Will be null when user deletion is complete.
+        /// </summary>
         [Encrypt]
         public string Email { get; set; }
+        
+        public string HashedEmail { get; set; }
         
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

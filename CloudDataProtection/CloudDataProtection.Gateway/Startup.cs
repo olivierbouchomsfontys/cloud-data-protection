@@ -8,6 +8,7 @@ using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Data;
 using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
+using CloudDataProtection.Email;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Listener;
 using CloudDataProtection.Messaging.Publisher;
@@ -67,6 +68,7 @@ namespace CloudDataProtection
             
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
             services.AddLazy<IMessagePublisher<UserDeletedModel>, UserDeletedMessagePublisher>();
+            services.AddLazy<IMessagePublisher<UserDeletionCompleteModel>, UserDeletionCompleteMessagePublisher>();
 
             services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
 
@@ -145,6 +147,7 @@ namespace CloudDataProtection
             services.AddScoped<IJwtHelper, JwtHelper>();
             services.AddScoped<IJwtDecoder, JwtDecoder>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+            services.AddScoped<IEmailHasher, BCryptEmailHasher>();
 
             services.AddScoped<ITokenValidatedHandler, TokenValidatedHandler>();
         }

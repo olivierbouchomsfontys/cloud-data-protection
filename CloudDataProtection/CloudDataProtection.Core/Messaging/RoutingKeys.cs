@@ -8,7 +8,9 @@
         
         public static readonly string UserDeleted = "UserDeleted";
         
-        public static string UserDataDeleted = "UserDataDeleted";
+        public static readonly string UserDataDeleted = "UserDataDeleted";
+
+        public static readonly string UserDeletionComplete = "UserDeletionComplete";
 
         public static readonly string GoogleAccountConnected = "GoogleAccountConnected";
     }

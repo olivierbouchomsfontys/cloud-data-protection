@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Migrations
 {
-    public partial class DeleteUserAccount : Migration
+    public partial class DeleteUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +16,7 @@ namespace CloudDataProtection.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
+                    HashedEmail = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CompletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },

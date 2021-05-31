@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
+using CloudDataProtection.Email;
 using CloudDataProtection.Entities;
 using CloudDataProtection.Password;
 
@@ -13,13 +14,15 @@ namespace CloudDataProtection.Business
     {
         private readonly IAuthenticationRepository _repository;
         private readonly IUserHistoryRepository _userHistoryRepository;
+        private readonly IEmailHasher _emailHasher;
 
         private readonly string[] ServicesToDeleteData = new[] {"Onboarding", "Gateway", "BackupConfiguration"};
 
-        public UserBusinessLogic(IAuthenticationRepository repository, IUserHistoryRepository userHistoryRepository, IPasswordHasher hasher)
+        public UserBusinessLogic(IAuthenticationRepository repository, IUserHistoryRepository userHistoryRepository, IEmailHasher emailHasher)
         {
             _repository = repository;
             _userHistoryRepository = userHistoryRepository;
+            _emailHasher = emailHasher;
         }
         
         public async Task<BusinessResult<User>> Get(long id)
@@ -57,6 +60,7 @@ namespace CloudDataProtection.Business
             UserDeletionHistory history = new UserDeletionHistory
             {
                 Email = user.Email,
+                HashedEmail = _emailHasher.Hash(user.Email),
                 UserId = user.Id,
                 Progress = new List<UserDeletionHistoryProgress>() {current}
             };
@@ -66,7 +70,7 @@ namespace CloudDataProtection.Business
             return BusinessResult<User>.Ok(user);
         }
 
-        public async Task<BusinessResult<UserDeletionHistory>> AddProgress(UserDeletionHistoryProgress progress, long userId)
+        public async Task<BusinessResult<Tuple<UserDeletionHistory, string>>> AddProgress(UserDeletionHistoryProgress progress, long userId)
         {
             UserDeletionHistory history = await _userHistoryRepository.GetDelete(userId);
             
@@ -76,14 +80,19 @@ namespace CloudDataProtection.Business
 
             bool isComplete = removed.All(r => ServicesToDeleteData.Contains(r));
 
+            string email = history.Email;
+
             if (isComplete)
             {
                 history.CompletedAt = DateTime.Now;
+                history.Email = null;
             }
 
             await _userHistoryRepository.Update(history);
 
-            return BusinessResult<UserDeletionHistory>.Ok(history);
+            Tuple<UserDeletionHistory, string> result = new Tuple<UserDeletionHistory, string>(history, email);
+            
+            return BusinessResult<Tuple<UserDeletionHistory, string>>.Ok(result);
         }
     }
 }

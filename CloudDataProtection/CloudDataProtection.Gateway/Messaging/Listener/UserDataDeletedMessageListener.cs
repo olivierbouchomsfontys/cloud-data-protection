@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Entities;
+using CloudDataProtection.Messaging.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -33,11 +35,23 @@ namespace CloudDataProtection.Messaging.Listener
                 CompletedAt = model.CompletedAt,
             };
 
-            BusinessResult<UserDeletionHistory> addProgressResult = await logic.AddProgress(history, model.UserId);
+            BusinessResult<Tuple<UserDeletionHistory, string>> addProgressResult = await logic.AddProgress(history, model.UserId);
 
-            if (addProgressResult.Success && addProgressResult.Data.IsComplete)
+            if (addProgressResult.Success && addProgressResult.Data != null && addProgressResult.Data.Item1.IsComplete)
             {
-                // TODO Send message that user account has been completed
+                UserDeletionHistory progress = addProgressResult.Data.Item1;
+                string email = addProgressResult.Data.Item2;
+                
+                IMessagePublisher<UserDeletionCompleteModel> publisher =
+                    _scope.ServiceProvider.GetRequiredService<IMessagePublisher<UserDeletionCompleteModel>>();
+
+                UserDeletionCompleteModel deletionCompleteModel = new UserDeletionCompleteModel
+                {
+                    UserId = progress.UserId,
+                    Email = email
+                };
+
+                await publisher.Send(deletionCompleteModel);
             }
         }
     }
