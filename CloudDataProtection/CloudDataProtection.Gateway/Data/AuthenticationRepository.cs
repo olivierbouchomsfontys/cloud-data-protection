@@ -30,5 +30,12 @@ namespace CloudDataProtection.Data
 
             await _context.SaveAsync();
         }
+
+        public async Task Delete(User user)
+        {
+            _context.User.Remove(user);
+
+            await _context.SaveAsync();
+        }
     }
 }

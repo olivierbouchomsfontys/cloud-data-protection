@@ -36,5 +36,12 @@ namespace CloudDataProtection.Services.Onboarding.Data.Repository
 
             await _context.SaveAsync();
         }
+
+        public async Task Delete(Entities.Onboarding onboarding)
+        {
+            _context.Onboarding.Remove(onboarding);
+
+            await _context.SaveAsync();
+        }
     }
 }

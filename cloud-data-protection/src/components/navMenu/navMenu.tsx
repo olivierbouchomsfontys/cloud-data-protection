@@ -7,7 +7,7 @@ import {
     DriveEta,
     Person,
     PersonAdd,
-    ExitToApp, Backup
+    ExitToApp, Backup, Settings
 } from '@material-ui/icons';
 import {
     AppBar,
@@ -69,6 +69,7 @@ const NavMenu = () => {
 
         links.push({text: 'Onboarding', route: '/onboarding', icon: <DriveEta />})
         links.push({text: 'Backup', route: '/demo', icon: <Backup />})
+        links.push({text: 'Settings', route: '/settings', icon: <Settings />})
 
         return links;
     }

@@ -6,6 +6,7 @@ namespace CloudDataProtection.Data.Context
     public interface IAuthenticationDbContext
     {
         DbSet<Entities.User> User { get; set; }
+        DbSet<Entities.UserDeletionHistory> UserDeletionHistory { get; set; }
 
         Task<bool> SaveAsync();
     }

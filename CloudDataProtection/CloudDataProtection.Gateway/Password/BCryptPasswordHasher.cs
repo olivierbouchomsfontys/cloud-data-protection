@@ -19,4 +19,4 @@
             return BCrypt.Net.BCrypt.HashPassword(password, DefaultWorkFactor);
         }
     }
-}
+}   

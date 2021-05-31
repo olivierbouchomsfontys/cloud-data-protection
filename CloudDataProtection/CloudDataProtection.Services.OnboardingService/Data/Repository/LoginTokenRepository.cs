@@ -53,5 +53,12 @@ namespace CloudDataProtection.Services.Onboarding.Data.Repository
 
             await _context.SaveAsync();
         }
+
+        public async Task Delete(ICollection<GoogleLoginToken> tokens)
+        {
+            _context.GoogleLoginToken.RemoveRange(tokens);
+
+            await _context.SaveAsync();
+        }
     }
 }
