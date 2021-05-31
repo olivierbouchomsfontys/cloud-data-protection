@@ -34,5 +34,12 @@ namespace CloudDataProtection.Services.Subscription.Data.Repository
                 .Include(b => b.Time)
                 .FirstOrDefaultAsync(b => b.UserId == userId);
         }
+
+        public async Task Delete(BackupConfiguration configuration)
+        {
+            _context.BackupConfiguration.Remove(configuration);
+
+            await _context.SaveAsync();
+        }
     }
 }

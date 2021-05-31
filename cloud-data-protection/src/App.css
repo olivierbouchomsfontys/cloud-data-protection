@@ -31,6 +31,14 @@
   margin-bottom: 0;
 }
 
+.dialog__content {
+  min-width: 24rem !important;
+}
+
+.dialog__title * {
+  font-weight: bold!important;
+}
+
 @media all and (max-width: 1366px) {
   .app__content {
     padding: 1rem 1rem;
