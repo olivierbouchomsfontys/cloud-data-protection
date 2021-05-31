@@ -1,13 +1,16 @@
 ﻿using System.Threading.Tasks;
+using CloudDataProtection.Services.Onboarding.Entities;
 
 namespace CloudDataProtection.Services.Onboarding.Data.Repository
 {
     public interface IGoogleCredentialsRepository
     {
-        Task Create(Entities.GoogleCredentials credentials);
+        Task Create(GoogleCredentials credentials);
 
-        Task<Entities.GoogleCredentials> Get(int id);
+        Task<GoogleCredentials> Get(int id);
         
-        Task<Entities.GoogleCredentials> GetByUserId(long userId);
+        Task<GoogleCredentials> GetByUserId(long userId);
+        
+        Task Delete(GoogleCredentials credentials);
     }
 }

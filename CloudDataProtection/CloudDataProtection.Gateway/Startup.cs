@@ -1,13 +1,16 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
+using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Data;
 using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
+using CloudDataProtection.Email;
 using CloudDataProtection.Jwt;
+using CloudDataProtection.Messaging.Listener;
 using CloudDataProtection.Messaging.Publisher;
 using CloudDataProtection.Messaging.Server;
 using CloudDataProtection.Ocelot;
@@ -64,6 +67,10 @@ namespace CloudDataProtection
             ConfigureAuthentication(services);
             
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
+            services.AddLazy<IMessagePublisher<UserDeletedModel>, UserDeletedMessagePublisher>();
+            services.AddLazy<IMessagePublisher<UserDeletionCompleteModel>, UserDeletionCompleteMessagePublisher>();
+
+            services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
 
             services.AddTransient<UserBusinessLogic>();
 
@@ -71,6 +78,7 @@ namespace CloudDataProtection
             services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
 
             services.AddHostedService<GetUserEmailRpcServer>();
+            services.AddHostedService<UserDataDeletedMessageListener>();
             
             services.AddOcelot()
                 .AddDelegatingHandler<BackupDemoFileDownloadHandler>()
@@ -137,7 +145,9 @@ namespace CloudDataProtection
             services.AddScoped<AuthenticationBusinessLogic>();
             
             services.AddScoped<IJwtHelper, JwtHelper>();
+            services.AddScoped<IJwtDecoder, JwtDecoder>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+            services.AddScoped<IEmailHasher, BCryptEmailHasher>();
 
             services.AddScoped<ITokenValidatedHandler, TokenValidatedHandler>();
         }

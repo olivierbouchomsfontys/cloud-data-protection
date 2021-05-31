@@ -1,0 +1,11 @@
+.delete-account-wizard {
+}
+
+.delete-account-wizard__input {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.delete-account-wizard__confirm-code {
+    font-weight: bold;
+}
