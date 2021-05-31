@@ -25,7 +25,7 @@ const DeleteAccount = (props: DeleteAccountProps) => {
                 }
                 <DialogTitle className='dialog__title'>Are you sure?</DialogTitle>
                 <DialogContent>
-                    This action cannot the undone. Please type <span
+                    This action cannot be undone. Please type <span
                     className='delete-account-wizard__confirm-code'>{confirmCode}</span> to confirm.
                     <Input autoFocus className='delete-account-wizard__input'
                            onChange={(e) => setEnteredCode(e.target.value)} disabled={props.loading} />

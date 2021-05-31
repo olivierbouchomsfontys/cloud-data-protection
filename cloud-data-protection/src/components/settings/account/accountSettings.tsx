@@ -29,15 +29,25 @@ const AccountSettings = () => {
 
         setDeleteAccountLoading(true);
 
-        await accountService.delete();
+        await accountService.delete()
+            .then(() => onDeleteAccountSuccess())
+            .catch((e: any) => onError(e))
+            .finally(() => onDeleteAccountComplete());
+    }
 
-        setDeleteAccountLoading(false);
-
-        stopLoading();
-
+    const onDeleteAccountSuccess = () => {
         enqueueSnackbar('Your account has been deleted. We hope to see you again in the future.', snackbarOptions);
-
         history.push('/');
+    }
+
+    const onDeleteAccountComplete = () => {
+        setDeleteAccountLoading(false);
+        stopLoading();
+    }
+
+
+    const onError = (e: any) => {
+        enqueueSnackbar(e, snackbarOptions);
     }
 
     const accountService = new AccountService();
