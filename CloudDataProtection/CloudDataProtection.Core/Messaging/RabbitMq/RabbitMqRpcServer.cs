@@ -96,7 +96,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         
         public abstract Task<TResponse> HandleMessage(TRequest model);
 
-        protected override Task ExecuteAsync(CancellationToken cancellationToken)
+        protected sealed override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             
@@ -107,6 +107,13 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel.BasicConsume(QueueName, false, consumer);
 
             return Task.CompletedTask;
+        }
+
+        public sealed override Task StopAsync(CancellationToken cancellationToken)
+        {
+            Connection?.Close();
+            
+            return base.StopAsync(cancellationToken);
         }
 
         private async Task OnRequestReceive(BasicDeliverEventArgs args)

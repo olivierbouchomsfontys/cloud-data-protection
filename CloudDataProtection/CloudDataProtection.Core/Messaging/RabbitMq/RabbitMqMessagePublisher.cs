@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.InteropServices.ComTypes;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -31,8 +32,20 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                 return _connectionFactory;
             }
         }
-        
-        private IConnection Connection => ConnectionFactory.CreateConnection();
+
+        private IConnection _connection;
+        private IConnection Connection
+        {
+            get
+            {
+                if (_connection == null)
+                {
+                    _connection = ConnectionFactory.CreateConnection();
+                }
+
+                return _connection;
+            }
+        }
         
         private IModel Channel { get; } 
 
@@ -53,6 +66,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             byte[] body = JsonSerializer.SerializeToUtf8Bytes(obj, typeof(TModel));
 
             await DoSend(message, body);
+            
+            Connection.Close();
         }
 
         private async Task DoSend(IBasicProperties message, byte[] body)

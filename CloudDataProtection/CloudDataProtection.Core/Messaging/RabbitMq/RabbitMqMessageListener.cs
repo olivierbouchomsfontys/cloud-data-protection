@@ -40,7 +40,19 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             }
         }
 
-        private IConnection Connection => ConnectionFactory.CreateConnection();
+        private IConnection _connection;
+        private IConnection Connection
+        {
+            get
+            {
+                if (_connection == null)
+                {
+                    _connection = ConnectionFactory.CreateConnection();
+                }
+
+                return _connection;
+            }
+        }
 
         private IModel _channel; 
 
@@ -65,6 +77,13 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel.BasicConsume(string.Empty, false, consumer);
 
             return Task.CompletedTask;
+        }
+
+        public sealed override Task StopAsync(CancellationToken cancellationToken)
+        {
+            Connection?.Close();
+            
+            return base.StopAsync(cancellationToken);
         }
 
         private async Task HandleMessage(BasicDeliverEventArgs args)
