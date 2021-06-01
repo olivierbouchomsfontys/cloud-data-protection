@@ -81,7 +81,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
         public sealed override Task StopAsync(CancellationToken cancellationToken)
         {
-            Connection?.Close();
+            _connection?.Close();
             
             return base.StopAsync(cancellationToken);
         }

@@ -67,7 +67,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
 
             await DoSend(message, body);
             
-            Connection?.Close();
+            _connection?.Close();
         }
 
         private async Task DoSend(IBasicProperties message, byte[] body)
