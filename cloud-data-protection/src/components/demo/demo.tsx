@@ -111,9 +111,11 @@ const Demo = () => {
     }
 
     const onError = (e: any) => {
-        if (e instanceof String) {
-            enqueueSnackbar(e, snackbarOptions);
+        if (!(e instanceof String)) {
+            e = 'An unknown error has occurred.';
         }
+
+        enqueueSnackbar(e, snackbarOptions);
     }
 
     return (

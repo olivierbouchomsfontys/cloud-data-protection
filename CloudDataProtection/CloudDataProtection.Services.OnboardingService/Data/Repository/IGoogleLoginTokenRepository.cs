@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CloudDataProtection.Services.Onboarding.Entities;
 
 namespace CloudDataProtection.Services.Onboarding.Data.Repository
 {
     public interface IGoogleLoginTokenRepository
     {
-        Task Create(Entities.GoogleLoginToken token);
+        Task Create(GoogleLoginToken token);
         
-        Task<Entities.GoogleLoginToken> Get(long id);
+        Task<GoogleLoginToken> Get(long id);
         
-        Task<Entities.GoogleLoginToken> Get(string token);
+        Task<GoogleLoginToken> Get(string token);
  
-        Task<ICollection<Entities.GoogleLoginToken>> GetAllByUser(long userId);
+        Task<ICollection<GoogleLoginToken>> GetAllByUser(long userId);
 
-        Task Update(Entities.GoogleLoginToken token);
+        Task Update(GoogleLoginToken token);
+        Task Update(ICollection<GoogleLoginToken> tokens);
         
-        Task Update(ICollection<Entities.GoogleLoginToken> tokens);
+        Task Delete(ICollection<GoogleLoginToken> tokens);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Data.Context;
@@ -26,7 +26,8 @@ namespace CloudDataProtection.Data.Context
         }
         
         public DbSet<User> User { get; set; }
-        
+        public DbSet<UserDeletionHistory> UserDeletionHistory { get; set; }
+
         public async Task<bool> SaveAsync()
         {
             return await base.SaveChangesAsync() > 0;

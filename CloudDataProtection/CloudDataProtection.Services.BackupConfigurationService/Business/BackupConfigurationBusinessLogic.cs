@@ -44,5 +44,19 @@ namespace CloudDataProtection.Services.Subscription.Business
             
             return BusinessResult<BackupConfiguration>.Ok(configuration);
         }
+
+        public async Task<BusinessResult<BackupConfiguration>> DeleteByUser(long userId)
+        {
+            BackupConfiguration configuration = await _repository.GetByUser(userId);
+
+            if (configuration == null)
+            {
+                return BusinessResult<BackupConfiguration>.Ok();
+            }
+
+            await _repository.Delete(configuration);
+            
+            return BusinessResult<BackupConfiguration>.Ok(configuration);
+        }
     }
 }

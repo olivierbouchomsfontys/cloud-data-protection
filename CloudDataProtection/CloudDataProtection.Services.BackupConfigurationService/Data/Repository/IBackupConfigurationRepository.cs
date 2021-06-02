@@ -10,5 +10,7 @@ namespace CloudDataProtection.Services.Subscription.Data.Repository
         Task<BackupConfiguration> Get(long id);
         
         Task<BackupConfiguration> GetByUser(long userId);
+        
+        Task Delete(BackupConfiguration configuration);
     }
 }

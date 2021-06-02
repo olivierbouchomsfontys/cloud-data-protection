@@ -27,5 +27,20 @@ namespace CloudDataProtection.Services.MailService.Business
 
             await _sender.Send(email, subject, body);
         }
+
+        public async Task SendUserDeletionComplete(string email)
+        {
+            string subject = "Account deletion complete";
+            string content = @"
+<p>Dear Sir / Madam,<br><br>
+    Hereby we confirm the deletion of your account has been completed. All your data has been deleted. We thank you for your trust and hope to see you again in the future.<br><br>
+    Yours sincerely,<br><br>
+    Olivier Bouchoms
+  </p>";
+
+            string body = ComposeBody(content);
+            
+            await _sender.Send(email, subject, body);
+        }
     }
 }

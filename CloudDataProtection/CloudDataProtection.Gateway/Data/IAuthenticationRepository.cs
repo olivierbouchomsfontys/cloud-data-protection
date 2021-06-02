@@ -9,5 +9,6 @@ namespace CloudDataProtection.Data
         Task<User> Get(string email);
 
         Task Create(User user);
+        Task Delete(User user);
     }
 }

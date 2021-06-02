@@ -71,12 +71,13 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddLazy<OnboardingBusinessLogic>();
             
             services.AddLazy<IRpcClient<GetUserEmailInput, GetUserEmailOutput>, GetUserEmailRpcClient>();
+            services.AddLazy<IMessagePublisher<UserDataDeletedModel>, UserDataDeletedMessagePublisher>();
             
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));
 
             services.AddHostedService<BackupConfigurationEnteredMessageListener>();
-
+            services.AddHostedService<UserDeletedMessageListener>();
 
             services.AddEncryptedDbContext<IOnboardingDbContext, OnboardingDbContext>(Configuration, builder =>
             {

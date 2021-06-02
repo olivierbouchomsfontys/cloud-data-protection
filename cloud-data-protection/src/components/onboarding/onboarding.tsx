@@ -27,8 +27,14 @@ import {formatDate, formatTime} from "common/formatting/timeFormat";
 import './onboarding.css';
 import {Autorenew, Edit, Schedule} from "@material-ui/icons";
 import CreateBackupConfigurationInput from "services/input/backupConfiguration/createBackupConfigurationInput";
+import {RouteComponentProps} from "react-router";
 
-const OnboardingComponent = () => {
+
+interface OnboardingProps extends RouteComponentProps {
+
+}
+
+const OnboardingComponent = (props: OnboardingProps) => {
     const [onboarding, setOnboarding] = useState<Onboarding>();
     const [schemes, setSchemes] = useState<BackupSchemeResult[]>();
     const [schemeId, setSchemeId] = useState<number>();
@@ -60,6 +66,27 @@ const OnboardingComponent = () => {
             cancelTokenSource?.cancel();
         }
     }, []);
+
+    useEffect(() => {
+        startLoading();
+
+        if (props.location.search) {
+            const params = new URLSearchParams(props.location.search);
+
+            const message = params.get('message');
+
+            if (message) {
+                enqueueSnackbar(message, {...snackbarOptions, autoHideDuration: 10000 });
+            }
+        }
+
+        fetchData()
+            .finally(() => stopLoading());
+
+        return () => {
+            cancelTokenSource?.cancel();
+        }
+    }, [props.location.search]);
 
     const fetchData = async () => {
         cancelTokenSource = axios.CancelToken.source();
@@ -126,7 +153,11 @@ const OnboardingComponent = () => {
         stopLoading();
     }
 
-    const onError = (e: string) => {
+    const onError = (e: any) => {
+        if (!(e instanceof String)) {
+            e = 'An unknown error has occurred.';
+        }
+
         enqueueSnackbar(e, snackbarOptions);
     }
 

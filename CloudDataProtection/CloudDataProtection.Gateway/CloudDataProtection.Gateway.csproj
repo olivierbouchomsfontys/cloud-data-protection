@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>CloudDataProtection</RootNamespace>
+        <PackageVersion>1.1.0</PackageVersion>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,10 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CloudDataProtection.Core\CloudDataProtection.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Messaging\Listener" />
     </ItemGroup>
 
 </Project>

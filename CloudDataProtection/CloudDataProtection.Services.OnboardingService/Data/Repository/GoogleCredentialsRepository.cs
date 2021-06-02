@@ -30,5 +30,12 @@ namespace CloudDataProtection.Services.Onboarding.Data.Repository
         {
             return await _context.GoogleCredential.FirstOrDefaultAsync(o => o.UserId == userId);
         }
+
+        public async Task Delete(GoogleCredentials credentials)
+        {
+            _context.GoogleCredential.Remove(credentials);
+
+            await _context.SaveAsync();
+        }
     }
 }

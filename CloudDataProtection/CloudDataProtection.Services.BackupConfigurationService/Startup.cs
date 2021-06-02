@@ -10,6 +10,7 @@ using CloudDataProtection.Services.Subscription.Data.Repository;
 using CloudDataProtection.Services.Subscription.Dto;
 using CloudDataProtection.Services.Subscription.Entities;
 using CloudDataProtection.Services.Subscription.Messaging.Dto;
+using CloudDataProtection.Services.Subscription.Messaging.Listener;
 using CloudDataProtection.Services.Subscription.Messaging.Publisher;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -47,7 +48,10 @@ namespace CloudDataProtection.Services.Subscription
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             
             services.AddLazy<IMessagePublisher<BackupConfigurationEnteredModel>, BackupConfigurationEnteredMessagePublisher>();
-            
+            services.AddLazy<IMessagePublisher<UserDataDeletedModel>, UserDataDeletedMessagePublisher>();
+
+            services.AddHostedService<UserDeletedMessageListener>();
+
             services.AddEncryptedDbContext<IBackupConfigurationDbContext, BackupConfigurationDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
