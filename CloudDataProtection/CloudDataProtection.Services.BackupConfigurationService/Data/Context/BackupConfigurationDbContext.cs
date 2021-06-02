@@ -8,18 +8,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace CloudDataProtection.Services.Subscription.Data.Context
 {
-    public class BackupConfigurationEncryptedDbContext : EncryptedDbContextBase, IBackupConfigurationDbContext
+    public class BackupConfigurationDbContext : EncryptedDbContextBase, IBackupConfigurationDbContext
     {
         public DbSet<BackupConfiguration> BackupConfiguration { get; set; }
         
         public DbSet<BackupScheme> BackupScheme { get; set; }
 
-        public BackupConfigurationEncryptedDbContext()
+        public BackupConfigurationDbContext()
         {
             
         }
 
-        public BackupConfigurationEncryptedDbContext(DbContextOptions<BackupConfigurationEncryptedDbContext> options, ITransformer transformer) : base(options, transformer)
+        public BackupConfigurationDbContext(DbContextOptions<BackupConfigurationDbContext> options, ITransformer transformer) : base(options, transformer)
         {
             
         }

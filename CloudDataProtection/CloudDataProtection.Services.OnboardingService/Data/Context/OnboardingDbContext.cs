@@ -2,34 +2,32 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Data.Context;
-using CloudDataProtection.Entities;
+using CloudDataProtection.Services.Onboarding.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace CloudDataProtection.Data.Context
+namespace CloudDataProtection.Services.Onboarding.Data.Context
 {
-    public class AuthenticationEncryptedDbContext : EncryptedDbContextBase, IAuthenticationDbContext
+    public class OnboardingDbContext : EncryptedDbContextBase, IOnboardingDbContext
     {
-        public AuthenticationEncryptedDbContext()
+        public DbSet<Entities.Onboarding> Onboarding { get; set; }
+        
+        public DbSet<GoogleCredentials> GoogleCredential { get; set; }
+        
+        public DbSet<GoogleLoginToken> GoogleLoginToken { get; set; }
+
+        public OnboardingDbContext()
+        {
+        }
+
+        public OnboardingDbContext(DbContextOptions<OnboardingDbContext> options, ITransformer transformer) : base(options, transformer)
         {
             
         }
 
-        public AuthenticationEncryptedDbContext(DbContextOptions options) : base(options, null)
-        {
-            
-        }
-
-        public AuthenticationEncryptedDbContext(DbContextOptions options, ITransformer transformer) : base(options, transformer)
-        {
-            
-        }
-        
-        public DbSet<User> User { get; set; }
-        
         public async Task<bool> SaveAsync()
         {
-            return await base.SaveChangesAsync() > 0;
+            return await SaveChangesAsync() > 0;
         }
 
         protected sealed override void ConfigureForEfCoreTools(DbContextOptionsBuilder builder)
@@ -43,5 +41,6 @@ namespace CloudDataProtection.Data.Context
 
             builder.UseNpgsql(connectionString);
         }
+
     }
 }

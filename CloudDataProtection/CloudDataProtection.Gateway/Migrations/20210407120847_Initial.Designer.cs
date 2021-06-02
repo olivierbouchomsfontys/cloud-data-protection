@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Migrations
 {
-    [DbContext(typeof(AuthenticationEncryptedDbContext))]
+    [DbContext(typeof(AuthenticationDbContext))]
     [Migration("20210407120847_Initial")]
     partial class Initial
     {

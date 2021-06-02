@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Services.Onboarding.Migrations
 {
-    [DbContext(typeof(OnboardingEncryptedDbContext))]
+    [DbContext(typeof(OnboardingDbContext))]
     [Migration("20210407072704_Initial")]
     partial class Initial
     {

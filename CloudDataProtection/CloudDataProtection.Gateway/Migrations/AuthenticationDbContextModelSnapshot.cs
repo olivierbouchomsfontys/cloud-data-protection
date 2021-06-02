@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Migrations
 {
-    [DbContext(typeof(AuthenticationEncryptedDbContext))]
+    [DbContext(typeof(AuthenticationDbContext))]
     partial class AuthenticationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

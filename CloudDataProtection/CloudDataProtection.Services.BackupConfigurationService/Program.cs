@@ -15,7 +15,7 @@ namespace CloudDataProtection.Services.Subscription
         {
             CreateHostBuilder(args)
                 .Build()
-                .Migrate<IBackupConfigurationDbContext, BackupConfigurationEncryptedDbContext>()
+                .Migrate<IBackupConfigurationDbContext, BackupConfigurationDbContext>()
                 .Seed()
                 .Run();
         }

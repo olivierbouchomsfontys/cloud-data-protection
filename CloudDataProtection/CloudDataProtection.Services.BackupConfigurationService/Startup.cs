@@ -48,7 +48,7 @@ namespace CloudDataProtection.Services.Subscription
             
             services.AddLazy<IMessagePublisher<BackupConfigurationEnteredModel>, BackupConfigurationEnteredMessagePublisher>();
             
-            services.AddEncryptedDbContext<IBackupConfigurationDbContext, BackupConfigurationEncryptedDbContext>(Configuration, builder =>
+            services.AddEncryptedDbContext<IBackupConfigurationDbContext, BackupConfigurationDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });

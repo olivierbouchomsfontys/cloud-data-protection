@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Services.Onboarding.Migrations
 {
-    [DbContext(typeof(OnboardingEncryptedDbContext))]
+    [DbContext(typeof(OnboardingDbContext))]
     [Migration("20210427104948_GoogleLogin")]
     partial class GoogleLogin
     {

@@ -78,7 +78,7 @@ namespace CloudDataProtection.Services.Onboarding
             services.AddHostedService<BackupConfigurationEnteredMessageListener>();
 
 
-            services.AddEncryptedDbContext<IOnboardingDbContext, OnboardingEncryptedDbContext>(Configuration, builder =>
+            services.AddEncryptedDbContext<IOnboardingDbContext, OnboardingDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
