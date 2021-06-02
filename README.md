@@ -71,12 +71,12 @@ Windows:
 
 Unix:
 `export CDP_BACKUP_DEMO_FUNCTIONS_KEY={your function key goes here}`
-`export CDP_BACKUP_DEMO_API_KEY={your function key goes here}`
+`export CDP_DEMO_API_KEY={your function key goes here}`
 
 Windows:
 `setx CDP_BACKUP_DEMO_FUNCTIONS_KEY {your function key goes here}`
-`setx CDP_BACKUP_DEMO_API_KEY {your function key goes here}`
+`setx CDP_DEMO_API_KEY {your function key goes here}`
 
 ## Logging in
 
-A client account can be created by registering a new account. It is not possible yet to change the password of the default (employee) user. An alternative is to change it by replacing the password hash in the database with your own.
+A client account can be created by registering a new account. It is not possible yet to change the password of the default (employee) user.
