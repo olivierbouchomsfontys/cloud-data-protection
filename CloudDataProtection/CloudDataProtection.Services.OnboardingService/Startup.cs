@@ -76,10 +76,9 @@ namespace CloudDataProtection.Services.Onboarding
             services.Configure<OnboardingOptions>(options => Configuration.GetSection("Google:Onboarding").Bind(options));
 
             services.AddHostedService<BackupConfigurationEnteredMessageListener>();
-            
-            ConfigureDbEncryption();
-                            
-            services.AddDbContext<IOnboardingDbContext, OnboardingDbContext>(builder =>
+
+
+            services.AddEncryptedDbContext<IOnboardingDbContext, OnboardingEncryptedDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -98,17 +97,6 @@ namespace CloudDataProtection.Services.Onboarding
             ConfigureAuthentication(services);
 
             services.AddAutoMapper(ConfigureMapper);
-        }
-
-        private void ConfigureDbEncryption()
-        {
-            AesOptions aesOptions = new AesOptions();
-            
-            Configuration.GetSection("Persistence").Bind(aesOptions);
-
-            ITransformer transformer = new AesTransformer(Options.Create(aesOptions));
-                
-            DbContextBase.SetTransformer(transformer);
         }
 
         private void ConfigureMapper(IMapperConfigurationExpression config)

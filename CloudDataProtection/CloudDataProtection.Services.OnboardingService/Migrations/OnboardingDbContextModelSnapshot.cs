@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CloudDataProtection.Services.Onboarding.Migrations
 {
-    [DbContext(typeof(OnboardingDbContext))]
+    [DbContext(typeof(OnboardingEncryptedDbContext))]
     partial class OnboardingDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

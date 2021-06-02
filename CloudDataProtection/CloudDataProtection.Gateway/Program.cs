@@ -18,7 +18,7 @@ namespace CloudDataProtection
         {
             CreateHostBuilder(args)
                 .Build()
-                .Migrate<IAuthenticationDbContext, AuthenticationDbContext>()
+                .Migrate<IAuthenticationDbContext, AuthenticationEncryptedDbContext>()
                 .Seed()
                 .Run();
         }

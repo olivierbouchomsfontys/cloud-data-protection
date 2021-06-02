@@ -11,7 +11,7 @@ namespace CloudDataProtection.Services.Onboarding
         {
             CreateHostBuilder(args)
                 .Build()
-                .Migrate<IOnboardingDbContext, OnboardingDbContext>()
+                .Migrate<IOnboardingDbContext, OnboardingEncryptedDbContext>()
                 .Run();
         }
 

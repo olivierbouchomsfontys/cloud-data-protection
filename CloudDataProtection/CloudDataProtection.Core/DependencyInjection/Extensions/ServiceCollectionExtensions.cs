@@ -1,4 +1,8 @@
 ﻿using System;
+using CloudDataProtection.Core.Cryptography.Aes;
+using CloudDataProtection.Core.Cryptography.Aes.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CloudDataProtection.Core.DependencyInjection.Extensions
@@ -17,6 +21,17 @@ namespace CloudDataProtection.Core.DependencyInjection.Extensions
         {
             services.AddTransient<TService, TImplementation>();
             services.AddTransient(provider => new Lazy<TService>(() => provider.GetRequiredService<TService>()));
+        }
+
+        public static void AddEncryptedDbContext<TService, TImplementation>(this IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder> optionsAction = null) 
+            where TService : class 
+            where TImplementation : DbContext, TService
+        {
+            services.Configure<AesOptions>(options => configuration.GetSection("Persistence").Bind(options));
+            
+            services.AddScoped<ITransformer, AesTransformer>();
+
+            services.AddDbContext<TService, TImplementation>(optionsAction);
         }
     }
 }
