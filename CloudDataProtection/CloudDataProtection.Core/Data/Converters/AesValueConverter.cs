@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using CloudDataProtection.Core.Cryptography.Aes;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CloudDataProtection.Services.Onboarding.Data
+namespace CloudDataProtection.Core.Data.Converters
 {
     public class AesValueConverter : ValueConverter<string, string>
     {

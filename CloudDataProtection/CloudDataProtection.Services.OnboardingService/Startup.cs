@@ -2,6 +2,7 @@ using AutoMapper;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Cryptography.Aes.Options;
 using CloudDataProtection.Core.Cryptography.Generator;
+using CloudDataProtection.Core.Data.Context;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
@@ -77,10 +78,8 @@ namespace CloudDataProtection.Services.Onboarding
 
             services.AddHostedService<BackupConfigurationEnteredMessageListener>();
             services.AddHostedService<UserDeletedMessageListener>();
-            
-            ConfigureDbEncryption();
-                            
-            services.AddDbContext<IOnboardingDbContext, OnboardingDbContext>(builder =>
+
+            services.AddEncryptedDbContext<IOnboardingDbContext, OnboardingDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -99,15 +98,6 @@ namespace CloudDataProtection.Services.Onboarding
             ConfigureAuthentication(services);
 
             services.AddAutoMapper(ConfigureMapper);
-        }
-
-        private void ConfigureDbEncryption()
-        {
-            AesOptions aesOptions = new AesOptions();
-            
-            Configuration.GetSection("Persistence").Bind(aesOptions);
-                
-            OnboardingDbContext.Transformer = new AesTransformer(Options.Create(aesOptions));
         }
 
         private void ConfigureMapper(IMapperConfigurationExpression config)

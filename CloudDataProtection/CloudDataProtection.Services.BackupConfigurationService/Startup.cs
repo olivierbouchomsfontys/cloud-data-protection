@@ -52,7 +52,7 @@ namespace CloudDataProtection.Services.Subscription
 
             services.AddHostedService<UserDeletedMessageListener>();
 
-            services.AddDbContext<IBackupConfigurationDbContext, BackupConfigurationDbContext>(builder =>
+            services.AddEncryptedDbContext<IBackupConfigurationDbContext, BackupConfigurationDbContext>(Configuration, builder =>
             {
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });

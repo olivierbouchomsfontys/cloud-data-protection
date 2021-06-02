@@ -112,8 +112,8 @@ namespace CloudDataProtection
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            services.AddDbContext<IAuthenticationDbContext, AuthenticationDbContext>
-                (o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddEncryptedDbContext<IAuthenticationDbContext, AuthenticationDbContext>
+                (Configuration, o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             JwtSecretOptions options = new JwtSecretOptions();
             
