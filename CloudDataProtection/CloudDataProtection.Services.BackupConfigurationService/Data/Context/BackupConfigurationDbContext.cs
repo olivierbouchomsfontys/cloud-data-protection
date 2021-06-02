@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Data.Context;
 using CloudDataProtection.Services.Subscription.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudDataProtection.Services.Subscription.Data.Context
 {
-    public class BackupConfigurationDbContext : DbContext, IBackupConfigurationDbContext
+    public class BackupConfigurationDbContext : DbContextBase, IBackupConfigurationDbContext
     {
         public DbSet<BackupConfiguration> BackupConfiguration { get; set; }
         

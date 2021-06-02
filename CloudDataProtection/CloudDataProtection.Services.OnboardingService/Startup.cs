@@ -2,6 +2,7 @@ using AutoMapper;
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Cryptography.Aes.Options;
 using CloudDataProtection.Core.Cryptography.Generator;
+using CloudDataProtection.Core.Data.Context;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
@@ -104,8 +105,10 @@ namespace CloudDataProtection.Services.Onboarding
             AesOptions aesOptions = new AesOptions();
             
             Configuration.GetSection("Persistence").Bind(aesOptions);
+
+            ITransformer transformer = new AesTransformer(Options.Create(aesOptions));
                 
-            OnboardingDbContext.Transformer = new AesTransformer(Options.Create(aesOptions));
+            DbContextBase.SetTransformer(transformer);
         }
 
         private void ConfigureMapper(IMapperConfigurationExpression config)

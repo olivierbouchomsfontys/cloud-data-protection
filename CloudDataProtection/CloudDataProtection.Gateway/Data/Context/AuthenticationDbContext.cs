@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using CloudDataProtection.Core.Data.Context;
 using CloudDataProtection.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudDataProtection.Data.Context
 {
-    public class AuthenticationDbContext : DbContext, IAuthenticationDbContext
+    public class AuthenticationDbContext : DbContextBase, IAuthenticationDbContext
     {
         public AuthenticationDbContext()
         {
