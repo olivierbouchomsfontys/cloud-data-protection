@@ -1,38 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-data-protection-test-frontend
-  labels:
-    app: cloud-data-protection-test
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: cloud-data-protection-test
-  template:
-    metadata:
-      labels:
-        app: cloud-data-protection-test
-    spec:
-      containers:
-      - name: cloud-data-protection-frontend
-        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_react
-        imagePullPolicy: Always
-        env:
-        - name: NODE_ENV
-          value: "Test"
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "100m"
-        ports:
-        - containerPort: 80
-    
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: cloud-data-protection-test-backend
   labels:
     app: cloud-data-protection-test
@@ -160,21 +128,3 @@ spec:
             cpu: "100m"
         ports:
         - containerPort: 5051
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: cloud-data-protection-test-load-balancer
-spec:
-  type: LoadBalancer
-  selector:
-    app: cloud-data-protection-test
-  ports:
-  - name: 'nginx'
-    port: 80
-    targetPort: 80
-  - name: 'gateway'
-    port: 5001
-    targetPort: 5001

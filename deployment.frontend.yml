@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-data-protection-test-frontend
+  labels:
+    app: cloud-data-protection-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-data-protection-test
+  template:
+    metadata:
+      labels:
+        app: cloud-data-protection-test
+    spec:
+      containers:
+      - name: cloud-data-protection-frontend
+        image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_react
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "Test"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
