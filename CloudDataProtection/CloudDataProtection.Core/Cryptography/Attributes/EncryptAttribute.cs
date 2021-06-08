@@ -2,7 +2,7 @@
 
 namespace CloudDataProtection.Core.Cryptography.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class EncryptAttribute : Attribute
     {
         public DataType DataType { get; set; }

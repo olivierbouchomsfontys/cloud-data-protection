@@ -15,12 +15,12 @@ namespace CloudDataProtection.Core.Data.Converters
             _transformer = transformer;
         }
 
-        private static Expression<Func<string, string>> Decrypt = input => 
+        private static readonly Expression<Func<string, string>> Decrypt = input => 
             ShouldDecrypt(input) 
                 ? _transformer.Decrypt(input) 
                 : input;
         
-        private static Expression<Func<string, string>> Encrypt = input => _transformer.Encrypt(input);
+        private static readonly Expression<Func<string, string>> Encrypt = input => _transformer.Encrypt(input);
 
         private static bool ShouldDecrypt(string input) => IsEncryptedData(input);
         private static bool IsEncryptedData(string input) => !new EmailAddressAttribute().IsValid(input);

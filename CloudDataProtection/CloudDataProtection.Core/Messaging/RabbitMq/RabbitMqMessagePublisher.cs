@@ -30,26 +30,15 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                         Password = _configuration.Password,
                         VirtualHost = _configuration.VirtualHost,
                     };
-                };
+                }
                 
                 return _connectionFactory;
             }
         }
 
         private IConnection _connection;
-        private IConnection Connection
-        {
-            get
-            {
-                if (_connection == null)
-                {
-                    _connection = ConnectionFactory.CreateConnection();
-                }
+        private IConnection Connection => _connection ??= ConnectionFactory.CreateConnection();
 
-                return _connection;
-            }
-        }
-        
         private IModel Channel { get; } 
 
         protected RabbitMqMessagePublisher(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessagePublisher<TModel>> logger)

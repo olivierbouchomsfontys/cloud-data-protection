@@ -55,10 +55,5 @@ namespace CloudDataProtection.Core.Controllers
                 return _userRole;
             }
         }
-
-        /// <summary>
-        /// If a user is authenticated
-        /// </summary>
-        protected bool IsAuthenticated => UserId > 0;
     }
 }

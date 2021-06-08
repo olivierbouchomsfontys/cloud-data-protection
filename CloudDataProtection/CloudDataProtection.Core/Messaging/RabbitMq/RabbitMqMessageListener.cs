@@ -41,18 +41,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         }
 
         private IConnection _connection;
-        private IConnection Connection
-        {
-            get
-            {
-                if (_connection == null)
-                {
-                    _connection = ConnectionFactory.CreateConnection();
-                }
-
-                return _connection;
-            }
-        }
+        private IConnection Connection => _connection ??= ConnectionFactory.CreateConnection();
 
         private IModel _channel; 
 

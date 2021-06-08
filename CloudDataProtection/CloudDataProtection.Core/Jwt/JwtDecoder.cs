@@ -40,7 +40,7 @@ namespace CloudDataProtection.Core.Jwt
             return role;
         }
 
-        private string GetToken(string header)
+        private static string GetToken(string header)
         {
             if (!header.StartsWith(AuthenticationScheme))
             {
@@ -50,21 +50,16 @@ namespace CloudDataProtection.Core.Jwt
             return header.Replace(AuthenticationScheme, string.Empty).Trim();
         }
 
-        private IEnumerable<Claim> GetClaims(string token)
+        private static IEnumerable<Claim> GetClaims(string token)
         {
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             SecurityToken jsonToken = handler.ReadToken(token);
-            JwtSecurityToken tokenS = jsonToken as JwtSecurityToken;
+            JwtSecurityToken securityToken = jsonToken as JwtSecurityToken;
 
-            if (tokenS == null)
-            {
-                return null;
-            }
-
-            return tokenS.Claims;
+            return securityToken?.Claims;
         }
 
-        private int? GetUserId(IEnumerable<Claim> claims)
+        private static int? GetUserId(IEnumerable<Claim> claims)
         {
             return claims
                 .Where(c => c.Type == "unique_name")
@@ -73,7 +68,7 @@ namespace CloudDataProtection.Core.Jwt
                 .FirstOrDefault();
         }
 
-        private UserRole? GetUserRole(IEnumerable<Claim> claims)
+        private static UserRole? GetUserRole(IEnumerable<Claim> claims)
         {
             return claims
                 .Where(c => c.Type == CustomClaimTypes.UserRole)

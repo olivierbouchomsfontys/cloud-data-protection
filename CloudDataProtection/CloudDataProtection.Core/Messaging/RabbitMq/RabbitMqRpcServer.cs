@@ -57,7 +57,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             }
         }
         
-        public RabbitMqRpcServer(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcServer<TRequest, TResponse>> logger)
+        protected RabbitMqRpcServer(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcServer<TRequest, TResponse>> logger)
         {
             _logger = logger;
             _configuration = options.Value;
