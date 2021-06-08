@@ -7,7 +7,7 @@ namespace CloudDataProtection.Core.Papertrail.Extensions
     {
         public static void ConfigureLogging(this ILoggingBuilder builder)
         {
-            if (EnvironmentVariableHelper.GetHostingEnvironment() == Environment.Environment.Development)
+            if (Environment.Environment.CurrentEnvironment == Environment.Environment.Development)
             {
                 builder = builder.AddConsole();
             }
@@ -17,8 +17,7 @@ namespace CloudDataProtection.Core.Papertrail.Extensions
                 builder = builder.AddPapertrail();
             }
 
-            builder
-                .AddFilter("Microsoft.EntityFrameworkCore.Migrations", LogLevel.None);
+            builder.AddFilter("Microsoft.EntityFrameworkCore.Migrations", LogLevel.None);
         }
     }
 }

@@ -46,7 +46,7 @@ spec:
         - name: CDP_PAPERTRAIL_URL
           valueFrom:
             secretKeyRef:
-              name: cdp-papertrail-access-url
+              name: cdp-papertrail-url
               key: value
         resources:
           limits:
@@ -78,7 +78,7 @@ spec:
         - name: CDP_PAPERTRAIL_URL
           valueFrom:
             secretKeyRef:
-              name: cdp-papertrail-access-url
+              name: cdp-papertrail-url
               key: value
         resources:
           limits:
@@ -100,7 +100,7 @@ spec:
         - name: CDP_PAPERTRAIL_URL
           valueFrom:
             secretKeyRef:
-              name: cdp-papertrail-access-url
+              name: cdp-papertrail-url
               key: value
         resources:
           limits:
@@ -132,7 +132,7 @@ spec:
         - name: CDP_PAPERTRAIL_URL
           valueFrom:
             secretKeyRef:
-              name: cdp-papertrail-access-url
+              name: cdp-papertrail-url
               key: value
         resources:
           limits:

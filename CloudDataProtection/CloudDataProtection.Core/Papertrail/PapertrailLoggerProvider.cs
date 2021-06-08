@@ -27,6 +27,5 @@ namespace CloudDataProtection.Core.Papertrail
             _loggers.Clear();
             _onChangeToken.Dispose();
         }
-        
     }
 }
