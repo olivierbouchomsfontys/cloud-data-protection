@@ -37,6 +37,8 @@
 | CDP_DEV_SENDGRID                                  | cdp-sendgrid                                  |
 | CDP_DEV_SENDGRID_SENDER                           | cdp-sendgrid-sender                           |
 | CDP_BACKUP_DEMO_FUNCTIONS_KEY                     | cdp-backup-demo-api-key                       |
+| CDP_PAPERTRAIL_ACCESS_TOKEN                       | cdp-papertrail-access-token                   |
+| CDP_PAPERTRAIL_URL                                | cdp-papertrail-url                            |
 
 ## Functions
 

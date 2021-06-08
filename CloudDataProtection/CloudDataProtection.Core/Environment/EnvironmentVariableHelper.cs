@@ -20,5 +20,7 @@ namespace CloudDataProtection.Core.Environment
 
             return environmentVariable;
         }
+        
+        public static string GetHostingEnvironment() => GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     }
 }

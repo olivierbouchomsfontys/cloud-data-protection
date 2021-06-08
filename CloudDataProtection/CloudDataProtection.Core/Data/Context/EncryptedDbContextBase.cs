@@ -2,6 +2,7 @@
 using CloudDataProtection.Core.Cryptography.Aes;
 using CloudDataProtection.Core.Cryptography.Attributes;
 using CloudDataProtection.Core.Data.Converters;
+using CloudDataProtection.Core.Papertrail.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
@@ -10,10 +11,13 @@ namespace CloudDataProtection.Core.Data.Context
 {
     public abstract class EncryptedDbContextBase : DbContext
     {
-        private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => 
-            builder
-                .AddConsole()
-                .AddFilter("Microsoft.EntityFrameworkCore.Migrations", LogLevel.None));
+        private static ILoggerFactory _loggerFactory;
+        private static ILoggerFactory LoggerFactory => _loggerFactory ??= CreateLoggerFactory();
+
+        private static ILoggerFactory CreateLoggerFactory()
+        {
+            return Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.ConfigureLogging());
+        }
 
         private readonly ITransformer _transformer;
 
