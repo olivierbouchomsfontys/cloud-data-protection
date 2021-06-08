@@ -1,4 +1,3 @@
-using CloudDataProtection.Core.Environment;
 using Microsoft.Extensions.Logging;
 
 namespace CloudDataProtection.Core.Papertrail.Extensions

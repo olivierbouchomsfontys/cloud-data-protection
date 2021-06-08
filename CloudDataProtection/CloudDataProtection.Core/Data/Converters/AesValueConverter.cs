@@ -14,7 +14,7 @@ namespace CloudDataProtection.Core.Data.Converters
             _transformer = transformer;
         }
 
-        private static Expression<Func<string, string>> Decrypt = input => _transformer.Decrypt(input);
-        private static Expression<Func<string, string>> Encrypt = input => _transformer.Encrypt(input);
+        private static readonly Expression<Func<string, string>> Decrypt = input => _transformer.Decrypt(input);
+        private static readonly Expression<Func<string, string>> Encrypt = input => _transformer.Encrypt(input);
     }
 }

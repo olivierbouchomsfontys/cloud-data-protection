@@ -12,16 +12,6 @@ namespace CloudDataProtection.Core.Rest.Errors
         public int Status => (int) HttpStatusCode.NotFound;
         public string StatusDescription => "Not found";
 
-        public static NotFoundResponse Create<T>(object identifier)
-        {
-            return Create(typeof(T), identifier, CrudAction.Find);
-        }
-
-        public static NotFoundResponse Create<T>(object identifier, CrudAction action)
-        {
-            return Create(typeof(T), identifier, action);
-        }
-
         public static NotFoundResponse Create(string type, object id)
         {
             string message = $"Could not find {type.ToLower()} with id = {id}";

@@ -6,7 +6,6 @@ using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
 using CloudDataProtection.Email;
 using CloudDataProtection.Entities;
-using CloudDataProtection.Password;
 
 namespace CloudDataProtection.Business
 {
@@ -16,7 +15,7 @@ namespace CloudDataProtection.Business
         private readonly IUserHistoryRepository _userHistoryRepository;
         private readonly IEmailHasher _emailHasher;
 
-        private readonly string[] ServicesToDeleteData = new[] {"Onboarding", "Gateway", "BackupConfiguration"};
+        private readonly string[] _servicesToDeleteData = {"Onboarding", "Gateway", "BackupConfiguration"};
 
         public UserBusinessLogic(IAuthenticationRepository repository, IUserHistoryRepository userHistoryRepository, IEmailHasher emailHasher)
         {
@@ -78,7 +77,7 @@ namespace CloudDataProtection.Business
                 
             IEnumerable<string> removed = history.Progress.Select(p => p.ServiceName);
 
-            bool isComplete = removed.All(r => ServicesToDeleteData.Contains(r));
+            bool isComplete = removed.All(r => _servicesToDeleteData.Contains(r));
 
             string email = history.Email;
 

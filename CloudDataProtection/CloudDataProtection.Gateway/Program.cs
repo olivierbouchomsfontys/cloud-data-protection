@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
-using CloudDataProtection.Core.Environment;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Papertrail.Extensions;
 using CloudDataProtection.Data.Context;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CloudDataProtection
 {
