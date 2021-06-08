@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>CloudDataProtection.Services.MailService</RootNamespace>
-        <PackageVersion>1.1.0</PackageVersion>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
+        <PackageVersion>1.2.0</PackageVersion>
+        <AssemblyVersion>1.2.0</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>
