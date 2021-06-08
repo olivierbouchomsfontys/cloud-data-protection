@@ -6,7 +6,6 @@ using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
 using CloudDataProtection.Email;
 using CloudDataProtection.Entities;
-using CloudDataProtection.Password;
 
 namespace CloudDataProtection.Business
 {
