@@ -1,8 +1,5 @@
 {
   "name": "cloud-data-protection",
-  "author": "Olivier Bouchoms",
-  "homepage": "https://github.com/olivierbouchomsfontys/cloud-data-protection",
-  "description": "The Cloud Data Protection project, made for Fontys Hogeschool ICT",
   "version": "1.1.0",
   "private": true,
   "dependencies": {
