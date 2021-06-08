@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-data-protection-test
+  name: cloud-data-protection-test-frontend
   labels:
     app: cloud-data-protection-test
 spec:
@@ -33,7 +33,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-data-protection-test
+  name: cloud-data-protection-test-backend
   labels:
     app: cloud-data-protection-test
 spec:
