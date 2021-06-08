@@ -38,6 +38,16 @@ spec:
             secretKeyRef:
               name: cdp-backup-demo-api-key
               key: value
+        - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-access-token
+              key: value
+        - name: CDP_PAPERTRAIL_URL
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-url
+              key: value
         resources:
           limits:
             memory: "256Mi"
@@ -60,6 +70,16 @@ spec:
             secretKeyRef:
               name: cdp-onboarding-google-oauth2-client-secret
               key: value
+        - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-access-token
+              key: value
+        - name: CDP_PAPERTRAIL_URL
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-url
+              key: value
         resources:
           limits:
             memory: "256Mi"
@@ -72,6 +92,16 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Test"
+        - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-access-token
+              key: value
+        - name: CDP_PAPERTRAIL_URL
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-url
+              key: value
         resources:
           limits:
             memory: "256Mi"
@@ -93,6 +123,16 @@ spec:
           valueFrom:
             secretKeyRef:
               name: cdp-sendgrid-sender
+              key: value
+        - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-access-token
+              key: value
+        - name: CDP_PAPERTRAIL_URL
+          valueFrom:
+            secretKeyRef:
+              name: cdp-papertrail-url
               key: value
         resources:
           limits:

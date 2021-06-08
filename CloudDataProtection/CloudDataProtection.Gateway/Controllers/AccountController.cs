@@ -7,12 +7,14 @@ using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
 using CloudDataProtection.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudDataProtection.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class AccountController : ServiceController
     {
         private readonly Lazy<IMessagePublisher<UserDeletedModel>> _userDeletedMessagePublisher;

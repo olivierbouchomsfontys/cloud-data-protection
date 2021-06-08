@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
+using CloudDataProtection.Core.Papertrail.Extensions;
 using CloudDataProtection.Services.Subscription.Business;
 using CloudDataProtection.Services.Subscription.Data.Context;
 using CloudDataProtection.Services.Subscription.Seeder;
@@ -20,9 +21,12 @@ namespace CloudDataProtection.Services.Subscription
                 .Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(loggingBuilder => loggingBuilder.ConfigureLogging())
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 
     public static class WebHostExtensions
