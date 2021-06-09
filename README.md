@@ -69,6 +69,8 @@ Windows:
 
 ## Function authentication
 
+Function authentication is done using an API-key. You can set it to any custom string you like.
+
 Unix:
 `export CDP_BACKUP_DEMO_FUNCTIONS_KEY={your function key goes here}`
 `export CDP_DEMO_API_KEY={your function key goes here}`
