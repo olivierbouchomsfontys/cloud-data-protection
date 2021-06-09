@@ -8,8 +8,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5021
+          "Host": "onboarding-cluster-ip",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/onboarding",
@@ -23,8 +23,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5021
+          "Host": "onboarding-cluster-ip",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/onboarding/{id}",
@@ -35,8 +35,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5021
+          "Host": "onboarding-cluster-ip",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/Callback/GoogleLogin",
@@ -50,8 +50,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5031
+          "Host": "backup-config-cluster-ip",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/backupscheme",
@@ -65,7 +65,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "backup-config-cluster-ip",
           "Port": 5031
         }
       ],

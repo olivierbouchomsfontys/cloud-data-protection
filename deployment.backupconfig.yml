@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-data-protection-test-backup-config-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: cloud-data-protection-test-backup-config-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloud-data-protection-test-backup-config-app
+    spec:
+      containers:
+        - name: cloud-data-protection-backup-config-service-container
+          image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_backup_config_service
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Test"
+            - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-access-token
+                  key: value
+            - name: CDP_PAPERTRAIL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-url
+                  key: value
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 5031
+              
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backup-config-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: cloud-data-protection-test-backup-config-app
+  ports:
+  - targetPort: 5031
+    port: 80

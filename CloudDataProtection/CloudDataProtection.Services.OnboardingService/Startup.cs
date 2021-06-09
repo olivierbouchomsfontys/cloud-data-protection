@@ -85,7 +85,7 @@ namespace CloudDataProtection.Services.Onboarding
                 options.AddPolicy(CorsPolicy, builder =>
                 {
                     builder
-                        .WithOrigins("https://localhost:5021", "https://localhost:5001")
+                        .AllowAnyHeader()
                         .AllowAnyOrigin()
                         .AllowAnyMethod();
                 });
@@ -137,13 +137,13 @@ namespace CloudDataProtection.Services.Onboarding
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway v1");
-                    c.ConfigObject.DisplayRequestDuration = true;
-                });
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnboardingService");
+            });
 
             app.UseHttpsRedirection();
 

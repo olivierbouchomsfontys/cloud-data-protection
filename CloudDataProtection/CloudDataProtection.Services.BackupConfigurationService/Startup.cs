@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CloudDataProtection.Services.Subscription
 {
@@ -38,6 +39,10 @@ namespace CloudDataProtection.Services.Subscription
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "CloudDataProtection BackupConfigurationService", Version = "v1"});
+            });
 
             services.AddScoped<IBackupConfigurationRepository, BackupConfigurationRepository>();
             services.AddScoped<IBackupSchemeRepository, BackupSchemeRepository>();
@@ -62,7 +67,7 @@ namespace CloudDataProtection.Services.Subscription
                 options.AddPolicy(CorsPolicy, builder =>
                 {
                     builder
-                        .WithOrigins("https://localhost:5021", "https://localhost:5001")
+                        .AllowAnyHeader()
                         .AllowAnyOrigin()
                         .AllowAnyMethod();
                 });
@@ -146,6 +151,12 @@ namespace CloudDataProtection.Services.Subscription
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackupConfigurationService");
+            });
 
             app.UseHttpsRedirection();
 
