@@ -12,13 +12,14 @@
 
 ## Kubernetes
 
-| Name                  | Port  | External |
-| -------------         | ----- | --- |
-| Frontend              | 80    | ✅ |
-| Gateway               | 5001  | ✅ |
-| BackupConfiguration   | 5031  | ❌ |
-| Onboarding            | 5021  | ❌ |
-| Mail                  | 5051  | ❌ |
+| Name                  | Host/port                 | External  | 
+| -------------         | -----                     | ---       | 
+| Frontend              | loadbalancer:80           | ✅        | 
+| Gateway               | loadbalancer:5001         | ✅        |
+| BackupConfiguration   | backup-config-cluster-ip  | ❌        | 
+| Onboarding            | onboarding-cluster-ip     | ❌        |
+| Mail                  | none                      | ❌        |
+
 
 ## Functions
 
