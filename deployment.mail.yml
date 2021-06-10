@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-data-protection-test-mail-service
+  labels:
+    app: cloud-data-protection-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-data-protection-test
+  template:
+    metadata:
+      labels:
+        app: cloud-data-protection-test
+    spec:
+      containers:
+        - name: cloud-data-protection-mail-service
+          image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_mail_service
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Test"
+            - name: CDP_DEV_SENDGRID
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-sendgrid
+                  key: value
+            - name: CDP_DEV_SENDGRID_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-sendgrid-sender
+                  key: value
+            - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-access-token
+                  key: value
+            - name: CDP_PAPERTRAIL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-url
+                  key: value
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 5051

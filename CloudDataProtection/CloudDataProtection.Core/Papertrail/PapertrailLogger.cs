@@ -62,7 +62,7 @@ namespace CloudDataProtection.Core.Papertrail
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"An error occured while attempting to log to Papertrail. Error: {e.Message}");
+                    Console.WriteLine($"An error occured while attempting to log to Papertrail. Error: {e.Message}\nOriginal message:\n{e.Message}");
                 }
             }
         } 

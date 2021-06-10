@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AzureFunctionsVersion>V3</AzureFunctionsVersion>
+        <Company>Olivier Bouchoms</Company>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Azure.Storage.Blobs" Version="12.8.3" />

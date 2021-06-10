@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-data-protection-test-gateway
+  labels:
+    app: cloud-data-protection-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-data-protection-test
+  template:
+    metadata:
+      labels:
+        app: cloud-data-protection-test
+    spec:
+      containers:
+        - name: cloud-data-protection-gateway
+          image: cdpregistrytest.azurecr.io/clouddataprotection:cdp_gateway
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Test"
+            - name: CDP_BACKUP_DEMO_FUNCTIONS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-backup-demo-api-key
+                  key: value
+            - name: CDP_PAPERTRAIL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-access-token
+                  key: value
+            - name: CDP_PAPERTRAIL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cdp-papertrail-url
+                  key: value
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 5001
