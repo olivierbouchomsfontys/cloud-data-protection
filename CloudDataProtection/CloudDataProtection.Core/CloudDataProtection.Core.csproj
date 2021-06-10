@@ -5,6 +5,9 @@
         <IsPackable>true</IsPackable>
         <PackageVersion>1.2.0</PackageVersion>
         <AssemblyVersion>1.2.0</AssemblyVersion>
+        <Authors>Olivier Bouchoms</Authors>
+        <PackageProjectUrl>https://github.com/olivierbouchomsfontys/cloud-data-protection/</PackageProjectUrl>
+        <Company>Olivier Bouchoms</Company>
     </PropertyGroup>
 
     <ItemGroup>
