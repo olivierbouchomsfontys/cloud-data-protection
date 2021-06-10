@@ -5,6 +5,7 @@
         <RootNamespace>CloudDataProtection.Services.Subscription</RootNamespace>
         <PackageVersion>1.2.0</PackageVersion>
         <AssemblyVersion>1.2.0</AssemblyVersion>
+        <Company>Olivier Bouchoms</Company>
     </PropertyGroup>
 
     <ItemGroup>
