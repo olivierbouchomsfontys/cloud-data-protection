@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography;
-using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.Extensions;
 
-namespace CloudDataProtection.Services.Onboarding.Cryptography.Generator
+namespace CloudDataProtection.Core.Cryptography.Generator
 {
-    public class GoogleLoginTokenGenerator : ITokenGenerator
+    public class OtpGenerator : ITokenGenerator
     {
         private const int DefaultBytes = 64;
 
@@ -16,7 +15,7 @@ namespace CloudDataProtection.Services.Onboarding.Cryptography.Generator
             using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
             {
                 byte[] tokenData = new byte[bytes];
-                
+
                 rng.GetBytes(tokenData);
 
                 // Workaround to prevent the special base64 characters getting encoded and causing problems in callback

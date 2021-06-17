@@ -18,7 +18,7 @@ const ChangeEmail = (props: ChangeEmailProps) => {
     const user = useSelector(selectUser);
 
     const canSubmit = () => {
-        return email !== user.email &&  isValidEmail(email);
+        return email !== user.email && isValidEmail(email);
     }
 
     const onSubmit = () => {
@@ -37,7 +37,9 @@ const ChangeEmail = (props: ChangeEmailProps) => {
                 <DialogContent>
                     Your current email address is <span className='change-email-wizard__old-email'>{user.email}</span>. You can enter your new email address. A confirmation link will be sent to the new email address.
                     <Input autoFocus className='delete-account-wizard__input'
-                           onChange={(e) => setEmail(e.target.value)} disabled={props.loading} />
+                           type='email'
+                           placeholder='Enter your new e-mail address here'
+                           onChange={(e) => setEmail(e.target.value.trim())} disabled={props.loading} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.onClose} color='primary' disabled={props.loading}>Cancel</Button>

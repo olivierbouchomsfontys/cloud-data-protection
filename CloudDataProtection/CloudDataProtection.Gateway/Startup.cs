@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Business.Options;
+using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.DependencyInjection.Extensions;
 using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Jwt.Options;
@@ -24,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
@@ -70,6 +73,8 @@ namespace CloudDataProtection
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
             services.AddLazy<IMessagePublisher<UserDeletedModel>, UserDeletedMessagePublisher>();
             services.AddLazy<IMessagePublisher<UserDeletionCompleteModel>, UserDeletionCompleteMessagePublisher>();
+            
+            services.AddSingleton<ITokenGenerator, OtpGenerator>();
 
             services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
 
@@ -77,6 +82,7 @@ namespace CloudDataProtection
 
             services.Configure<RabbitMqConfiguration>(options => Configuration.GetSection("RabbitMq").Bind(options));
             services.Configure<JwtSecretOptions>(options => Configuration.GetSection("Jwt").Bind(options));
+            services.Configure<ChangeEmailOptions>(options => Configuration.GetSection("ChangeEmail").Bind(options));
 
             services.AddHostedService<GetUserEmailRpcServer>();
             services.AddHostedService<UserDataDeletedMessageListener>();

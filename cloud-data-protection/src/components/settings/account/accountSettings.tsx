@@ -9,6 +9,8 @@ import {useSnackbar} from "notistack";
 import snackbarOptions from "common/snackbar/options";
 import ChangeEmail from "./modal/changeEmail";
 import ChangeEmailInput from "../../../services/input/account/changeEmailInput";
+import {useSelector} from "react-redux";
+import {selectLoading} from "features/progressSlice";
 
 const AccountSettings = () => {
     const [isDeleteAccountVisible, setDeleteAccountVisible] = useState(false);
@@ -18,6 +20,8 @@ const AccountSettings = () => {
     const [isChangeEmailLoading, setChangeEmailLoading] = useState(false);
 
     const history = useHistory();
+
+    const loading = useSelector(selectLoading);
 
     const {enqueueSnackbar} = useSnackbar();
 
@@ -70,11 +74,12 @@ const AccountSettings = () => {
     }
 
     const onChangeEmailSuccess = (email: string) => {
-        enqueueSnackbar(`A confirmation link to confirm the change been sent to ${email}.`, snackbarOptions)
+        enqueueSnackbar(`A confirmation link has been sent to ${email}.`, snackbarOptions)
     }
 
     const onChangeEmailComplete = () => {
         setChangeEmailLoading(false);
+        setChangeEmailVisible(false);
         stopLoading();
     }
 
@@ -89,7 +94,7 @@ const AccountSettings = () => {
             <div className='account-settings__userinfo'>
                 <Typography variant='h5'>Update account information</Typography>
                 <p>If you want to migrate to another email address, you can change it here.</p>
-                <Button className='account-settings__userinfo__btn' variant='contained' color='secondary' onClick={() => onChangeEmailClick()} disabled={isChangeEmailLoading}>
+                <Button className='account-settings__userinfo__btn' variant='contained' color='secondary' onClick={() => onChangeEmailClick()} disabled={loading}>
                     Change my email address
                 </Button>
                 {isChangeEmailVisible &&
@@ -99,7 +104,7 @@ const AccountSettings = () => {
             <div className='account-settings__delete'>
                 <Typography variant='h5'>Delete account</Typography>
                 <p>If you don't want to use the services of Cloud Data Protection, you can delete your account. All your personal data will be deleted, leaving no trace at all.</p>
-                <Button className='account-settings__delete__btn' variant='contained' color='secondary' onClick={() => onDeleteAccountClick()} disabled={isDeleteAccountLoading}>
+                <Button className='account-settings__delete__btn' variant='contained' color='secondary' onClick={() => onDeleteAccountClick()} disabled={loading}>
                     Delete my account
                 </Button>
                 {isDeleteAccountVisible &&

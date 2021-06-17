@@ -1,4 +1,6 @@
-﻿namespace CloudDataProtection.Core.Result
+﻿using System;
+
+namespace CloudDataProtection.Core.Result
 {
     public class BusinessResult<TResult>
     {

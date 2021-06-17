@@ -1,16 +1,15 @@
 ﻿using CloudDataProtection.Core.Cryptography.Generator;
-using CloudDataProtection.Services.Onboarding.Cryptography.Generator;
 using Xunit;
 
 namespace CloudDataProtection.Services.OnboardingService.Tests.Cryptography
 {
-    public class GoogleLoginTokenGeneratorTests
+    public class OtpGeneratorTests
     {
         private readonly ITokenGenerator _tokenGenerator;
         
-        public GoogleLoginTokenGeneratorTests()
+        public OtpGeneratorTests()
         {
-            _tokenGenerator = new GoogleLoginTokenGenerator();
+            _tokenGenerator = new OtpGenerator();
         }
         
         [Fact]

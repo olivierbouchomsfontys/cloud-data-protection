@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Services.Onboarding.Business;
-using CloudDataProtection.Services.Onboarding.Cryptography.Generator;
 using CloudDataProtection.Services.Onboarding.Data.Repository;
 using CloudDataProtection.Services.Onboarding.Entities;
 using CloudDataProtection.Services.Onboarding.Google.Credentials;
@@ -48,7 +48,7 @@ namespace CloudDataProtection.Services.OnboardingService.Tests.Business
                 .Returns(Task.FromResult(_fetch));
                 
             _logic = new OnboardingBusinessLogic
-                (onboardingMock.Object, credentialsMock.Object, loginTokenMock.Object, new GoogleLoginTokenGenerator(), 
+                (onboardingMock.Object, credentialsMock.Object, loginTokenMock.Object, new OtpGenerator(), 
                 new GoogleOAuthV2EnvironmentCredentialsProvider(),
                 Options.Create(new GoogleOAuthV2Options()), loggerMock.Object);
         }
