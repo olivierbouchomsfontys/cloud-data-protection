@@ -5,6 +5,7 @@ using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Papertrail.Extensions;
 using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
+using CloudDataProtection.Dto.Result;
 using CloudDataProtection.Seeder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

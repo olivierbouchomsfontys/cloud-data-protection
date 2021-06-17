@@ -1,4 +1,4 @@
-﻿namespace CloudDataProtection.Dto
+﻿namespace CloudDataProtection.Dto.Result
 {
     public class AuthenticateResult
     {

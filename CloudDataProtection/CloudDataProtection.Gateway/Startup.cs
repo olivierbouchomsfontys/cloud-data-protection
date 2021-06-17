@@ -8,6 +8,7 @@ using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Data;
 using CloudDataProtection.Data.Context;
 using CloudDataProtection.Dto;
+using CloudDataProtection.Dto.Result;
 using CloudDataProtection.Email;
 using CloudDataProtection.Jwt;
 using CloudDataProtection.Messaging.Listener;

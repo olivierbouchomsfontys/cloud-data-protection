@@ -6,6 +6,7 @@ using CloudDataProtection.Core.Jwt;
 using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto;
+using CloudDataProtection.Dto.Input;
 using CloudDataProtection.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,13 @@ namespace CloudDataProtection.Controllers
         {
             _userDeletedMessagePublisher = userDeletedMessagePublisher;
             _userBusinessLogic = userBusinessLogic;
+        }
+
+        [HttpPatch]
+        [Route("Email")]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailInput input)
+        {
+            return Ok();
         }
 
         [HttpDelete]

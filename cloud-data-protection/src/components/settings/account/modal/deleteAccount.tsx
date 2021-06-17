@@ -4,7 +4,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Linear
 
 export interface DeleteAccountProps {
     onClose: () => void;
-    onDelete: () => void;
+    onSubmit: () => void;
     loading: boolean;
 }
 
@@ -32,7 +32,7 @@ const DeleteAccount = (props: DeleteAccountProps) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.onClose} color='primary' disabled={props.loading}>Cancel</Button>
-                    <Button onClick={props.onDelete} color='secondary' disabled={!canDelete() || props.loading}>
+                    <Button onClick={props.onSubmit} color='secondary' disabled={!canDelete() || props.loading}>
                         Yes
                     </Button>
                 </DialogActions>
