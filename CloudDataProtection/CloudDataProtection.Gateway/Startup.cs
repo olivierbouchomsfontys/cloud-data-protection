@@ -73,6 +73,7 @@ namespace CloudDataProtection
             services.AddLazy<IMessagePublisher<UserResult>, UserRegisteredMessagePublisher>();
             services.AddLazy<IMessagePublisher<UserDeletedModel>, UserDeletedMessagePublisher>();
             services.AddLazy<IMessagePublisher<UserDeletionCompleteModel>, UserDeletionCompleteMessagePublisher>();
+            services.AddLazy<IMessagePublisher<EmailChangeRequestedModel>, EmailChangeRequestedMessagePublisher>();
             
             services.AddSingleton<ITokenGenerator, OtpGenerator>();
 
