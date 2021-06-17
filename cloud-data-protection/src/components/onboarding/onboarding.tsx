@@ -29,12 +29,7 @@ import {Autorenew, Edit, Schedule} from "@material-ui/icons";
 import CreateBackupConfigurationInput from "services/input/backupConfiguration/createBackupConfigurationInput";
 import {RouteComponentProps} from "react-router";
 
-
-interface OnboardingProps extends RouteComponentProps {
-
-}
-
-const OnboardingComponent = (props: OnboardingProps) => {
+const OnboardingComponent = (props: RouteComponentProps) => {
     const [onboarding, setOnboarding] = useState<Onboarding>();
     const [schemes, setSchemes] = useState<BackupSchemeResult[]>();
     const [schemeId, setSchemeId] = useState<number>();

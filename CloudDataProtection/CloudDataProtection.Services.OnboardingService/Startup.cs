@@ -7,7 +7,6 @@ using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Messaging.RabbitMq;
 using CloudDataProtection.Services.Onboarding.Business;
 using CloudDataProtection.Services.Onboarding.Config;
-using CloudDataProtection.Services.Onboarding.Cryptography.Generator;
 using CloudDataProtection.Services.Onboarding.Data.Context;
 using CloudDataProtection.Services.Onboarding.Data.Repository;
 using CloudDataProtection.Services.Onboarding.Dto;
@@ -61,7 +60,7 @@ namespace CloudDataProtection.Services.Onboarding
             
             services.Configure<GoogleOAuthV2Options>(options => Configuration.GetSection("Google:OAuth2").Bind(options));
             
-            services.AddSingleton<ITokenGenerator, GoogleLoginTokenGenerator>();
+            services.AddSingleton<ITokenGenerator, OtpGenerator>();
             services.AddSingleton<IGoogleOAuthV2CredentialsProvider, GoogleOAuthV2EnvironmentCredentialsProvider>();
             
             services.AddLazy<OnboardingBusinessLogic>();

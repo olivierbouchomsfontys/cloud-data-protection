@@ -13,5 +13,7 @@
         public static readonly string UserDeletionComplete = "UserDeletionComplete";
 
         public static readonly string GoogleAccountConnected = "GoogleAccountConnected";
+
+        public static readonly string EmailChangeRequested = "EmailChangeRequested";
     }
 }

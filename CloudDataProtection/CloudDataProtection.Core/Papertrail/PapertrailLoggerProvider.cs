@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using CloudDataProtection.Core.Papertrail.Options;
 using Microsoft.Extensions.Logging;

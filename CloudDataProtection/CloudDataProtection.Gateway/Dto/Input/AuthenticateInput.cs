@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CloudDataProtection.Dto
+namespace CloudDataProtection.Dto.Input
 {
     public class LoginInput
     {

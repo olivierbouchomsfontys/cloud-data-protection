@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {LoginResult} from "services/result/login/loginResult";
 import User from "entities/user";
+import ConfirmChangeEmailResult from "services/result/account/confirmChangeEmailResult";
 
 interface UserSliceState {
     user?: User;
@@ -24,6 +25,15 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        changeEmail: ((state, action: PayloadAction<ConfirmChangeEmailResult>) => {
+            if (!state.user) {
+                return;
+            }
+
+            state.user.email = action.payload.email;
+
+            localStorage.setItem('user', JSON.stringify(state.user));
+        }),
         login: ((state, action: PayloadAction<LoginResult>) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
@@ -42,7 +52,7 @@ export const userSlice = createSlice({
     }
 })
 
-export const {login, logout} = userSlice.actions;
+export const {login, logout, changeEmail} = userSlice.actions;
 export const selectUser = (state: any) => state.user.user;
 export const selectAuthenticated = (state: any) => state.user.user?.id !== undefined;
 

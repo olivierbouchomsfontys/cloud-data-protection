@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
 using CloudDataProtection.Business;
+using CloudDataProtection.Business.Options;
+using CloudDataProtection.Core.Cryptography.Generator;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Data;
 using CloudDataProtection.Entities;
 using CloudDataProtection.Password;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -31,7 +34,7 @@ namespace CloudDataProtection.Gateway.Tests.Business
 
         public AuthenticationBusinessLogicTests()
         {
-            var mock = new Mock<IAuthenticationRepository>();
+            Mock<IAuthenticationRepository> mock = new Mock<IAuthenticationRepository>();
             
             mock.Setup(repository => repository.Get(1))
                 .Returns(Task.FromResult(_fetch));
@@ -42,8 +45,10 @@ namespace CloudDataProtection.Gateway.Tests.Business
             mock.Setup(repository => repository.Create(_register))
                 .Callback(() => _register.Id = 2)
                 .Returns(Task.CompletedTask);
+
+            IOptions<ChangeEmailOptions> changeEmailOptions = Options.Create(new ChangeEmailOptions() {ExpiresInMinutes = 15});
             
-            _logic = new AuthenticationBusinessLogic(mock.Object, new BCryptPasswordHasher());
+            _logic = new AuthenticationBusinessLogic(mock.Object, new BCryptPasswordHasher(), changeEmailOptions, new OtpGenerator());
         }
 
         #region Valid credentials

@@ -28,6 +28,7 @@ namespace CloudDataProtection.Services.MailService
             services.AddHostedService<UserRegisteredMessageListener>();
             services.AddHostedService<GoogleAccountConnectedMessageListener>();
             services.AddHostedService<UserDeletionCompleteMessageListener>();
+            services.AddHostedService<EmailChangeRequestedMessageListener>();
 
             services.AddSingleton<IMailSender, SendGridMailSender>();
             

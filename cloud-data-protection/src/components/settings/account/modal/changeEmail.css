@@ -1,0 +1,9 @@
+.change-email-wizard__input {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.change-email-wizard__old-email,
+.change-email-wizard__new-email {
+    font-weight: bold;
+}

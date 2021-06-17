@@ -27,6 +27,7 @@ namespace CloudDataProtection.Data.Context
         
         public DbSet<User> User { get; set; }
         public DbSet<UserDeletionHistory> UserDeletionHistory { get; set; }
+        public DbSet<ChangeEmailRequest> ChangeEmailRequest { get; set; }
 
         public async Task<bool> SaveAsync()
         {

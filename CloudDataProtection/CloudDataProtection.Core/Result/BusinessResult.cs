@@ -1,10 +1,12 @@
-﻿namespace CloudDataProtection.Core.Result
+﻿using System;
+
+namespace CloudDataProtection.Core.Result
 {
     public class BusinessResult<TResult>
     {
-        public bool Success { get; private set; }
-        public TResult Data { get; private set; }
-        public string Message { get; private set; }
+        public bool Success { get; protected set; }
+        public TResult Data { get; protected set; }
+        public string Message { get; protected set; }
 
         public static BusinessResult<TResult> Error(string message)
         {
@@ -39,6 +41,26 @@
             return new BusinessResult<TResult>
             {
                 Success = true
+            };
+        }
+    }
+
+    public class BusinessResult : BusinessResult<Object>
+    {
+        public new static BusinessResult Ok()
+        {
+            return new BusinessResult
+            {
+                Success = true
+            };
+        }
+
+        public new static BusinessResult Error(string message)
+        {
+            return new BusinessResult
+            {
+                Success = false,
+                Message = message
             };
         }
     }
