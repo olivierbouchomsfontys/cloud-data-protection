@@ -4,7 +4,7 @@ import ChangeEmailInput from "services/input/account/changeEmailInput";
 import {useSelector} from "react-redux";
 import {selectUser} from "features/userSlice";
 import './changeEmail.css';
-import {isValidEmail} from "../../../../common/validator/simpleEmailValidator";
+import {isValidEmail} from "common/validator/simpleEmailValidator";
 
 export interface ChangeEmailProps {
     onClose: () => void;

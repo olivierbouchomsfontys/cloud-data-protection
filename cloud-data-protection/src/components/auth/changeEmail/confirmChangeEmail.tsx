@@ -10,11 +10,7 @@ import ConfirmChangeEmailResult from "services/result/account/confirmChangeEmail
 import {AccountService} from "services/accountService";
 import ConfirmChangeEmailInput from "services/input/account/confirmChangeEmailInput";
 
-interface ConfirmChangeEmailProps extends RouteComponentProps {
-
-}
-
-const ConfirmChangeEmail = (props: ConfirmChangeEmailProps) => {
+const ConfirmChangeEmail = (props: RouteComponentProps) => {
     let cancelTokenSource: CancelTokenSource;
 
     const {enqueueSnackbar} = useSnackbar();

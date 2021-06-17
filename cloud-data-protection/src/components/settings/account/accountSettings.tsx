@@ -8,7 +8,7 @@ import {useHistory} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import snackbarOptions from "common/snackbar/options";
 import ChangeEmail from "./modal/changeEmail";
-import ChangeEmailInput from "../../../services/input/account/changeEmailInput";
+import ChangeEmailInput from "services/input/account/changeEmailInput";
 import {useSelector} from "react-redux";
 import {selectLoading} from "features/progressSlice";
 import ChangePassword from "components/settings/account/modal/changePassword";
