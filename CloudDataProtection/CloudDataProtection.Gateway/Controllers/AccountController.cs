@@ -87,6 +87,20 @@ namespace CloudDataProtection.Controllers
             return Ok(result);
         }
 
+        [HttpPatch]
+        [Route("ChangePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordInput input)
+        {
+            BusinessResult changePasswordResult = await _authenticationBusinessLogic.ChangePassword(UserId, input.CurrentPassword, input.NewPassword);
+            
+            if (!changePasswordResult.Success)
+            {
+                return Conflict(ConflictResponse.Create(changePasswordResult.Message));
+            }
+
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("")]
         public async Task<ActionResult> Delete()

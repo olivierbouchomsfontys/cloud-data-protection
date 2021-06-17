@@ -36,7 +36,7 @@ const ChangeEmail = (props: ChangeEmailProps) => {
                 <DialogTitle className='dialog__title'>Change email address</DialogTitle>
                 <DialogContent>
                     Your current email address is <span className='change-email-wizard__old-email'>{user.email}</span>. You can enter your new email address. A confirmation link will be sent to the new email address.
-                    <Input autoFocus className='delete-account-wizard__input'
+                    <Input autoFocus className='change-email-wizard__input'
                            type='email'
                            placeholder='Enter your new e-mail address here'
                            onChange={(e) => setEmail(e.target.value.trim())} disabled={props.loading} />

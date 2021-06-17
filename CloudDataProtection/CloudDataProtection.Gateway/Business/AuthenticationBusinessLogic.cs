@@ -193,5 +193,31 @@ namespace CloudDataProtection.Business
             
             return BusinessResult<string>.Ok(user.Email);
         }
+
+        public async Task<BusinessResult> ChangePassword(long userId, string currentPassword, string newPassword)
+        {
+            User user = await _repository.Get(userId);
+            
+            if (user == null)
+            {
+                return BusinessResult.Error($"Could not find user with id = {userId}");
+            }
+            
+            if (!_passwordHasher.Match(user.Password, currentPassword))
+            {
+                return BusinessResult.Error("Current password is invalid");
+            }
+            
+            if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < MinimumPasswordLength)
+            {
+                return BusinessResult.Error($"Password must be at least {MinimumPasswordLength} characters long");
+            }
+
+            user.Password = _passwordHasher.HashPassword(newPassword);
+
+            await _repository.Update(user);
+
+            return BusinessResult.Ok();
+        }
     }
 }

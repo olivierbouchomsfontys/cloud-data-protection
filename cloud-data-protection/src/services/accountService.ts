@@ -6,6 +6,7 @@ import store from "stores/Store";
 import ChangeEmailInput from "./input/account/changeEmailInput";
 import ConfirmChangeEmailInput from "services/input/account/confirmChangeEmailInput";
 import ConfirmChangeEmailResult from "services/result/account/confirmChangeEmailResult";
+import ChangePasswordInput from "services/input/account/changePasswordInput";
 
 export class AccountService extends ServiceBase {
     public async changeEmail(input: ChangeEmailInput, cancelToken?: CancelToken) {
@@ -16,6 +17,11 @@ export class AccountService extends ServiceBase {
     public async confirmChangeEmail(input: ConfirmChangeEmailInput, cancelToken?: CancelToken) {
         return await http.patch('/Account/ConfirmEmail', input, { cancelToken: cancelToken })
             .then((response: AxiosResponse<ConfirmChangeEmailResult>) => AccountService.onConfirmChangeEmail(response))
+            .catch((e: any) => this.onError(e));
+    }
+
+    public async changePassword(input: ChangePasswordInput, cancelToken?: CancelToken) {
+        return await http.patch('/Account/ChangePassword', input, { cancelToken: cancelToken })
             .catch((e: any) => this.onError(e));
     }
 
