@@ -114,6 +114,26 @@ namespace CloudDataProtection.Business
                 return BusinessResult<ChangeEmailRequest>.Error($"Could not find user with id = {userId}");
             }
 
+            if (user.Email.Equals(newEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                return BusinessResult<ChangeEmailRequest>.Error("Email address is same as current");
+            }
+
+            bool emailExists = await _repository.Get(newEmail) != null;
+
+            if (emailExists)
+            {
+                return BusinessResult<ChangeEmailRequest>.Error("Email address is already in use");
+            }
+
+            IEnumerable<ChangeEmailRequest> requestsByEmail = await _repository.GetAll(newEmail);
+
+            // There is already a request to change to this email address
+            if (requestsByEmail.Any(c => c.IsValid))
+            {
+                return BusinessResult<ChangeEmailRequest>.Error("Email address is already in use");
+            }
+
             IEnumerable<ChangeEmailRequest> oldRequests = await _repository.GetAll(userId);
             
             ICollection<ChangeEmailRequest> validRequests = oldRequests.Where(r => r.IsValid).ToList();
@@ -139,6 +159,39 @@ namespace CloudDataProtection.Business
             await _repository.Create(request);
 
             return BusinessResult<ChangeEmailRequest>.Ok(request);
+        }
+
+        public async Task<BusinessResult<string>> ConfirmChangeEmail(string inputToken)
+        {
+            if (string.IsNullOrEmpty(inputToken))
+            {
+                return BusinessResult<string>.Error("No token has been provided");
+            }
+
+            ChangeEmailRequest request = await _repository.GetEmailRequest(inputToken);
+
+            if (request == null)
+            {
+                return BusinessResult<string>.Error("An invalid token has been provided");
+            }
+
+            if (!request.IsValid)
+            {
+                return BusinessResult<string>.Error("The token has expired or is already used");
+            }
+
+            User user = await _repository.Get(request.UserId);
+
+            if (user == null)
+            {
+                return BusinessResult<string>.Error("An invalid token has been provided");
+            }
+
+            user.Email = request.NewEmail;
+
+            await _repository.Update(user);
+            
+            return BusinessResult<string>.Ok(user.Email);
         }
     }
 }

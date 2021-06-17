@@ -26,6 +26,13 @@ namespace CloudDataProtection.Data
             return await _context.User.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task Update(User user)
+        {
+            _context.User.Update(user);
+
+            await _context.SaveAsync();
+        }
+
         public async Task Create(User user)
         {
             _context.User.Add(user);
@@ -67,6 +74,21 @@ namespace CloudDataProtection.Data
                 .AsNoTracking()
                 .Where(r => r.UserId == userId)
                 .ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<ChangeEmailRequest>> GetAll(string email)
+        {
+            return await _context.ChangeEmailRequest
+                .AsNoTracking()
+                .Where(r => r.NewEmail == email)
+                .ToArrayAsync();
+        }
+
+        public async Task<ChangeEmailRequest> GetEmailRequest(string token)
+        {
+            return await _context.ChangeEmailRequest
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Token == token);
         }
     }
 }

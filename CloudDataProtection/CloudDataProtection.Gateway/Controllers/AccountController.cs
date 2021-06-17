@@ -8,6 +8,7 @@ using CloudDataProtection.Core.Messaging;
 using CloudDataProtection.Core.Rest.Errors;
 using CloudDataProtection.Core.Result;
 using CloudDataProtection.Dto.Input;
+using CloudDataProtection.Dto.Result;
 using CloudDataProtection.Entities;
 using CloudDataProtection.Messaging.Publisher;
 using Microsoft.AspNetCore.Authorization;
@@ -64,6 +65,26 @@ namespace CloudDataProtection.Controllers
             await _emailChangeRequestedMessagePublisher.Value.Send(model);
             
             return Ok();
+        }
+
+        [HttpPatch]
+        [Route("ConfirmEmail")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmChangeEmail(ConfirmChangeEmailInput input)
+        {
+            BusinessResult<string> changeEmailResult = await _authenticationBusinessLogic.ConfirmChangeEmail(input.Token);
+            
+            if (!changeEmailResult.Success)
+            {
+                return Conflict(ConflictResponse.Create(changeEmailResult.Message));
+            }
+
+            ConfirmChangeEmailResult result = new ConfirmChangeEmailResult
+            {
+                Email = changeEmailResult.Data
+            };
+
+            return Ok(result);
         }
 
         [HttpDelete]
