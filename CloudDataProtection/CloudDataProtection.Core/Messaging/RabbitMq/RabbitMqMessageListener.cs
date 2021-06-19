@@ -5,6 +5,7 @@ using CloudDataProtection.Core.Messaging.RabbitMq.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -81,9 +82,21 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             {
                 return;
             }
-            
-            TModel model = args.GetModel<TModel>();
-         
+
+            TModel model;
+
+            try
+            {
+                model = args.GetModel<TModel>();
+            }
+            catch (JsonReaderException e)
+            {
+                _logger.LogWarning(e, "Could not deserialize received object. Length: {Length}", args.Body.Length);
+
+                _channel.BasicReject(args.DeliveryTag, false);
+                return;
+            }
+
             _logger.LogInformation("Handling message with subject {GetSubject} and model {Model}", args.RoutingKey, model);
 
             await HandleMessage(model);
@@ -99,10 +112,11 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
                 .Execute(DoInit);
         }
 
+
         private void OnInitRetry(Exception exception, TimeSpan timeSpan, int attempt, Context context)
         {
             _logger.LogWarning(exception, "An error occurred during initialization");
-            _logger.LogWarning("Retrying initialization, attempt nr. {Attempt} / {RetryCount}", attempt, _configuration.RetryCount);
+            _logger.LogWarning("Retrying initialization. Waiting {Ms}ms. Attempt nr. {Attempt} / {RetryCount}", timeSpan.TotalMilliseconds, attempt, _configuration.RetryCount);
         }
         
         private TimeSpan GetRetryDelay(int attempt)
@@ -115,7 +129,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel = Connection.CreateModel();
             _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
             
-            // A queue should not be automatically deleted and should survive a broker restart
             _channel.QueueDeclare(Queue, exclusive: false, durable: true, autoDelete: false);
             _channel.QueueBind(Queue, _configuration.Exchange, RoutingKey);
         }

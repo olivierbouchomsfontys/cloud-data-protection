@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using CloudDataProtection.Core.Messaging.RabbitMq.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
 {
@@ -13,6 +15,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
     /// </summary>
     public abstract class RabbitMqRpcClient<TRequest, TResponse> : IRpcClient<TRequest, TResponse>
     {
+        private readonly ILogger<RabbitMqRpcClient<TRequest, TResponse>> _logger;
         private readonly RabbitMqConfiguration _configuration;
 
         private static readonly string Queue = "rpc_queue";
@@ -25,6 +28,8 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private IModel _replyChannel;
         
         private TResponse _response;
+
+        private bool _hasError;
 
         private ConnectionFactory _connectionFactory;
         private ConnectionFactory ConnectionFactory
@@ -62,9 +67,10 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         }
 
 
-        public RabbitMqRpcClient(IOptions<RabbitMqConfiguration> options)
+        public RabbitMqRpcClient(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqRpcClient<TRequest, TResponse>> logger)
         {
             _configuration = options.Value;
+            _logger = logger;
         }
 
         public async Task<TResponse> Request(TRequest request)
@@ -131,7 +137,7 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             
             _requestChannel.BasicPublish(_configuration.Exchange, "", message, body);
             
-            while (_response == null)
+            while (_response == null&& !_hasError)
             {
                 await Task.Delay(8);
             }
@@ -143,7 +149,18 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         {
             if (ShouldHandleResponse(args))
             {
-                _response = args.GetModel<TResponse>();
+                try
+                {
+                    _response = args.GetModel<TResponse>();
+                }
+                catch (JsonReaderException e)
+                {
+                    _logger.LogWarning(e, "Could not deserialize received object. Length: {Length}", args.Body.Length);
+
+                    _replyChannel.BasicReject(args.DeliveryTag, false);
+                    _hasError = true;
+                    return;
+                }
                 
                 _replyChannel.BasicAck(args.DeliveryTag, false);
             }

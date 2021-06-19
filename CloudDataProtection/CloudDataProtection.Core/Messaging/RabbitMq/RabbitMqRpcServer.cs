@@ -65,6 +65,72 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             Init();
         }
         
+        public abstract Task<TResponse> HandleMessage(TRequest model);
+
+        protected sealed override Task ExecuteAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
+
+            consumer.Received += async (_, args) => await OnRequestReceive(args);
+
+            _channel.BasicConsume(QueueName, false, consumer);
+
+            return Task.CompletedTask;
+        }
+
+        public sealed override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _connection?.Close();
+            
+            return base.StopAsync(cancellationToken);
+        }
+
+        private async Task OnRequestReceive(BasicDeliverEventArgs args)
+        {
+            if (!args.BasicProperties.IsReplyToPresent())
+            {
+                _channel.BasicReject(args.DeliveryTag, false);
+                return;
+            }
+            
+            TRequest request;
+
+            try
+            {
+                request = args.GetModel<TRequest>();
+            }
+            catch (JsonReaderException e)
+            {
+                _logger.LogWarning(e, "Could not deserialize received object. Length: {Length}", args.Body.Length);
+
+                _channel.BasicReject(args.DeliveryTag, false);
+                return;
+            }
+
+            IBasicProperties replyProperties = _channel.CreateBasicProperties();
+
+            replyProperties.CorrelationId = args.BasicProperties.CorrelationId;
+            replyProperties.ContentType = _configuration.ContentType;
+            replyProperties.Persistent = true;
+            replyProperties.ClearReplyTo();
+
+            TResponse response = await HandleMessage(request);
+            
+            byte[] body = JsonSerializer.SerializeToUtf8Bytes(response, typeof(TResponse));
+
+            DoSendResponse(replyProperties, body, args.BasicProperties.ReplyTo);
+            
+            _channel.BasicAck(args.DeliveryTag, false);
+        }
+
+        private void DoSendResponse(IBasicProperties message, byte[] body, string routingKey)
+        {
+            _channel.BasicPublish(_configuration.Exchange, routingKey, message, body);
+        }
+        
+                
         private void Init()
         {
             Policy
@@ -92,71 +158,6 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
             _channel.QueueBind(QueueName, _configuration.Exchange, "");
             
             _channel.BasicQos(0, 1, false);
-        }
-        
-        public abstract Task<TResponse> HandleMessage(TRequest model);
-
-        protected sealed override Task ExecuteAsync(CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            
-            EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
-
-            consumer.Received += async (_, args) => await OnRequestReceive(args);
-
-            _channel.BasicConsume(QueueName, false, consumer);
-
-            return Task.CompletedTask;
-        }
-
-        public sealed override Task StopAsync(CancellationToken cancellationToken)
-        {
-            _connection?.Close();
-            
-            return base.StopAsync(cancellationToken);
-        }
-
-        private async Task OnRequestReceive(BasicDeliverEventArgs args)
-        {
-            TRequest request;
-
-            if (!args.BasicProperties.IsReplyToPresent())
-            {
-                _channel.BasicReject(args.DeliveryTag, false);
-                return;
-            }
-            
-            try
-            {
-                request = args.GetModel<TRequest>();
-            }
-            catch (JsonReaderException e)
-            {
-                _logger.LogWarning("Could not deserialize received object. Length: {Length}", args.Body.Length);
-                
-                _channel.BasicReject(args.DeliveryTag, false);
-                return;
-            }
-
-            IBasicProperties replyProperties = _channel.CreateBasicProperties();
-
-            replyProperties.CorrelationId = args.BasicProperties.CorrelationId;
-            replyProperties.ContentType = _configuration.ContentType;
-            replyProperties.Persistent = true;
-            replyProperties.ClearReplyTo();
-
-            TResponse response = await HandleMessage(request);
-            
-            byte[] body = JsonSerializer.SerializeToUtf8Bytes(response, typeof(TResponse));
-
-            DoSendResponse(replyProperties, body, args.BasicProperties.ReplyTo);
-            
-            _channel.BasicAck(args.DeliveryTag, false);
-        }
-
-        private void DoSendResponse(IBasicProperties message, byte[] body, string routingKey)
-        {
-            _channel.BasicPublish(_configuration.Exchange, routingKey, message, body);
         }
     }
 }
