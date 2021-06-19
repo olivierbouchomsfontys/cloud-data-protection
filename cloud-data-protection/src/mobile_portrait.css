@@ -38,4 +38,14 @@
     .home__title {
         display: none;
     }
+
+    .dialog__content {
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .dialog__content .MuiDialogContent-root {
+        max-width: 100% !important;
+        overflow: hidden;
+    }
 }

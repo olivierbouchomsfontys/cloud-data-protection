@@ -33,10 +33,11 @@
 
 .dialog__content {
   min-width: 24rem !important;
+  max-width: 100% !important;
 }
 
 .dialog__title * {
-  font-weight: bold!important;
+  font-weight: bold !important;
 }
 
 @media all and (max-width: 1366px) {

@@ -1,6 +1,13 @@
-.account-settings__delete__btn,
-.account-settings__userinfo__btn {
+.account-settings__section__btn {
     display: block!important;
     margin-left: auto!important;
     margin-right: 0!important;
+}
+
+@media all and (max-width: 600px) {
+    .account-settings__section__btn {
+        margin-left: 0!important;
+        margin-right: 0!important;
+        width: 100%!important;
+    }
 }
