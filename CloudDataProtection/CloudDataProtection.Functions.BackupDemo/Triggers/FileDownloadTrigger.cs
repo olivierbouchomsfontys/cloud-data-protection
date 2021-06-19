@@ -26,12 +26,6 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
             }
             
             string id = request.Query["id"];
-            string decryptString = request.Query["decrypt"];
-
-            if (!bool.TryParse(decryptString, out bool decrypt))
-            {
-                decrypt = false;
-            }
             
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -49,14 +43,14 @@ namespace CloudDataProtection.Functions.BackupDemo.Triggers
                 request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "content-disposition");
             }
 
-            return await DoFileDownload(id, decrypt);
+            return await DoFileDownload(id);
         }
 
-        private static async Task<IActionResult> DoFileDownload(string id, bool decrypt)
+        private static async Task<IActionResult> DoFileDownload(string id)
         {
             FileManagerLogic logic = FileManagerLogicFactory.Instance.GetLogic();
 
-            BusinessResult<FileDownloadResult> result = await logic.Download(id, decrypt);
+            BusinessResult<FileDownloadResult> result = await logic.Download(id);
 
             if (!result.Success)
             {
