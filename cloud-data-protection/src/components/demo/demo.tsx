@@ -23,6 +23,8 @@ const Demo = () => {
 
     const demoService = new DemoService();
 
+    const [initialized, setInitialized] = useState<boolean>(false);
+
     let cancelTokenSource: CancelTokenSource;
 
     useEffect(() => {
@@ -32,6 +34,11 @@ const Demo = () => {
     })
 
     useEffect(() => {
+        if (!initialized) {
+            setInitialized(true);
+            return;
+        }
+
         startLoading();
 
         onFileIdChange();
