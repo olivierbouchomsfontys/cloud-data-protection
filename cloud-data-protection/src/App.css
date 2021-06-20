@@ -32,7 +32,7 @@
 }
 
 .dialog__content {
-  min-width: 24rem !important;
+  width: 32rem !important;
   max-width: 100% !important;
 }
 
