@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Polly;
 using RabbitMQ.Client;
 
 namespace CloudDataProtection.Core.Messaging.RabbitMq
@@ -39,43 +41,67 @@ namespace CloudDataProtection.Core.Messaging.RabbitMq
         private IConnection _connection;
         private IConnection Connection => _connection ??= ConnectionFactory.CreateConnection();
 
-        private IModel Channel { get; } 
+        private IModel _channel; 
 
         protected RabbitMqMessagePublisher(IOptions<RabbitMqConfiguration> options, ILogger<RabbitMqMessagePublisher<TModel>> logger)
         {
             _logger = logger;
             _configuration = options.Value;
-            
-            Channel = Connection.CreateModel();
-            Channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
+
+            Init();
         }
         
         public async Task Send(TModel obj)
         {
-            IBasicProperties message = Channel.CreateBasicProperties();
+            IBasicProperties message = _channel.CreateBasicProperties();
 
             message.ContentType = _configuration.ContentType;
 
             byte[] body = JsonSerializer.SerializeToUtf8Bytes(obj, typeof(TModel));
             
-            Stopwatch performance = Stopwatch.StartNew();
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             await DoSend(message, body);
 
             _connection?.Close();
 
-            performance.Stop();
+            stopwatch.Stop();
 
             _logger.Log(LogLevel.Information, "{Type}.{Method} to {Host} took {Ms}ms", this.GetType().Name, nameof(Send), _configuration.Hostname,
-                performance.ElapsedMilliseconds);
+                stopwatch.ElapsedMilliseconds);
         }
 
         private async Task DoSend(IBasicProperties message, byte[] body)
         {
             await Task.Run(() =>
             {
-                Channel.BasicPublish(_configuration.Exchange, RoutingKey, message, body);
+                _channel.BasicPublish(_configuration.Exchange, RoutingKey, message, body);
             });
+        }
+        
+        private void Init()
+        {
+            Policy
+                .Handle<Exception>()
+                .WaitAndRetry(_configuration.RetryCount, GetRetryDelay, OnInitRetry)
+                .Execute(DoInit);
+        }
+
+        private void OnInitRetry(Exception exception, TimeSpan timeSpan, int attempt, Context context)
+        {
+            _logger.LogWarning(exception, "An error occurred during initialization");
+            _logger.LogWarning("Retrying initialization. Waiting {Ms}ms. Attempt nr. {Attempt} / {RetryCount}", timeSpan.TotalMilliseconds, attempt, _configuration.RetryCount);
+        }
+        
+        private TimeSpan GetRetryDelay(int attempt)
+        {
+            return TimeSpan.FromMilliseconds(attempt * _configuration.RetryDelayMs);
+        }
+
+        private void DoInit()
+        {
+            _channel = Connection.CreateModel();
+            _channel.ExchangeDeclare(_configuration.Exchange, ExchangeType.Fanout, true);
         }
     }
 }

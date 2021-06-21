@@ -87,7 +87,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             return BusinessResult<File>.Ok(file);
         }
 
-        public async Task<BusinessResult<FileDownloadResult>> Download(string id, bool decrypt)
+        public async Task<BusinessResult<FileDownloadResult>> Download(string id)
         {
             BusinessResult<File> info = await GetInfo(id);
 
@@ -96,12 +96,7 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
                 return BusinessResult<FileDownloadResult>.Error("An unknown error occured while retrieving info of the file");
             }
             
-            if (decrypt)
-            {
-                return await DownloadAndDecrypt(id, info.Data.ContentType, info.Data.Name);
-            }
-
-            return await DownloadRaw(info.Data.Name);
+            return await DownloadAndDecrypt(id, info.Data.ContentType, info.Data.Name);
         }
 
         private async Task<BusinessResult<FileDownloadResult>> DownloadAndDecrypt(string id, string contentType, string fileName)
@@ -124,11 +119,6 @@ namespace CloudDataProtection.Functions.BackupDemo.Business
             };
             
             return BusinessResult<FileDownloadResult>.Ok(result);
-        }
-
-        private async Task<BusinessResult<FileDownloadResult>> DownloadRaw(string fileName)
-        {
-            throw new NotImplementedException();
         }
 
         private string GetBlobName(IFormFile input)

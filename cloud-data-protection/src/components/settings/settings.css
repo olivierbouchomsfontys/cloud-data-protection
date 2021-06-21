@@ -5,3 +5,7 @@
 .settings__tabs {
     margin-top: .5rem;
 }
+
+.account-settings > .account-settings__section:not(:first-child) {
+    margin-top: 1.5rem;
+}

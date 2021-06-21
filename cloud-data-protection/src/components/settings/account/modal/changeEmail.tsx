@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {selectUser} from "features/userSlice";
 import './changeEmail.css';
 import {isValidEmail} from "common/validator/simpleEmailValidator";
+import {shorten} from "common/formatting/emailFormat";
 
 export interface ChangeEmailProps {
     onClose: () => void;
@@ -35,10 +36,10 @@ const ChangeEmail = (props: ChangeEmailProps) => {
                 }
                 <DialogTitle className='dialog__title'>Change email address</DialogTitle>
                 <DialogContent>
-                    Your current email address is <span className='change-email-wizard__old-email'>{user.email}</span>. You can enter your new email address. A confirmation link will be sent to the new email address.
+                    Your current email address is <span className='change-email-wizard__old-email'>{shorten(user.email)}</span>. You can enter your new email address. A confirmation link will be sent to the new email address.
                     <Input autoFocus className='change-email-wizard__input'
                            type='email'
-                           placeholder='Enter your new e-mail address here'
+                           placeholder='Enter your new email address here'
                            onChange={(e) => setEmail(e.target.value.trim())} disabled={props.loading} />
                 </DialogContent>
                 <DialogActions>
